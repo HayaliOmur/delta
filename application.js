@@ -272,7 +272,8 @@ window.master = new(class {
             'wss://delta-server.glitch.me': 'Antarctic',
             'wss://delta-selffeed.glitch.me': 'Zimbabve',
             'wss://imsolo.pro:2109' : 'Arctida',
-          
+          'wss://imsolo.pro:2104' : 'Rookery',
+          'wss://imsolo.pro:2108' : 'Dagestan'
           
         };
 

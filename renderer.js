@@ -244,6 +244,10 @@ var camera = new(class {
                 const s = theme.bordersWidth >> 1;
                 this.drawMapBorders(this.ctx, a.mapOffsetFixed, a.mapMinX - s, a.mapMinY - s, a.mapMaxX + s, a.mapMaxY + s, theme.bordersColor, theme.bordersWidth);
             }
+            if (settings.showRainbowBorders === true) {
+                const s = theme.bordersWidth >> 1;
+                this.drawMapBorders(this.ctx, a.mapOffsetFixed, a.mapMinX - s, a.mapMinY - s, a.mapMaxX + s, a.mapMaxY + s, theme.bordersColor, theme.bordersWidth);
+            }
 
             if (settings.virusesRange === true)
                 this.drawVirusesRange(this.ctx, this.virusesFrame);
@@ -453,6 +457,10 @@ var camera = new(class {
                 this.drawBattleArea(this.ctx);
 
             if (settings.showMapBorders) {
+                const o = theme.bordersWidth / 2;
+                this.drawMapBorders(this.ctx, a.mapOffsetFixed, a.mapMinX - o, a.mapMinY - o, a.mapMaxX + o, a.mapMaxY + o, theme.bordersColor, theme.bordersWidth);
+            }
+            if (settings.showRainbowBorders) {
                 const o = theme.bordersWidth / 2;
                 this.drawMapBorders(this.ctx, a.mapOffsetFixed, a.mapMinX - o, a.mapMinY - o, a.mapMaxX + o, a.mapMaxY + o, theme.bordersColor, theme.bordersWidth);
             }
@@ -706,6 +714,42 @@ var camera = new(class {
             a.stroke();
             a.restore();
         },
+              drawRainbowBorders(a, b, c, d, e, f, g, h) {
+            if (!b) return;
+      ctx.save();
+
+      ctx.filter = `blur(${~~( width / 2 * this.scale)}px)`;
+      let m = (width / 2) * 1.1,
+          time = Date.now() * 3,
+          saturate = "100%",
+          lightness = "50%";
+
+      var gradient1 = ctx.createLinearGradient(minX, 0, maxX, 0);
+      gradient1.addColorStop(0, `hsl(${~~((time)/30+0)%360},${saturate},${lightness})`);
+      gradient1.addColorStop(0.33, `hsl(${~~((time)/30+60)%360},${saturate},${lightness})`);
+      gradient1.addColorStop(0.67, `hsl(${~~((time)/30+120)%360},${saturate},${lightness})`);
+      gradient1.addColorStop(1, `hsl(${~~((time)/30+180)%360},${saturate},${lightness})`);
+      var gradient2 = ctx.createLinearGradient(minX, 0, maxX, 0);
+      gradient2.addColorStop(0, `hsl(${~~((time)/30+180)%360},${saturate},${lightness})`);
+      gradient2.addColorStop(0.33, `hsl(${~~((time)/30+240)%360},${saturate},${lightness})`);
+      gradient2.addColorStop(0.67, `hsl(${~~((time)/30+300)%360},${saturate},${lightness})`);
+      gradient2.addColorStop(1, `hsl(${~~((time)/30+0)%360},${saturate},${lightness})`);
+
+      ctx.fillStyle = gradient1;
+      ctx.fillRect(minX - m, minY - m, maxX * 2 + m, width);
+      ctx.rotate(Math.PI / 2);
+      ctx.fillStyle = gradient2;
+      ctx.fillRect(minX - m, minY - m, maxX * 2 + m, width);
+      ctx.rotate(Math.PI / 2);
+      ctx.fillStyle = gradient1;
+      ctx.fillRect(minX - m, minY - m, maxX * 2 + m, width);
+      ctx.rotate(Math.PI / 2);
+      ctx.fillStyle = gradient2;
+      ctx.fillRect(minX - m, minY - m, maxX * 2 + m, width);
+      ctx.filter = 'none';
+      ctx.restore();
+        },
+      
         drawVirusesRange(a, b, c, d) {
             if (!b || !b.length) return;
             a.beginPath();

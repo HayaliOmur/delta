@@ -512,6 +512,7 @@ const ExpImp = new(class {
             this.addOption('gridGroup', 'showGrid');
             this.addOption('gridGroup', 'showBgSectors');
             this.addOption('gridGroup', 'showMapBorders');
+            this.addOption('gridGroup', 'showRainbowBorders');
             this.addOption('gridGroup', 'showBgImg');
             this.addOption('gridGroup', 'bordersGlow');
             this.addOptions([], 'chatGroup');
