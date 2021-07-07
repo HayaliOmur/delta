@@ -1484,8 +1484,8 @@ class Client {
                         //window.user.ghostX = ~~(this.playerX + this.mapOffsetX);
                         //window.user.ghostY = ~~(this.playerY + this.mapOffsetY);
                     } else { //Yahnych
-                        window.user.ghostX = ~~(this.ghostCells[0].x + this.mapOffsetX);
-                        window.user.ghostY = ~~(this.ghostCells[0].y + this.mapOffsetY);
+                        //window.user.ghostX = ~~(this.ghostCells[0].x + this.mapOffsetX);
+                        //window.user.ghostY = ~~(this.ghostCells[0].y + this.mapOffsetY);
                     }
                 }
 
