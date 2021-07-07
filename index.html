@@ -392,7 +392,44 @@
                 //setTimeout(function(){new MoreBots},1000)
         }
     </script>
+      <script>
+          // This code is the dirtiest pile of trash ever, but hey, it works
 
+
+function Fullspect() {
+
+application.initFullSpect();
+  toastr.info("Spectators enabled.");
+
+}
+        function destroyfullspect() {
+
+application.destroyFullSpect();
+  toastr.info("Spectators closed.");
+
+}
+
+kingarox = {
+
+  addGUI() {
+      document.getElementById('BroBroBro').innerHTML = `
+                      <div class="input-group-row">
+                        <div class="input-box-cell" onclick="Fullspect()" style="width: 50%;"><button class="button b" style="text-align:left;border:none;">Spectators</button></div>
+                      </div>
+                                            <div class="input-group-row">
+                        <div class="input-box-cell" onclick="destroyfullspect()" style="width: 50%;"><button class="button b" style="text-align:left;border:none;">Close Spectators</button></div>
+                      </div>
+
+              `
+  },
+
+
+  init() {
+      this.addGUI();
+  }
+};
+kingarox.init();
+      </script>
     <script>
         document.getElementsByTagName("base")[0].href = '/'
         document.head || (document.head = document.getElementsByTagName('head')[0]);
