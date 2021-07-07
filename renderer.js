@@ -244,7 +244,7 @@ var camera = new(class {
                 
                 this.drawMapBorders(this.ctx, a.mapOffsetFixed, a.mapMinX - s, a.mapMinY - s, a.mapMaxX + s, a.mapMaxY + s, theme.bordersColor, theme.bordersWidth);
             }
-          if (settings.showRainbowBorders === true && settings.bordersGlow === false){
+          if (settings.showRainbowBorders === true){
                 this.drawRainbowBorders(this.ctx, a.mapOffsetFixed, a.mapMinX - s, a.mapMinY - s, a.mapMaxX + s, a.mapMaxY + s, theme.bordersColor, theme.bordersWidth *10);
           }
 
