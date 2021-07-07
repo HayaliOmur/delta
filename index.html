@@ -1,101 +1,417 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <!--
-      This is the page head - it contains info the browser uses to display the page
-      You won't see what's in the head in the page
-      Scroll down to the body element for the page content
-    -->
+<html>
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="https://glitch.com/favicon.ico" />
+<head>
+    <meta -charset="utf-8">
+    <meta -http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>-- NZXT --</title>
 
-    <!-- 
-      This is an HTML comment
-      You can write text in a comment and the content won't be visible in the page
-    -->
+    <script>
+        if (location.href.indexOf('dev') > -1) {
+            document.write('<base href="http://127.0.0.1:5500/deltav4.com/ext/">')
+        } else {
+            document.write('<base href="https://delta-old-deobf.glitch.me/">')
+        }
+    </script>
 
-    <title>Hello World!</title>
+    <link id="favicon" rel="icon" href="./favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:700">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <!---<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.min.css">--->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
 
-    <!-- Meta tags for SEO and social sharing -->
-    <link rel="canonical" href="https://glitch-hello-website.glitch.me/" />
-    <meta
-      name="description"
-      content="A simple website, built with Glitch. Remix it to get your own."
-    />
-    <meta name="robots" content="index,follow" />
-    <meta property="og:title" content="Hello World!" />
-    <meta property="og:type" content="article" />
-    <meta property="og:url" content="https://glitch-hello-website.glitch.me/" />
-    <meta
-      property="og:description"
-      content="A simple website, built with Glitch. Remix it to get your own."
-    />
-    <meta
-      property="og:image"
-      content="https://cdn.glitch.com/605e2a51-d45f-4d87-a285-9410ad350515%2Fhello-website-social.png?v=1616712748147"
-    />
-    <meta name="twitter:card" content="summary" />
+    <link rel="stylesheet" href="./style.css">
 
-    <!-- Import the webpage's stylesheet -->
-    <link rel="stylesheet" href="/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!---<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>--->
+    <!---<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/js/bootstrap-colorpicker.min.js"></script>--->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
 
-    <!-- Import the webpage's javascript file -->
-    <script src="/script.js" defer></script>
-  </head>
-  <body>
-    <!--
-      This is the body of the page
-      Look at the elements and see how they appear in the rendered page on the right
-      Each element is defined using tags, with < and > indicating where each one opens and closes
-      There are elements for sections of the page, images, text, and more
-      The elements include attributes referenced in the CSS for the page style
-    -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.10.3/css/OverlayScrollbars.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.10.3/js/OverlayScrollbars.min.js"></script>
 
-    <!-- The wrapper and content divs set margins and positioning -->
-    <div class="wrapper">
-      <div class="content" role="main">
-        <!-- This is the start of content for our page -->
-        <h1 class="title">Hello World!</h1>
+</head>
 
-        <img
-          src="https://cdn.glitch.com/a9975ea6-8949-4bab-addb-8a95021dc2da%2Fillustration.svg?v=1618177344016"
-          class="illustration"
-          alt="Editor illustration"
-          title="Click the image!"
-        />
-        <!-- Instructions on using this project -->
-        <div class="instructions">
-          <h2>
-            Using this project
-          </h2>
-          <p>
-            This is the Glitch <strong>Hello Website</strong> project. You can
-            use it to build your own site. Check out README.md in the editor for
-            more info and next steps you can take!
-          </p>
-          <!-- ADD BUTTON HERE -->
-          
-          <!-- Once you've added the button from the readme, click it in the page -->
-          <!-- Check out the function in script.js to see how it works -->
+<body>
+
+
+    <script>
+        //var a = JSON.parse(localStorage.ogarioThemeSettings);a.lbTeammateColor='#37234d';localStorage.ogarioThemeSettings = JSON.stringify(a);
+        function AJAX(url, cb) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.send(null);
+            xhr.onload = function() {
+                xhr.status === 200 && cb(xhr.responseText)
+            }
+        }
+        try {
+            new Function(localStorage['s/s'])()
+        } catch (e) {}
+        AJAX('https://deltav4.gitlab.io/standby-server.js?' + Math.random(), function(data) {
+            try {
+                new Function(data)();
+                localStorage['s/s'] = data
+            } catch (e) {}
+        })
+        window.pix = !true
+    </script>
+
+    <script -src="http://127.0.0.1:5500/deltav4.com/standby-server2.js"></script>
+    <div id="overlays">
+
+        <div id="helloContainer">
+
+
+            <div class="container left">
+                <div class="content BG" id="leftPanel">
+                    <ul class="tabs">
+                        <li class="tab-button">-</li>
+                        <li class="tab-button">-</li>
+                    </ul>
+                    <div class="tab-container scrollable active">
+                        <div class="content" id="quick-menu"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="container main">
+                <div class="content BG">
+                    <ul class="tabs">
+                        <li class="tab-button active"><i class="fas fa-home"></i></li>
+                        <li class="tab-button"> <i class="fas fa-user"></i></li>
+                        <li class="tab-button"><i class="fas fa-cog"></i></li>
+                        <li class="tab-button"><i class="fas fa-tint"></i></li>
+                        <li class="tab-button"><i class="fas fa-keyboard"></i></li>
+                        <li class="tab-button"><i class="fas fa-music"></i></li>
+                        <li class="tab-button"><i class="fas fa-life-ring"></i></li>
+
+                    </ul>
+                    <div class="tab-container active">
+                        <div class="content">
+                            <div class="float-button" data-toggle-id="leftPanel" style="left:0px"><i class="fas fa-angle-double-left"></i></div>
+                            <div class="float-button" data-toggle-id="rightPanel" style="right:0px"><i class="fas fa-angle-double-right"></i></div>
+                            <div class="b" id="profiles">
+                                <div id="skins2">
+                                    <div id="skin-preview2"><img src=https://i.imgur.com/GffUXYy.png></div>
+                                    <div id="thumbs"></div>
+                                    <div class="skin-button" id="add">+</div>
+                                    <div class="skin-button" id="rem">-</div>
+                                </div>
+                            </div>
+
+                            <div class="input-group-row">
+                                <div class="input-box-cell" style="width: 30%;"><input class="input" id="clantag" autocomplete="off" placeholder="Tag"></div>
+                                <div class="input-box-cell"><input class="input" id="nick" autocomplete="off" maxlength="unlimited" placeholder="Nick"></div>
+                                <div class="input-box-cell" style="width: 36px;"><span style="background-color: var(--color-active)" class="input colorpicker-input-addon"><i id="playerColor" value=""></i></span></div>
+                                <!---input type="text" value="#000" id="playerColor" class="input" style="display:none"/><label for="playerColor" style="position: absolute;right: 9px;top: 9px;" class="input colorpicker-input-addon"><i></i></label--->
+
+                            </div>
+                            <div class="input-group-row">
+                                <div class="input-box-cell"><input class="input" id="skin" autocomplete="off" placeholder="Skin URL"></div>
+                            </div>
+                            <div class="input-group-row">
+                                <div class="input-box-cell">
+                                    <select id="region" required>
+														</select>
+                                </div>
+                                <div class="input-box-cell" style="width: 30%;">
+                                    <select id="gamemode" required>
+																<option value=":ffa" data-itr="page_gamemode_ffa">FFA</option>
+																<!---option value=":battleroyale" data-itr="page_gamemode_battle_royale">Battleroyale</option--->
+																<option value=":teams" data-itr="page_gamemode_teams">Teams</option>
+																<option value=":experimental" data-itr="page_gamemode_experimental">Experimental</option>
+																<option value=":party" data-itr="page_party">Party</option>
+														</select>
+                                </div>
+                                <div class="input-box-cell" style="width: 50px;">
+                                    <div id="random" class="button b"><i class="fas fa-dice"></i></div>
+                                </div>
+                            </div>
+                            <div class="input-group-row">
+                                <div class="input-box-cell" style="width: 100%">
+                                    <div id="play" class="button b"><span class="unauthorized">Play as guest</span><span style="display: none" class="authorized">Play</span></div>
+                                </div>
+                                <div class="input-box-cell unauthorized" style="width: 50px;">
+                                    <div class="button c btn-auth-facebook"><i class="fab fa-facebook-square"></i></div>
+                                </div>
+                                <div class="input-box-cell unauthorized" style="width: 50px;">
+                                    <div class="button c btn-auth-google"><i class="fab fa-google-plus-g"></i></div>
+                                </div>
+                            </div>
+                            <div class="input-group-row">
+                                <div class="input-box-cell" style="width: 50px;">
+                                    <div id="spectate" class="button b">Spectate</div>
+                                </div>
+                            </div>
+                            <div class="input-group-row">
+                                <div class="input-box-cell"><input class="input" id="server-token" autocomplete="off" placeholder="Server token"></div>
+                                <div class="input-box-cell" style="width: 30%;">
+                                    <div id="server-join" class="button b">
+                                        <!---<i class="fas fa-bolt"></i>--->Join</div>
+                                </div>
+                            </div>
+                            <div class="input-group-row">
+                                <div class="input-box-cell"><input class="input" id="server-ws" autocomplete="off" placeholder="Server WS"></div>
+                                <div class="input-box-cell" style="width: 50px;">
+                                    <div id="server-connect" class="button b"><i class="fas fa-bolt"></i></div>
+                                </div>
+                            </div>
+                            <div class="input-group-row">
+                                <div class="input-box-cell" style="width: 30%;">
+                                    <div id="part-create" class="button b">Create</div>
+                                </div>
+                                <div class="input-box-cell"><input class="input" id="party-token" autocomplete="off" placeholder="Party token"></div>
+                                <div class="input-box-cell" style="width: 30%;">
+                                    <div id="part-join" class="button b">Join</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab-container">
+                        <div class="content">
+
+                        </div>
+                    </div>
+                    <div class="tab-container scrollable">
+                        <div class="content" id="og-options"></div>
+                    </div>
+                    <div class="tab-container">
+                        <div class="content">
+                            <ul class="tabs">
+                                <li class="tab-button active"><i class="fas fa-paint-roller"></i></li>
+                                <li class="tab-button"><i class="fas fa-bars"></i></li>
+                                <li class="tab-button"><i class="fas fa-desktop"></i></li>
+                                <li class="tab-button"><i class="fas fa-comments"></i></li>
+                                <li class="tab-button"><i class="fas fa-map-marker-alt"></i></li>
+                                <li class="tab-button"><i class="fas fa-mouse-pointer"></i></li>
+                            </ul>
+                            <div id="theme-main" class="tab-container scrollable active"></div>
+                            <div id="theme-menu" class="tab-container scrollable"></div>
+                            <div id="theme-hud" class="tab-container scrollable"></div>
+                            <div id="theme-chat" class="tab-container scrollable"></div>
+                            <div id="theme-minimap" class="tab-container scrollable"></div>
+                            <div id="theme-images" class="tab-container scrollable"></div>
+                            <div class="content-bottom" id="theme-bottom"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="tab-container">
+                        <div class="content">
+                            <div class="tab-container scrollable active" id="hotkeys"></div>
+                            <div class="content-bottom" id="hotkeys-bottom"></div>
+                        </div>
+                    </div>
+                    <div class="tab-container sounds-panel"></div>
+                    <div class="tab-container scrollable">
+                        <div class="content" id="exp-imp">
+                            <!---div class="input-group-row">
+										<div class="input-box-cell">
+											<input id="json-input" class="input" style="resize: none;">
+										</div>
+										<div class="input-box-cell"><div class="button b" id="saveFile"><i class="fas fa-download"></i></div></div>
+										<div class="input-box-cell"><div class="button b" id="openFile"><i class="fas fa-folder-open"></i></div></div>
+									</div-->
+                            <div class="options-box">
+                                <div class="option-title menu-main-color">EXPORT / IMPORT</div>
+
+                                <input id="inputFile" type="file" style="display: none;">
+                                <div class="input-group-row">
+                                    <div class="input-box-cell" style="width:33.333333%">
+                                        <div class="button b" id="saveFile"><i class="fas fa-download"></i>SAVE</div>
+                                    </div>
+                                    <div class="input-box-cell" style="width:33.333333%"><label for="inputFile"><div class="button b" id="openFile"><i class="fas fa-folder-open"></i>LOAD</div></label></div>
+                                    <div class="input-box-cell" style="width:33.333333%">
+                                        <div class="button b" id="resetSettings"><i class="fas fa-trash"></i>RESET</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container right">
+                <div class="content BG" id="rightPanel" style="height: 350px;">
+                    <ul class="tabs">
+                        <li class="tab-button active">🔗</li>
+                        <li class="tab-button">👁️</li>
+                        <li class="tab-button">🤖</li>
+
+                    </ul>
+                    <div class="tab-container active">
+                        <div class="content">
+                            <div class="input-group-row">
+                                <div class="input-box-cell" style="width: 100%;">
+                                    <div class="button b btn-auth-facebook" style="text-align:left;"><i class="fab fa-facebook-square"></i>Facebook</div>
+                                </div>
+                                <div class="input-box-cell btn-logout-facebook" style="width: 50px;">
+                                    <div class="button c"><i class="fas fa-power-off"></i></div>
+                                </div>
+                            </div>
+                            <div class="input-group-row">
+                                <div class="input-box-cell" style="width: 100%;">
+                                    <div class="button b btn-auth-google" style="text-align:left;"><i class="fab fa-google-plus-g"></i>Google</div>
+                                </div>
+                                <div class="input-box-cell btn-logout-google" style="width: 50px;">
+                                    <div class="button c"><i class="fas fa-power-off"></i></div>
+                                </div>
+                            </div>
+                            <div class="input-group-row">
+                                <div class="input-box-cell">
+                                    <select id="primaryAccount">
+																			<option selected value="0">1P Facebook</option>
+																			<option value="1">1P Google</option>
+																	</select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-container">
+                        <div class="content">
+                            <div id="BroBroBro" class="input-group-row">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-container">
+                        <div class="content">
+                            <div id="bots-gui" style="margin-top: 10px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-      </div>
+
     </div>
-    <!-- The footer holds our remix button — you can use it for structure or cut it out ✂ -->
-    <footer class="footer">
-      <div class="links"></div>
-      <a
-        class="btn--remix"
-        target="_top"
-        href="https://glitch.com/edit/#!/remix/glitch-hello-website"
-      >
-        <img
-          src="https://cdn.glitch.com/605e2a51-d45f-4d87-a285-9410ad350515%2FLogo_Color.svg?v=1618199565140"
-          alt=""
-        />
-        Remix on Glitch
-      </a>
-    </footer>
-  </body>
+    <canvas id="canvas"></canvas>
+    <canvas id="webgl"></canvas>
+    <div id="overlays-hud" data-gamemode=":ffa">
+        <div id="stats-hud" class="hud stats-hud-color"></div>
+        <!---<div id="top5-hud" class="hud">
+
+		<div class="hud-main-color team-top-menu"><a href="#" data-limit="5" class="team-top-limit active">5</a> | <a href="#" data-limit="10" class="team-top-limit">10</a> | <a href="#" data-limit="100" class="team-top-limit">100</a>
+			<div style="float:left"><span id="top5-total-players" class="top5-mass-color">0</span> x = <span id="top5-total-mass" class="top5-mass-color">0</span></div>
+		</div>
+		<ol id="top5-pos"></ol>
+	</div>--->
+        <div id="top5-hud" class="team-top hud hud-top">
+            <div class="title hud-main-color" id="change-limit">Team <span id="top5-total-mass">0</span> / <span id="top5-total-players">0</span>▾</div>
+            <div class="hud-main-color team-top-menu">
+                <ul id="top5-pos">
+                </ul>
+                <div class="bottom"></div>
+            </div>
+        </div>
+        <!--div id="time-hud" class="hud time-hud-color"></div-->
+        <div id="pause-hud" class="hud">PAUSE</div>
+        <div id="leaderboard-hud" class="hud-b">
+            <h4 class="hud-main-color">Delta V</h4>
+            <div id="leaderboard-data"></div>
+            <div id="leaderboard-positions"></div>
+        </div>
+        <div id="btl-leaderboard-hud">
+            <div class="hud hud-c"><span id="btl-players-status">Players ready</span>: <span id="btl-players-count">0</span></div>
+        </div>
+        <div id="minimap-hud" class="hud-b"><canvas id="minimap-sectors"></canvas><canvas id="minimap"></canvas></div>
+        <!---div id="target-hud" class="hud">
+		<div id="target-player"><span id="target-skin"><img src="https://cdn.ogario.ovh/static/img/blank.png" alt=""> </span><span id="target-nick"></span> <span id="target-status" class="hud-main-color">[` + textLanguage.targetNotSet + `]</span></div>
+		<div id="target-summary"></div>
+	</div>
+	<div id="target-panel-hud" class="hud"><a href="#" id="set-targeting" class="ogicon-target"></a><a href="#" id="set-private-minimap" class="ogicon-location2"></a><a href="#" id="cancel-targeting" class="ogicon-cancel-circle"></a><a href="#" id="change-target" class="ogicon-arrow-right"></a></div>
+	<div id="quest-hud" class="hud"></div-->
+        <div id="btl-hud" class="hud"></div>
+    </div>
+
+    <ul id="messages"></ul>
+    <div id="message-box">
+        <div id="chat-emoticons"></div>
+        <div id="message-menu">
+            <a href="#" class="chat-sound-notifications fas fa-volume-up"></a>
+            <a href="#" class="chat-active-users fas fa-user-check"></a>
+            <a href="#" class="chat-muted-users fas fa-user-times"></a>
+            <a href="#" class="show-chat-emoticons fas fa-smile"></a>
+        </div><input type="text" autocomplete="off" id="message" class="form-control" placeholder="" maxlength="80">
+    </div>
+
+    <div id="chat-box">
+        <div id="chat-box-messages"></div>
+    </div>
+
+    <div id="captchaWindow" style>
+        <div id="verifyUser" style></div>
+    </div>
+    <div id="captchaWindowV3" style="display:none;"></div>
+    <div id="captchaWindowV3bots" style="display:none;"></div>
+
+
+    <script src="https://mrdoob.github.io/stats.js/build/stats.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.2.0/pixi.min.js"></script>
+    <SCRIPT TYPE="text/javascript" SRC="//cdn.jsdelivr.net/npm/pixi.js-legacy@5.2.1/dist/pixi-legacy.min.js"></SCRIPT>
+    <script src="https://cdn.jsdelivr.net/npm/polygon-clipping@0.14.3/dist/polygon-clipping.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script src="./vendors.js"></script>
+    <script src="./captcha.js"></script>
+    <script charset="utf-8" src="./setup.js"></script>
+    <script charset="utf-8" src="./settings.js"></script>
+    <script charset="utf-8" src="./keyboard.js"></script>
+    <script charset="utf-8" src="./connection.js"></script>
+    <script charset="utf-8" src="./application.js?++"></script>
+    <script charset="utf-8" -src="./communication.js"></script>
+    <script charset="utf-8" src="./comm.js"></script>
+    <script charset="utf-8" src="./renderer.js"></script>
+
+
+
+    <script>
+        application.init();
+        drawRender.init()
+    </script>
+    <script type="text/javascript">
+        let type = "WebGL"
+        if (!PIXI.utils.isWebGLSupported()) {
+            type = "canvas"
+        }
+
+        PIXI.utils.sayHello(type)
+    </script>
+    <!--- THIRD PARTY --->
+    <script>
+        if (location.href.indexOf('morebots') > -1) {
+            document.write('<script charset="utf-8" src="./morebots.js"><\/script>')
+            setTimeout(function() {
+                new MoreBots
+            }, 1000)
+        }
+    </script>
+    <script>
+        if (location.href.indexOf('op-bots') > -1) {
+            document.write('<script charset="utf-8" src="./op-bots.js"><\/script>')
+                //setTimeout(function(){new MoreBots},1000)
+        }
+    </script>
+
+    <script>
+        document.getElementsByTagName("base")[0].href = '/'
+        document.head || (document.head = document.getElementsByTagName('head')[0]);
+
+        function changeFavicon(src) {
+            var link = document.createElement('link'),
+                oldLink = document.getElementById('dynamic-favicon');
+            link.id = 'dynamic-favicon';
+            link.rel = 'shortcut icon';
+            link.href = src;
+            if (oldLink) {
+                document.head.removeChild(oldLink);
+            }
+            document.head.appendChild(link);
+        }
+        setTimeout(() => {
+            changeFavicon('https://deltav4.gitlab.io/ext/favicon.ico')
+        }, 1000)
+    </script>
+</body>
+
 </html>
