@@ -244,6 +244,12 @@ var camera = new(class {
                 const s = theme.bordersWidth >> 1;
                 this.drawMapBorders(this.ctx, a.mapOffsetFixed, a.mapMinX - s, a.mapMinY - s, a.mapMaxX + s, a.mapMaxY + s, theme.bordersColor, theme.bordersWidth);
             }
+          if (settings.showRainbowBorders === true){
+            const ss = theme.bordersWidth / 2;
+                this.drawRainbowBorders(this.ctx, a.mapOffsetFixed, a.mapMinX - s, a.mapMinY - s, a.mapMaxX + s, a.mapMaxY + s, theme.bordersColor, theme.bordersWidth * 10);
+
+            
+          }
 
             if (settings.virusesRange === true)
                 this.drawVirusesRange(this.ctx, this.virusesFrame);
@@ -706,6 +712,44 @@ var camera = new(class {
             a.stroke();
             a.restore();
         },
+          drawRainbowBorders(a, b, c, d, e, f, g, h) {
+        if (!b) {
+            return;
+        }
+      a.save();
+
+      a.filter = `blur(${~~(h/2*this.scale)}px)`;
+      let m = (h/2)*1.1,
+          time = Date.now() * 3,
+          saturate = "100%", 
+          lightness = "50%";
+      
+      var g1 = a.createLinearGradient(c, 0, e, 0);
+      g1.addColorStop(0,    `hsl(${~~((time)/30+0)%360},${saturate},${lightness})`);
+      g1.addColorStop(0.33, `hsl(${~~((time)/30+60)%360},${saturate},${lightness})`);
+      g1.addColorStop(0.67, `hsl(${~~((time)/30+120)%360},${saturate},${lightness})`);
+      g1.addColorStop(1, `hsl(${~~((time)/30+180)%360},${saturate},${lightness})`);
+      var g2 = a.createLinearGradient(c, 0, e, 0);
+      g2.addColorStop(0, `hsl(${~~((time)/30+180)%360},${saturate},${lightness})`);
+      g2.addColorStop(0.33, `hsl(${~~((time)/30+240)%360},${saturate},${lightness})`);
+      g2.addColorStop(0.67, `hsl(${~~((time)/30+300)%360},${saturate},${lightness})`);
+      g2.addColorStop(1,    `hsl(${~~((time)/30+0)%360},${saturate},${lightness})`);
+      
+      a.fillStyle = g1;
+      a.fillRect(c-m, d-m, e*2+m, h);//Yahnych
+      a.rotate(Math.PI / 2);
+      a.fillStyle = g2;
+      a.fillRect(c-m, d-m, e*2+m, h);
+      a.rotate(Math.PI / 2);
+      a.fillStyle = g1;
+      a.fillRect(c-m, d-m, e*2+m, h);
+      a.rotate(Math.PI / 2);
+      a.fillStyle = g2;
+      a.fillRect(c-m, d-m, e*2+m, h);
+      a.filter = 'none';
+      a.restore();
+
+    },
         drawVirusesRange(a, b, c, d) {
             if (!b || !b.length) return;
             a.beginPath();

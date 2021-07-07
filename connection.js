@@ -2002,10 +2002,7 @@ class Client {
 
             this.mapOffsetFixed = true;
             this.log('Map offset fixed (x, y):', this.mapOffsetX, this.mapOffsetY);
-            //bots
-            window.user.offsetX = this.mapOffsetX; //Yahnych
-            window.user.offsetY = this.mapOffsetY;
-            //
+
             this.emit('offset', this);
         } else {
             this.viewportMinX = this.receiveX(a);
