@@ -1881,14 +1881,9 @@ const QServer = new(class {
             this.getWS(this.ws);
             this.activeTab = 0;
             this.destroyClient('slave');
-            if (typeof spectators === 'undefined') {
-                console.log('[SPECTATORS] Acces denied.');
-            } else {
-                spectators.destroyFullSpect();
 
-            }
-            for (var b of this.tabs) {
-                b.connect(a);
+            for (var tab of this.tabs) {
+                tab.connect(a);
             }
         },
         disconnect() {
