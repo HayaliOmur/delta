@@ -954,7 +954,7 @@ class Client {
         if (typeof KingaroxBots !== 'undefined') {
             if (!window.game.protocolVersion) window.game.protocolVersion = 23;
         }
-        a.setUint32(1, this.client_protocol, true);
+        a.setUint32(1,this.integrity ? this.client_protocol : 22, true);
         this.sendMessage(a);
         a = this.createView(5);
         a.setUint8(0, 255);
