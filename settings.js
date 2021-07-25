@@ -186,7 +186,7 @@ const ExpImp = new(class {
         customMapTextureCanvas: {},
         customMapTextureLogo: {},
         loadThemeSettings() {
-            let a = null;
+            let a = null;bots
 
             if (window.localStorage.getItem('ogarioThemeSettings') !== null)
                 a = JSON.parse(window.localStorage.getItem('ogarioThemeSettings'));
