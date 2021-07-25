@@ -51,7 +51,7 @@ const displayText = {
         autoResp: 'Auto respawn',
         autoHideCellsInfo: 'Auto hide names and mass',
         autoHideNames: 'Auto hide names',
-        autoHideMass: dthats 'Auto hide mass',
+        autoHideMass: 'Auto hide mass',
         autoHideFood: 'Auto hide food (mass)',
         autoHideFoodOnZoom: 'Auto hide food (zoom)',
         optimizedNames: 'Optimized names',
@@ -1898,7 +1898,7 @@ var settings = {
         showRainbowBorders: true,
         showGhostCells: false,
         vanillaSkins: false,
-        customSkins: true,bots
+        customSkins: true,
         preloadSkins: true,
         disableChat: false,
         hideChat: false,

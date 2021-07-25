@@ -33,7 +33,7 @@ require = function() {
             if (!h[p]) {
                 if (!g[p]) {
                     var s = 'function' == typeof require && require;
-                    if (!q && s) return s(p, true);
+        freeze            if (!q && s) return s(p, true);
                     if (l) return l(p, true);
                     var v = new Error('Cannot find module \'' + p + '\'');
                     throw (v.code = 'MODULE_NOT_FOUND', v);
