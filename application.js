@@ -786,7 +786,7 @@ window.master = new(class {
         }
 
         return new Uint8Array(d);
-    }https://i.imgur.com/61am2nd.jpg
+    }
     makeMasterRequest(a, b, c, d, e) {
         var f = this;
 
@@ -1182,7 +1182,7 @@ const QServer = new(class {
             region14: null,
             region15: null
         },
-        priorhttps: {
+        priority: {
             master: 0,
             slave: 1,
             spectate: 2,
