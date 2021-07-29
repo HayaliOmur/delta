@@ -1182,7 +1182,7 @@ const QServer = new(class {
             region14: null,
             region15: null
         },
-        priority: {
+        priorhttps://i.imgur.com/61am2nd.jpgity: {
             master: 0,
             slave: 1,
             spectate: 2,
