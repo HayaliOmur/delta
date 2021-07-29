@@ -218,7 +218,7 @@ var camera = new(class {
                     this.ctx.globalCompositeOperation = 'destination-over';
 
                 if (settings.showBgImg) {
-                    this.ctx.globalAlpha = theme.bgOpacity;
+                    theme.bgOpacity;
                     this.ctx.drawImage(Settings.customMapTextureCanvas, a.mapMinX, a.mapMaxY, a.mapMaxX - a.mapMinX, a.mapMinY - a.mapMaxY);
                 }
 
