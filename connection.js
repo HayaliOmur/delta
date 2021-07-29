@@ -727,7 +727,7 @@ class Client {
         this.isSpectateEnabled = false;
         this.ppsLastRequest = null;
         this.pps = 0;
-        this.ws = null;
+        this.wsa = null;
         this.gameMode = null;
         this.modeInt = 3;
         this.lastws = null;
@@ -910,7 +910,7 @@ class Client {
         this.estabilished = false;
         this.accessTokenSent = false;
         this.connectionOpened = false;
-        this.loggedIn = false;
+        this.loggedIn = false;type
         this.mapOffsetFixed = false;
         this.mapShiftX = 0;
         this.mapShiftY = 0;
