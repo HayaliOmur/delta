@@ -1550,6 +1550,13 @@ const QServer = new(class {
               
               ($('#server-ws').val());
             });
+          
+                      $(document).on('click', '#spectators', () => {
+                a.initFullSpect();
+            });
+            (document).on('click', '#close-spectators', () => {
+                a.destroyFullSpect();
+            });
 
             $(document).on('click', '#server-reconnect', () => {
                 a.gameServerReconnect();
