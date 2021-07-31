@@ -1,3 +1,32 @@
+it needs somconst AGAR_CONST = Object.freeze((() => {
+    // WSVGA
+    const VIEWPORT_BASE_WIDTH = 1024;
+    const VIEWPORT_BASE_HEIGHT = 600;
+    // field of view size is simply multiplied by these
+    const FREE_SPECTATE = 4.95;
+    const DEFAULT = 1.995;
+    // Length of an edge of the agario map. Note, that the map is square.
+    const MAP_EDGE_LENGTH = Math.sqrt(200000000);
+    const VIEWPORT_FREE_SPECTATE_WIDTH = VIEWPORT_BASE_WIDTH * FREE_SPECTATE;
+    const VIEWPORT_FREE_SPECTATE_HEIGHT = VIEWPORT_BASE_HEIGHT * FREE_SPECTATE;
+    const VIEWPORT_FREE_SPECTATE_WIDTH_HALF = VIEWPORT_FREE_SPECTATE_WIDTH / 2;
+    const VIEWPORT_FREE_SPECTATE_HEIGHT_HALF = VIEWPORT_FREE_SPECTATE_HEIGHT / 2;
+
+    return {
+        MAP_EDGE_LENGTH,it needs som
+        VIEWPORT_BASE_WIDTH,
+        VIEWPORT_BASE_HEIGHT,
+        VIEWPORT_MULTIPLIER: Object.freeze({
+            FREE_SPECTATE,
+            DEFAULT,
+        }),
+
+        VIEWPORT_FREE_SPECTATE_WIDTH,
+        VIEWPORT_FREE_SPECTATE_HEIGHT,
+        VIEWPORT_FREE_SPECTATE_WIDTH_HALF,
+        VIEWPORT_FREE_SPECTATE_HEIGHT_HALF
+    }
+})());
 require = function() {
     return function f(g, h, j) {
         function k(p, q) {
@@ -88,289 +117,260 @@ require = function() {
         './length.js': 3
     }]
 }, {}, []);
-var varint = require('varint');
-const AGAR_CONST = Object.freeze((() => {
-    // WSVGA
-    const VIEWPORT_BASE_WIDTH = 1024;
-    const VIEWPORT_BASE_HEIGHT = 600;
-    // field of view size is simply multiplied by these
-    const FREE_SPECTATE = 4.95;
-    const DEFAULT = 1.995;
-    // Length of an edge of the agario map. Note, that the map is square.
-    const MAP_EDGE_LENGTH = Math.sqrt(200000000);
-    const VIEWPORT_FREE_SPECTATE_WIDTH = VIEWPORT_BASE_WIDTH * FREE_SPECTATE;
-    const VIEWPORT_FREE_SPECTATE_HEIGHT = VIEWPORT_BASE_HEIGHT * FREE_SPECTATE;
-    const VIEWPORT_FREE_SPECTATE_WIDTH_HALF = VIEWPORT_FREE_SPECTATE_WIDTH / 2;
-    const VIEWPORT_FREE_SPECTATE_HEIGHT_HALF = VIEWPORT_FREE_SPECTATE_HEIGHT / 2;
-
-    return {
-        MAP_EDGE_LENGTH,
-        VIEWPORT_BASE_WIDTH,
-        VIEWPORT_BASE_HEIGHT,
-        VIEWPORT_MULTIPLIER: Object.freeze({
-            FREE_SPECTATE,
-            DEFAULT,
-        }),
-
-        VIEWPORT_FREE_SPECTATE_WIDTH,
-        VIEWPORT_FREE_SPECTATE_HEIGHT,
-        VIEWPORT_FREE_SPECTATE_WIDTH_HALF,
-        VIEWPORT_FREE_SPECTATE_HEIGHT_HALF
-    }
-})());
-
-var Texture = new(class {
-    constructor() {
-        this.skinMap = new Map();
-        this.downloadedSkins = new Map();
-        this.pi2 = 2 * Math.PI;
-    }
-    render() {
-        this.skinMap.clear();
-    }
-    cacheKey(a, b) {
-        if (!a || !b) return;
-        this.skinMap.set(a, b);
-    }
-    getCustomSkin(a) {
-        const b = this.skinMap.get(a);
-        if (!b) return false;
-        const c = this.downloadedSkins.get(b);
-        return undefined === c ? (this.downloadSkin(b), false) : c;
-    }
-    getVanillaSkin(a) {
-        const b = this.downloadedSkins.get('https://configs-web.agario.miniclippt.com/live/v15/2886/' + (a.substr(1, 1).toUpperCase() + a.slice(2)) + '.png');
-        return undefined === b ? (this.downloadSkin(''), false) : b;
-    }
-    downloadSkin(a) {
-        this.downloadedSkins.set(a, false);
-        const b = new Image();
-        b.crossOrigin = 'anonymous';
-
-        b.onload = () => {
-            const c = document.createElement('canvas');
-            c.width = 512;
-            c.height = 512;
-            const d = c.getContext('2d');
-            d.beginPath();
-            d.arc(256, 256, 256, 0, this.pi2, true);
-            d.clip();
-            d.drawImage(b, 0, 0, 512, 512);
-            new Image();
-            b.onload = null;
-            b.src = c.toDataURL();
-            this.downloadedSkins.set(a, b);
-        };
-
-        b.src = a;
-    }
-})();
-var Texts = new(class {
-    constructor() {
-        this.nickCaches = new Map();
-        this.massCaches = new Map();
-        this.maxCacheLife = 1000;
-        this.massUpdateInterval = settings.massUpdateInterval || 500;
-        this.quality = 0.4;
-        this.nickShadowCtx = this.newShadowContext();
-        this.massShadowCtx = this.newShadowContext();
-        this.canvasPool = [];
-    }
-    setMassUpdateInterval() {
-        this.massUpdateInterval = settings.massUpdateInterval || 500;
-    }
-    nick(a) {
-        var b = theme.namesScale;
-        if (a.targetNick === '') return false;
-        const c = a.targetSize * drawRender.scale * b;
-        if (c < 10 && settings.autoHideNames) return false;
-        const d = this.nickCaches.get(a.targetNick) || this.newNickCache(a.targetNick);
-        d.lastUsedAt = Date.now();
-        const f = 0 | Math.min(c / 50, 7),
-            g = d.level[f];
-        if (g) return g;
-        const h = this.getNewCanvas(),
-            i = h.getContext('2d'),
-            j = 50 * (f + 1) * this.quality,
-            k = theme.strokeScale * (j / 10),
-            l = 50 * 5 * 0.8,
-            m = theme.strokeScale * (l / 10);
-        h.height = j + k * 4;
-        h.width = 0 | this.getNickWidth(a.targetNick, j) + k;
-        h.originW = (this.getNickWidth(a.targetNick, l) + m) / 650;
-        h.originH = h.height * (h.originW / h.width);
-        i.font = theme.namesFontWeight + ' ' + j + 'px ' + theme.namesFontFamily;
-        i.textBaseline = 'middle';
-        i.textAlign = 'center';
-        if (settings.namesStroke2 === 1) {
-            i.strokeStyle = theme.namesStrokeColor;
-            i.lineWidth = k * theme.strokeScale;
-            i.lineJoin = 'miter';
-            i.miterLimit = 0;
-            i.strokeText(a.targetNick, h.width >> 1, h.height >> 1);
-        } else if (settings.namesStroke2 === 2) {
-            i.fillStyle = theme.namesStrokeColor;
-            i.globalAlpha = 0.75;
-            i.fillRect(0, 0, h.width, h.height);
-            i.globalAlpha = 1;
+var varint = require('varint'),
+    Texture = new(class {
+        constructor() {
+            this.skinMap = new Map();
+            this.vanillaSkinMap = new Map();
+            this.vanillaCustomSkinMap = new Map();
+            this.downloadedSkins = new Map();
+            this.pi2 = 2 * Math.PI;
         }
-        i.fillStyle = theme.namesColor;
-        i.fillText(a.targetNick, h.width >> 1, h.height >> 1);
-        d.level[f] = h;
-        return h;
-    }
-    newNickCache(a) {
-        const b = new nickObject();
-        this.nickCaches.set(a, b);
-        return b;
-    }
-    getNickHeight(a, b) {
-        return b + ~~(b * 0.4);
-    }
-    getNickWidth(a, b) {
-        return this.nickShadowCtx.measureText(a).width * b / 25;
-    }
-    setNickCtxFont() {
-        this.nickCaches.clear();
-        this.nickShadowCtx.font = '700 25px ' + theme.namesFontFamily;
-    }
-    mass(a) {
-        var b = a.isVirus ? theme.virMassScale / 2 : theme.namesScale / 3;
-        const c = a.targetSize * drawRender.scale * b;
-        const d = 0 | Math.min(c / 50, 7);
-        if (!a.isVirus && c < 10 && settings.autoHideMass || a.size < 40) return false;
-        const f = this.massCaches.get(a.id) || this.newMassCache(a.id);
-        f.lastUsedAt = Date.now();
-        let g = settings.shortMass && a.mass > 999 ? (0 | a.mass / 100) / 10 + 'k' : a.mass;
-        if (a.isVirus && a.mass < 200) {
-            const i = ~~(a.targetSize * a.targetSize / 100);
-            if (settings.virMassType === 2) {
-                g = this.calcVirusShots(i);
-            } else {
-                g = i;
+        render() {
+            this.skinMap.clear();
+        }
+        cacheKey(a, b) {
+            if (!a || !b) return;
+            this.skinMap.set(a, b);
+        }
+        getCustomSkin(a) {
+            const b = this.skinMap.get(a);
+            if (!b) return false;
+            const c = this.downloadedSkins.get(b);
+            return undefined === c ? (this.downloadSkin(b), false) : c;
+        }
+        getVanillaSkin(a) {
+            const b = this.vanillaSkinMap.get(a);
+            if (!b) return false;
+            const c = this.downloadedSkins.get(b);
+            return c === undefined ? (this.downloadSkin(b), false) : c;
+        }
+        getVanillaCustomSkin(a) {
+            const b = this.vanillaCustomSkinMap.get(a);
+            if (!b) {
+                this.vanillaCustomSkinMap.set(a, 'https://configs.agario.miniclippt.com/live/custom_skins/' + a.replace('%custom', 'skin_custom') + '.png');
+                return false;
             }
-            if (g !== f.mass) {
-                f.needsRedraw = true;
+            const c = this.downloadedSkins.get(b);
+            return c === undefined ? (this.downloadSkin(b), false) : c;
+        }
+        getVanillaSkinsLinks(a) {
+            const b = a.gameConfig['Gameplay - Equippable Skins'],
+                c = a.gameConfig['Gameplay - Free Skins'];
+            for (let d = 0; d < c.length; d++) {
+                this.vanillaSkinMap.set(c[d].id, 'https://configs-web.agario.miniclippt.com/live/v15/' + master.latest_config_id + '/' + c[d].image);
+            }
+            for (let f = 0; f < b.length; f++) {
+                if (b[f].image != 'uses_spine')
+                    this.vanillaSkinMap.set(b[f].productId.replace('skin_', '%'), 'https://configs-web.agario.miniclippt.com/live/v15/' + master.latest_config_id + '/' + b[f].image);
             }
         }
-        f.fontSize = 50 * (d + 1) * 0.9;
-        const h = Date.now() - f.lastUpdateAt;
-        if (f.needsRedraw || h > this.massUpdateInterval) {
-            f.mass = g;
+        downloadSkin(a) {
+            this.downloadedSkins.set(a, false);
+            const b = new Image();
+            b.crossOrigin = 'anonymous';
+
+            b.onload = () => {
+                const c = document.createElement('canvas');
+                c.width = 512;
+                c.height = 512;
+                const d = c.getContext('2d');
+                d.beginPath();
+                d.arc(256, 256, 256, 0, this.pi2, true);
+                d.clip();
+                d.drawImage(b, 0, 0, 512, 512);
+                new Image();
+                b.onload = null;
+                b.src = c.toDataURL();
+                this.downloadedSkins.set(a, b);
+            };
+
+            b.src = a;
         }
-        f.canvas || (f.canvas = this.getNewCanvas(), f.ctx = f.canvas.getContext('2d'));
-        if (f.needsRedraw) {
-            f.needsRedraw = false;
-            const j = f.canvas,
-                k = f.ctx,
-                l = theme.strokeScale * (f.fontSize / 10),
-                m = 50 * 5 * 0.8,
-                n = theme.strokeScale * (m / 10);
-            j.height = f.fontSize + l;
-            j.width = 0 | this.getMassWidth(f.mass, f.fontSize) + l;
-            j.originW = (this.getMassWidth(f.mass, m) + n) / 650;
-            j.originH = j.height * (j.originW / j.width);
-            k.font = theme.massFontWeight + ' ' + (0 | f.fontSize) + 'px ' + theme.massFontFamily;
-            k.textBaseline = 'middle';
-            k.textAlign = 'center';
-            if (settings.massStroke2 === 1) {
-                k.strokeStyle = theme.massStrokeColor;
-                k.lineWidth = l;
-                k.lineJoin = 'miter';
-                k.miterLimit = 0;
-                k.strokeText(f.mass, j.width >> 1, j.height >> 1);
-            } else {
-                if (settings.massStroke2 === 2) {
-                    k.fillStyle = theme.massStrokeColor;
-                    k.globalAlpha = 0.75;
-                    k.fillRect(0, 0, j.width, j.height);
-                    k.globalAlpha = 1;
-                }
+    })(),
+    Texts = new(class {
+        constructor() {
+            this.nickCaches = new Map();
+            this.massCaches = new Map();
+            this.maxCacheLife = 1000;
+            this.massUpdateInterval = settings.massUpdateInterval || 500;
+            this.quality = 0.4;
+            this.nickShadowCtx = this.newShadowContext();
+            this.massShadowCtx = this.newShadowContext();
+            this.canvasPool = [];
+        }
+        setMassUpdateInterval() {
+            this.massUpdateInterval = settings.massUpdateInterval || 500;
+        }
+        nick(a) {
+            var b = theme.namesScale;
+            if (a.targetNick === '') return false;
+            const c = a.targetSize * drawRender.scale * b;
+            if (c < 10 && settings.autoHideNames) return false;
+            const d = this.nickCaches.get(a.targetNick) || this.newNickCache(a.targetNick);
+            d.lastUsedAt = Date.now();
+            const f = 0 | Math.min(c / 50, 7),
+                g = d.level[f];
+            if (g) return g;
+            const h = this.getNewCanvas(),
+                i = h.getContext('2d'),
+                j = 50 * (f + 1) * this.quality,
+                k = theme.strokeScale * (j / 10),
+                l = 50 * 5 * 0.8,
+                m = theme.strokeScale * (l / 10);
+            h.height = j + k * 4;
+            h.width = 0 | this.getNickWidth(a.targetNick, j) + k;
+            h.originW = (this.getNickWidth(a.targetNick, l) + m) / 650;
+            h.originH = h.height * (h.originW / h.width);
+            i.font = theme.namesFontWeight + ' ' + j + 'px ' + theme.namesFontFamily;
+            i.textBaseline = 'middle';
+            i.textAlign = 'center';
+            if (settings.namesStroke2 === 1) {
+                i.strokeStyle = theme.namesStrokeColor;
+                i.lineWidth = k * theme.strokeScale;
+                i.lineJoin = 'miter';
+                i.miterLimit = 0;
+                i.strokeText(a.targetNick, h.width >> 1, h.height >> 1);
+            } else if (settings.namesStroke2 === 2) {
+                i.fillStyle = theme.namesStrokeColor;
+                i.globalAlpha = 0.75;
+                i.fillRect(0, 0, h.width, h.height);
+                i.globalAlpha = 1;
             }
-            k.fillStyle = theme.massColor;
-            k.fillText(f.mass, j.width >> 1, j.height >> 1);
-            f.lastUpdateAt = Date.now();
+            i.fillStyle = theme.namesColor;
+            i.fillText(a.targetNick, h.width >> 1, h.height >> 1);
+            d.level[f] = h;
+            return h;
         }
-        return f.canvas;
-    }
-    newMassCache(a) {
-        const b = new massObject();
-        this.massCaches.set(a, b);
-        return b;
-    }
-    getMassWidth(a, b) {
-        return this.massShadowCtx.measureText(a).width * b / 25;
-    }
-    setMassCtxFont() {
-        this.massCaches.clear();
-        this.massShadowCtx.font = '700 25px ' + theme.massFontFamily;
-    }
-    getScreenRadius(a) {
-        return a * drawRender.scale;
-    }
-    isSmall(a) {
-        return settings.autoHideText === 'on' && this.getScreenRadius(a.targetSize) < 20;
-    }
-    calcVirusShots(a) {
-        return ~~((200 - a) / 14);
-    }
-    getNewCanvas() {
-        return this.canvasPool.shift() || document.createElement('canvas');
-    }
-    newShadowContext() {
-        const a = document.createElement('canvas').getContext('2d');
-        a.font = '700 25px ubuntu';
-        return a;
-    }
-    clear(a) {
-        if (a === 'nick') {
-            this.nickCaches.forEach((b, c) => {
+        newNickCache(a) {
+            const b = new nickObject();
+            this.nickCaches.set(a, b);
+            return b;
+        }
+        getNickHeight(a, b) {
+            return b + ~~(b * 0.4);
+        }
+        getNickWidth(a, b) {
+            return this.nickShadowCtx.measureText(a).width * b / 25;
+        }
+        setNickCtxFont() {
+            this.nickCaches.clear();
+            this.nickShadowCtx.font = '700 25px ' + theme.namesFontFamily;
+        }
+        mass(a) {
+            var b = a.isVirus ? theme.virMassScale / 2 : theme.namesScale / 3;
+            const c = a.targetSize * drawRender.scale * b,
+                d = 0 | Math.min(c / 50, 7);
+            if (!a.isVirus && c < 10 && settings.autoHideMass || a.size < 40) return false;
+            const f = this.massCaches.get(a.id) || this.newMassCache(a.id);
+            f.lastUsedAt = Date.now();
+            let g = settings.shortMass && a.mass > 999 ? (0 | a.mass / 100) / 10 + 'k' : a.mass;
+            if (a.isVirus && a.mass < 200) {
+                const i = ~~(a.targetSize * a.targetSize / 100);
+                settings.virMassType === 2 ? g = this.calcVirusShots(i) : g = i;
+
+                if (g !== f.mass)
+                    f.needsRedraw = true;
+            }
+            f.fontSize = 50 * (d + 1) * 0.9;
+            const h = Date.now() - f.lastUpdateAt;
+
+            if (f.needsRedraw || h > this.massUpdateInterval)
+                f.mass = g;
+
+            f.canvas || (f.canvas = this.getNewCanvas(), f.ctx = f.canvas.getContext('2d'));
+            if (f.needsRedraw) {
+                f.needsRedraw = false;
+                const j = f.canvas,
+                    k = f.ctx,
+                    l = theme.strokeScale * (f.fontSize / 10),
+                    m = 50 * 5 * 0.8,
+                    n = theme.strokeScale * (m / 10);
+                j.height = f.fontSize + l;
+                j.width = 0 | this.getMassWidth(f.mass, f.fontSize) + l;
+                j.originW = (this.getMassWidth(f.mass, m) + n) / 650;
+                j.originH = j.height * (j.originW / j.width);
+                k.font = theme.massFontWeight + ' ' + (0 | f.fontSize) + 'px ' + theme.massFontFamily;
+                k.textBaseline = 'middle';
+                k.textAlign = 'center';
+                settings.massStroke2 === 1 ? (k.strokeStyle = theme.massStrokeColor, k.lineWidth = l, k.lineJoin = 'miter', k.miterLimit = 0, k.strokeText(f.mass, j.width >> 1, j.height >> 1)) : settings.massStroke2 === 2 && (k.fillStyle = theme.massStrokeColor, k.globalAlpha = 0.75, k.fillRect(0, 0, j.width, j.height), k.globalAlpha = 1);
+                k.fillStyle = theme.massColor;
+                k.fillText(f.mass, j.width >> 1, j.height >> 1);
+                f.lastUpdateAt = Date.now();
+            }
+            return f.canvas;
+        }
+        newMassCache(a) {
+            const b = new massObject();
+            this.massCaches.set(a, b);
+            return b;
+        }
+        getMassWidth(a, b) {
+            return this.massShadowCtx.measureText(a).width * b / 25;
+        }
+        setMassCtxFont() {
+            this.massCaches.clear();
+            this.massShadowCtx.font = '700 25px ' + theme.massFontFamily;
+        }
+        getScreenRadius(a) {
+            return a * drawRender.scale;
+        }
+        isSmall(a) {
+            return settings.autoHideText === 'on' && this.getScreenRadius(a.targetSize) < 20;
+        }
+        calcVirusShots(a) {
+            return ~~((200 - a) / 14);
+        }
+        getNewCanvas() {
+            return this.canvasPool.shift() || document.createElement('canvas');
+        }
+        newShadowContext() {
+            const a = document.createElement('canvas').getContext('2d');
+            a.font = '700 25px ubuntu';
+            return a;
+        }
+        clear(a) {
+            if (a === 'nick') this.nickCaches.forEach((b, c) => {
                 this.nickCaches.delete(c);
-                var d;
-                var f = b.level;
+                var d, f = b.level;
                 for (var g = 0; g < f.length; g++) {
-                    if (d = f[g]) {
+                    if (d = f[g])
                         this.resetCanvas(d);
-                    }
                 }
             });
-        }
-        if (a === 'mass') {
-            this.massCaches.forEach((b, c) => {
+
+            if (a === 'mass') this.massCaches.forEach((b, c) => {
                 this.massCaches.delete(c);
                 if (this.canvasPool.length >= 50) return;
                 var d = b.canvas;
                 this.resetCanvas(d);
             });
         }
-    }
-    cleaner() {
-        this.nickCaches.forEach((a, b) => {
-            if (Date.now() - a.lastUsedAt > this.maxCacheLife) {
-                this.nickCaches.delete(b);
-                var c;
-                var d = a.level;
-                for (var f = 0; f < d.length; f++) {
-                    if (c = d[f]) {
-                        this.resetCanvas(c);
+        cleaner() {
+            this.nickCaches.forEach((a, b) => {
+                if (Date.now() - a.lastUsedAt > this.maxCacheLife) {
+                    this.nickCaches.delete(b);
+                    var c, d = a.level;
+                    for (var f = 0; f < d.length; f++) {
+                        if (c = d[f])
+                            this.resetCanvas(c);
                     }
                 }
-            }
-        });
+            });
 
-        this.massCaches.forEach((a, b) => {
-            if (Date.now() - a.lastUsedAt > this.maxCacheLife) {
-                this.massCaches.delete(b);
-                if (this.canvasPool.length >= 50) return;
-                var c = a.canvas;
-                this.resetCanvas(c);
-            }
-        });
-    }
-    resetCanvas(a) {
-        !a || this.canvasPool.length >= 75 || (a.width = 0, this.canvasPool.push(a));
-    }
-})();
+            this.massCaches.forEach((a, b) => {
+                if (Date.now() - a.lastUsedAt > this.maxCacheLife) {
+                    this.massCaches.delete(b);
+                    if (this.canvasPool.length >= 50) return;
+                    var c = a.canvas;
+                    this.resetCanvas(c);
+                }
+            });
+        }
+        resetCanvas(a) {
+            !a || this.canvasPool.length >= 75 || (a.width = 0, this.canvasPool.push(a));
+        }
+    })();
 class nickObject {
     constructor() {
         this.lastUsedAt = Date.now();
@@ -390,6 +390,7 @@ class massObject {
     }
     set mass(a) {
         this._mass = a;
+
         if (this._mass !== this.lastMass) {
             this.lastMass = this._mass;
             this.needsRedraw = true;
@@ -432,7 +433,33 @@ class Cell {
         this.redrawed = 0;
         this.time = 0;
         this.skin = null;
+        this.hasVanillaCustomSkin = false;
         this.pi2 = 2 * Math.PI;
+        this.container = null;
+        this.graphic = null;
+    }
+    initPixi() {
+        this.container = new PIXI.Container();
+        this.graphic = new PIXI.Graphics();
+        this.container.addChild(this.graphic);
+        drawRender.app.stage.addChild(this.container);
+    }
+    upldatePixi(a, b, c, d, f, g) {
+        this.drawCellPixi();
+    }
+    drawCellPixi() {
+        this.graphic.clear();
+        this.graphic.beginFill(this.color.replace('#', '0x'), 1);
+        this.graphic.drawCircle(0, 0, 10);
+        this.graphic.endFill();
+    }
+    renderPixi() {
+        this.container.position.x = this.x;
+        this.container.position.y = this.y;
+        this.container.scale.x = this.container.scale.y = this.size / 10;
+    }
+    removeFromStagePixi() {
+        drawRender.app.stage.removeChild(this.container);
     }
     update(a, b, c, d, f, g) {
         this.x = a;
@@ -441,44 +468,6 @@ class Cell {
         this.isPlayerCell = f;
         this.setMass(c);
         this.setNick(g);
-    }
-    removeCell() {
-        this.removed = true;
-        let a = this.c.cells.indexOf(this);
-        if (a != -1) {
-            this.c.cells.splice(a, 1);
-            if (this.c.cellAID.hasOwnProperty(this.accountID)) {
-                let b = this.c.cellAID[this.accountID].indexOf(this.id);
-                if (b != -1) {
-                    this.c.cellAID[this.accountID].splice(b, 1);
-                    if (this.c.cellAID[this.accountID].length == 0) delete this.c.cellAID[this.accountID];
-                }
-            }
-            if (settings.virusesRange) {
-                a = this.c.viruses.indexOf(this);
-                if (a != -1) {
-                    this.c.viruses.splice(a, 1);
-                }
-            }
-        } else {
-            a = this.c.food.indexOf(this);
-            if (a != -1) {
-                this.c.food.splice(a, 1);
-            }
-        }
-        a = this.c.playerCells.indexOf(this);
-        if (a != -1) {
-            this.c.removePlayerCell = true;
-            this.c.playerCells.splice(a, 1);
-            a = this.c.playerCellIDs.indexOf(this.id);
-            if (a != -1) {
-                this.c.playerCellIDs.splice(a, 1);
-            }
-        }
-        if (this.redrawed) {
-            this.c.removedCells.push(this);
-        }
-        delete this.c.indexedCells[this.id];
     }
     moveCell() {
         const a = this.c.time - this.time;
@@ -494,25 +483,27 @@ class Cell {
         }
         if (b == 1) {
             const c = this.c.removedCells.indexOf(this);
-            if (c != -1) {
+
+            if (c != -1)
                 this.c.removedCells.splice(c, 1);
-            }
         }
     }
     draw(a, b, c) {
         this.redrawed++;
-        if (b) {
+
+        if (b)
             this.moveCell();
-        }
+
         const d = a.globalAlpha;
-        if (this.removed) {
+
+        if (this.removed)
             a.globalAlpha *= 1 - this.alpha;
-        }
+
         const f = a.globalAlpha;
         let g = false;
-        const h = ~~(this.isFood ? this.size + theme.foodSize : this.size);
+        const h = this.isFood ? this.size + theme.foodSize : this.size;
         a.beginPath();
-        a.arc(~~this.x, ~~this.y, h, 0, this.pi2, false);
+        a.arc(this.x, this.y, h, 0, this.pi2, false);
         a.closePath();
         if (this.isFood) {
             a.fillStyle = this.color;
@@ -525,80 +516,85 @@ class Cell {
                 a.globalAlpha *= theme.virusAlpha;
                 g = true;
             }
-            if (settings.virColors && this.c.play) {
-                a.fillStyle = application.setVirusColor(h);
-                a.strokeStyle = application.setVirusStrokeColor(h);
-            } else {
-                a.fillStyle = theme.virusColor;
-                a.strokeStyle = theme.virusStrokeColor;
-            }
+
+            settings.virColors && this.c.play ? (a.fillStyle = application.setVirusColor(h), a.strokeStyle = application.setVirusStrokeColor(h)) : (a.fillStyle = theme.virusColor, a.strokeStyle = theme.virusStrokeColor);
             if (this.size >= 148) a.fillStyle = '#000000';
             a.fill();
+
             if (g) {
                 a.globalAlpha = f;
                 g = false;
             }
+
             a.lineWidth = theme.virusStrokeSize;
             a.stroke();
-            if (settings.virMassType === 0) {} else if (settings.virMassType === 3 && this.size < 148) {
-                a.fillStyle = a.strokeStyle;
-                a.beginPath();
-                a.arc(this.x, this.y, ~~(3 * (this.size - 100)), 0, this.pi2, true);
-                a.closePath();
-                a.fill();
-            } else {
-                this.mass = ~~(this.size * this.size / 100);
-                var i = Texts.mass(this);
-                if (i) {
-                    var j = i.originW * this.size * theme.virMassScale;
-                    var k = i.originH * this.size * theme.virMassScale;
-                    a.drawImage(i, ~~(this.x - (j >> 1)), ~~(this.y - (k >> 1)), ~~j, ~~k);
+            if (settings.virMassType === 0) {} else {
+                if (settings.virMassType === 3 && this.size < 148) {
+                    a.fillStyle = a.strokeStyle;
+                    a.beginPath();
+                    a.arc(this.x, this.y, 3 * (this.size - 100), 0, this.pi2, true);
+                    a.closePath();
+                    a.fill();
+                } else {
+                    this.mass = ~~(this.size * this.size / 100);
+                    var i = Texts.mass(this);
+                    if (i) {
+                        var j = i.originW * this.size * theme.virMassScale,
+                            k = i.originH * this.size * theme.virMassScale;
+                        a.drawImage(i, ~~(this.x - (j >> 1)), ~~(this.y - (k >> 1)), ~~j, ~~k);
+                    }
                 }
             }
             a.globalAlpha = d;
             return;
         }
+
         if (settings.transparentCells) {
             a.globalAlpha *= theme.cellsAlpha;
             g = true;
         }
 
-        let l = drawRender.nickToColorTable[this.targetNick] || this.color;
-        drawRender.nickToColorTable[this.targetNick] = l;
-
+        let l = this.color;
         if (application.play) {
-            if (this.isPlayerCell) {
-                if (settings.myCustomColor) {
+            if (this.isPlayerCell)
+                if (settings.myCustomColor)
                     l = profiles.masterProfile.color;
-                }
-            } else if (settings.oppColors && !settings.oppRings) {
+                else if (settings.oppColors && !settings.oppRings)
                 l = this.oppColor;
-            }
         }
         a.fillStyle = l;
         a.fill();
+
         if (g) {
             a.globalAlpha = f;
             g = false;
         }
+
         let m = null;
-        if (settings.customSkins && tempsett.showCustomSkins) {
-            m = Texture.getCustomSkin(this.targetNick);
+        if (tempsett.showAnySkins) {
+            if (settings.customSkins) m = Texture.getCustomSkin(this.targetNick);
+
+            if (!m && settings.vanillaSkins)
+                this.hasVanillaCustomSkin ? m = Texture.getVanillaCustomSkin(this.skin) : m = Texture.getVanillaSkin(this.skin);
+
             if (m) {
                 if ((settings.transparentSkins || this.c.play && settings.oppColors) && !(this.isPlayerCell && !settings.myTransparentSkin) || this.isPlayerCell && settings.myTransparentSkin) {
                     a.globalAlpha *= theme.skinsAlpha;
                     g = true;
                 }
-                a.drawImage(m, ~~(this.x - h), ~~(this.y - h), 2 * h, 2 * h);
+
+                a.drawImage(m, this.x - h, this.y - h, 2 * h, 2 * h);
+
                 if (g) {
                     a.globalAlpha = f;
                     g = false;
                 }
             }
         }
-        if (settings.teammatesInd && !this.isPlayerCell && h <= 200 && (m || Texture.skinMap.has(this.targetNick))) {
+
+        if (settings.teammatesInd && !this.isPlayerCell && h <= 200 && (m || Texture.skinMap.has(this.targetNick)))
             drawRender.drawTeammatesInd(a, ~~this.x, ~~this.y, h);
-        }
+
         let n = false;
         if (!this.isPlayerCell) {
             n = drawRender.setAutoHideCellInfo(h);
@@ -607,13 +603,13 @@ class Cell {
                 return;
             }
         }
-        if (this.isPlayerCell && c && application.activeTab === this.c.type) {
+        if (this.isPlayerCell && c && settings.mbRings && application.activeTab === this.c.type) {
             const q = h / 100 * 10;
             a.lineWidth = q;
             a.globalAlpha = f;
             a.strokeStyle = theme.mboxActiveCellStroke;
             a.beginPath();
-            a.arc(~~this.x, ~~this.y, h - q / 2, 0, this.pi2, false);
+            a.arc(this.x, this.y, h - q / 2, 0, this.pi2, false);
             a.closePath();
             a.stroke();
             a.globalAlpha = 1;
@@ -622,20 +618,19 @@ class Cell {
         if (settings.showNames && !(this.isPlayerCell && settings.hideMyName) && !(m && settings.hideTeammatesNames)) {
             var o = Texts.nick(this);
             if (o) {
-                var j = o.originW * this.size * theme.namesScale;
-                var k = o.originH * this.size * theme.namesScale;
-                var p = ~~this.y - ~~(k / 2);
-                a.drawImage(o, ~~(this.x - (j >> 1)), ~~(this.y - (k >> 1)), ~~j, ~~k);
+                var j = o.originW * this.size * theme.namesScale,
+                    k = o.originH * this.size * theme.namesScale;
+                a.drawImage(o, this.x - (j >> 1), this.y - (k >> 1), j, k);
             }
         }
         if (settings.showMass && !(this.isPlayerCell && settings.hideMyMass) && !(settings.hideEnemiesMass && !this.isPlayerCell && !this.isVirus)) {
             this.mass = ~~(this.size * this.size / 100);
             var i = Texts.mass(this);
             if (i) {
-                var j = i.originW * this.size * theme.massScale / 2;
-                var k = i.originH * this.size * theme.massScale / 2;
-                var p = !settings.showNames || this.isPlayerCell && settings.hideMyName ? this.y - (k >> 1) : this.size / 4 + ~~this.y;
-                a.drawImage(i, ~~(this.x - (j >> 1)), ~~p, ~~j, ~~k);
+                var j = i.originW * this.size * theme.massScale / 2,
+                    k = i.originH * this.size * theme.massScale / 2,
+                    p = !settings.showNames || this.isPlayerCell && settings.hideMyName ? this.y - (k >> 1) : this.size / 4 + this.y;
+                a.drawImage(i, this.x - (j >> 1), p, j, k);
             }
         }
         a.globalAlpha = d;
@@ -647,39 +642,40 @@ function Node(a, b) {
     this.offset = b;
     this.contentType = 1;
     this.uncompressedSize = 0;
+
     this.setContentType = function() {
         this.contentType = this.readUint32();
     };
+
     this.setUncompressedSize = function() {
         this.uncompressedSize = this.readUint32();
     };
+
     this.compareBytesGt = (c, d) => {
-        const f = c < 0;
-        const g = d < 0;
-        if (f != g) {
-            return f;
-        }
+        const f = c < 0,
+            g = d < 0;
+        if (f != g) return f;
         return c > d;
     };
+
     this.skipByte = function() {
         const c = this.readByte();
-        if (c < 128) {
-            return;
-        }
+        if (c < 128) return;
         this.skipByte();
     };
+
     this.readByte = function() {
         return this.view.getUint8(this.offset++);
     };
+
     this.readUint32 = function() {
-        let c = 0;
-        let d = 0;
+        let c = 0,
+            d = 0;
         while (true) {
             const f = this.readByte();
             if (this.compareBytesGt(32, d)) {
-                if (f >= 128) {
-                    c |= (f & 127) << d;
-                } else {
+                if (f >= 128) c |= (f & 127) << d;
+                else {
                     c |= f << d;
                     break;
                 }
@@ -691,15 +687,16 @@ function Node(a, b) {
         }
         return c;
     };
+
     this.readFlag = function() {
         return this.readUint32() >>> 3;
     };
 }
 var proto = 'syntax=\"proto3\";\x0amessage index {\x0a  sint32 hasmessage = 1;\x0a  Message_data data = 2;\x0a}\x0amessage Message_data {\x0a  uint32 opcode = 1;\x0a  optional Login_response data = 11;\x0a}\x0a\x0a  message Empty {\x0a  }\x0a\x0amessage Login_response {\x0a\x0a  message TOKENS {\x0a    required string auth = 1;\x0a    required string alt = 2;\x0a    required string gdpr = 3;\x0a    required string xsolla = 4;\x0a  }\x0a\x0a  required TOKENS tokens = 1;\x0a  required uint32 currentGameState = 2;\x0a  required uint32 latestConfiguration = 5;\x0a\x0a  message SERVERINFO {\x0a    required string host = 1;\x0a    required uint32 tcpPort = 2;\x0a    required uint32 udpPort = 3;\x0a    required string awsRegion = 4;\x0a  }\x0a\x0a  required SERVERINFO serverInfo = 6;\x0a\x0a  message USERINFO {\x0a    required string userId = 1;\x0a    required string displayName = 2;\x0a    required int32 xp = 3;\x0a    required int32 level = 4;\x0a    required bool isPayingUser = 5;\x0a    required bool hasLoggedIntoMobile = 6;\x0a    required bool isNewUser = 7;\x0a\x0a    message REALMINFO {\x0a      required int32 realm = 1;\x0a      required string realmId = 2;\x0a      required string avatarUrl = 3;\x0a    }\x0a\x0a    required REALMINFO realmInfo = 8;\x0a    required int32 extraInitialMass = 9;\x0a\x0a    message ACTIONCOUNTERS {\x0a      required int32 questsCompleted = 1;\x0a      required int32 potionsObtained = 2;\x0a      required int32 skinsCreated = 3;\x0a    }\x0a\x0a    required ACTIONCOUNTERS actionCounters = 10;\x0a    required string latestCountryCode = 11;\x0a    required int32 accountAge = 12;\x0a  }\x0a\x0a  required USERINFO userInfo = 7;\x0a\x0a  message USERSTATS {\x0a    uint32 gamesPlayed = 1;\x0a    uint64 massConsumed = 2;\x0a    uint64 allTimeScore = 3;\x0a    uint32 highestMass = 4;\x0a    uint32 longestTimeAlive = 5;\x0a    uint32 mostCellsEaten = 6;\x0a  }\x0a\x0a  required USERSTATS userStats = 8;\x0a\x0a  message USERWALLET {\x0a    required int32 type = 1;\x0a    required string productId = 2;\x0a    required int32 amount = 3;\x0a  }\x0a\x0a  repeated USERWALLET userWallet = 9;\x0a  repeated Empty Settings = 10;\x0a  repeated Empty userBoosts = 11;\x0a  repeated Empty userTimedEvents = 12;\x0a\x0a  message USERGIFTS {\x0a    repeated Empty claimable = 0;\x0a    repeated Empty claimedFrom = 1;\x0a    repeated Empty sentTo = 2;\x0a    repeated Empty requestedTo = 3;\x0a    repeated string requestedFrom = 4;\x0a  }\x0a\x0a  required USERGIFTS userGifts = 13;\x0a\x0a  message SOFTUPGRADE {\x0a    required bool isAvailable = 1;\x0a    required bool rewardWasHandedOut = 2;\x0a  }\x0a\x0a  required SOFTUPGRADE softUpgrade = 14;\x0a  repeated Empty userAbTestGroups = 15;\x0a  repeated Empty userActiveQuests = 16;\x0a\x0a  message USERPOTIONS {\x0a    required int32 slot = 1;\x0a    required int32 status = 2;\x0a    required int32 secondsRemaining = 3;\x0a    required string productId = 4;\x0a  }\x0a\x0a  repeated USERPOTIONS userPotions = 17;\x0a  required string userSessionId = 18;\x0a\x0a  message USERSUBSCRIPTIONS {\x0a    repeated Empty active = 1;\x0a  }\x0a\x0a  required USERSUBSCRIPTIONS userSubscriptions = 20;\x0a\x0a  message USERREWARDS {\x0a    required int32 __for = 1;\x0a    required int32 activeSlot = 2;\x0a\x0a    message USERWALLETITEMS {\x0a      required int32 type = 1;\x0a      required string productId = 2;\x0a      required int32 amount = 3;\x0a    }\x0a\x0a    repeated USERWALLETITEMS userWalletItems = 3;\x0a  }\x0a\x0a  repeated USERREWARDS userRewards = 21;\x0a  repeated Empty userUnapprovedSkinsIds = 22;\x0a\x0a  message USERLEAGUESINFO {\x0a    required int32 secondsUntilReset = 1;\x0a  }\x0a\x0a  optional USERLEAGUESINFO userLeaguesInfo = 23;\x0a}\x0a\x0a\x0a';
 try {
-    var root = protobuf.parse(proto).root;
-    var mobileData = root.lookupType('index');
-} catch (a5c) {}
+    var root = protobuf.parse(proto).root,
+        mobileData = root.lookupType('index');
+} catch (a4c) {}
 class Client {
     constructor(a, b) {
         eventify(this);
@@ -713,16 +710,18 @@ class Client {
         this._camX = 0;
         this._camY = 0;
         this.integrity = true;
-        this.client_protocol = 23;
+        this.client_protocol = 22;
         this.client_version_string = '3.10.9';
         this.client_version = 31009;
         this.gotCaptcha = false;
         this.quadrant = null;
         this.realQuadrant = null;
+        this.lastRealQuadrant = null;
         this.lastQuadrant = null;
         this.mirrorV = false;
         this.mirrorH = false;
         this.ghostCellsStep = 0;
+        this.connectionTime = 0;
         this.totalPackets = 0;
         this.isFreeSpectate = false;
         this.isSpectateEnabled = false;
@@ -769,14 +768,17 @@ class Client {
         this.camMinY = 0;
         this.staticX = 0;
         this.staticY = 0;
+
         this.bound = {
             left: 0,
             right: 0,
             top: 0,
             bottom: 0
         };
+
         this.viewportW2s = 0;
         this.viewportH2s = 0;
+
         this.viewport = [
             [
                 [0, 0],
@@ -785,6 +787,7 @@ class Client {
                 [0, 0]
             ]
         ];
+
         this.availableViewport = [
             [
                 [0, 0],
@@ -793,6 +796,7 @@ class Client {
                 [0, 0]
             ]
         ];
+
         this.unavailableViewport = [
             [
                 [0, 0],
@@ -801,13 +805,16 @@ class Client {
                 [0, 0]
             ]
         ];
+
         this.$cells = new Map();
         this.$playerCells = new Map();
         this.$cellsID = new Set();
+
         this.cellRange = {
             max: 0,
             min: 0
         };
+
         this.cellShift = 0;
         this.cellAID = {};
         this.indexedCells = {};
@@ -850,6 +857,7 @@ class Client {
         this.targetX = 0;
         this.targetY = 0;
         this.targetDistance = 0;
+
         this.battleRoyale = {
             state: 0,
             players: 0,
@@ -867,6 +875,7 @@ class Client {
             playerRank: 0,
             joined: false
         };
+
         this.sendPositionInterval = null;
         this.play = false;
         this.pause = false;
@@ -908,26 +917,33 @@ class Client {
         this.viewX = this.protocol_viewX = 0;
         this.viewY = this.protocol_viewY = 0;
         this.leaderboard = [];
-        this.sendPositionInterval = setInterval(() => {
-            this.sendCursorPosition();
-        }, 40);
         if (!a) return false;
+        if (typeof KingaroxBots !== 'undefined') {
+            window.game.url = a;
+            window.user.isAlive = false;
+            window.user.macroFeedInterval = null;
+        }
         this.integrity = a.indexOf('agar.io') > -1;
         this.client_protocol = a.indexOf('~') > -1 ? 6 : 22;
         this.socket = new WebSocket(a);
         this.socket.binaryType = 'arraybuffer';
+
         this.socket.onopen = () => {
             this.onOpen();
         };
+
         this.socket.onmessage = c => {
             this.onMessage(c);
         };
+
         this.socket.onerror = c => {
             this.onError(c);
         };
+
         this.socket.onclose = c => {
             this.onClose(c);
         };
+
         application.emit('connecting', this);
     }
     onOpen() {
@@ -935,10 +951,17 @@ class Client {
         this.time = Date.now();
         let a = this.createView(5);
         a.setUint8(0, 254);
+        if (typeof KingaroxBots !== 'undefined') {
+            if (!window.game.protocolVersion) window.game.protocolVersion = 22;
+        }
         a.setUint32(1, this.client_protocol, true);
         this.sendMessage(a);
         a = this.createView(5);
         a.setUint8(0, 255);
+        if (typeof KingaroxBots !== 'undefined') {
+
+            if (!window.game.clientVersion) window.game.clientVersion = master.client_version;
+        }
         a.setUint32(1, master.client_version, true);
         this.sendMessage(a);
         this.connectionOpened = true;
@@ -1037,42 +1060,53 @@ class Client {
     }
     doubleSplit() {
         this.sendSplit();
+
         setTimeout(() => {
             this.sendSplit();
         }, 40);
     }
     popSplit() {
         this.sendSplit();
+
         setTimeout(() => {
             this.sendSplit();
         }, 200);
     }
     tripleSplit() {
         this.sendSplit();
+
         setTimeout(() => {
             this.sendSplit();
         }, 40);
+
         setTimeout(() => {
             this.sendSplit();
         }, 80);
     }
     split16() {
         this.sendSplit();
+
         setTimeout(() => {
             this.sendSplit();
         }, 40);
+
         setTimeout(() => {
             this.sendSplit();
         }, 80);
+
         setTimeout(() => {
             this.sendSplit();
         }, 120);
     }
     sendNick(a) {
-        this.playerNick = a;
 
+        window.lastNick = a;
+        window.myTurn = true;
+
+        this.playerNick = a;
         if (this.integrity) agarCaptcha.requestCaptchaV3('play', b => {
             this.sendNick2(a, b);
+
             if (this.gotCaptcha) {
                 this.log('Connection have unsolved recaptcha!');
                 application.emit('captcha', this);
@@ -1083,46 +1117,76 @@ class Client {
             this.sendNick2(a, '0');
     }
     sendNick2(a, b) {
-        a = unescape(encodeURIComponent(this.playerNick));
-        var c = this.createView(1 + a.length + 1 + b.length + 1);
-        var d = 1;
-        for (let f = 0; f < a.length; f++, d++) c.setUint8(d, a.charCodeAt(f));
-        d++;
-        for (let g = 0; g < b.length; g++, d++) c.setUint8(d, b.charCodeAt(g));
-        this.sendMessage(c);
+        this.playerNick = a;
+        a = window.unescape(window.encodeURIComponent(a));
+        const view = this.createView(3 + a.length + b.length);
+        let buftes = [];
+        for (let i = 0; i < 3 + a.length + b.length; i++) buftes.push(0);
+        for (let length = 0; length < a.length; length++) {
+            view.setUint8(length + 1, a.charCodeAt(length));
+            //buftes[length+1] = nick.charCodeAt(length)
+        }
+        for (let len = 0; len < b.length; len++) {
+            view.setUint8(a.length + 2 + len, b.charCodeAt(len));
+            //buftes[nick.length + 2 + len] = token.charCodeAt(len);
+        }
+        this.sendMessage(view);
+        //console.log(buftes);
+        myTurn = false;
+        //return recaptchaExecuteLoop();
     }
+
     sendCursorPosition() {
-        if (!this.isSocketOpen() || !this.connectionOpened || !this.clientKey && this.integrity) {
-            return;
+
+        if (!this.isSocketOpen() || !this.connectionOpened || !this.clientKey && this.integrity) return;
+
+        let cursorX = this.cursorX;
+        let cursorY = this.cursorY;
+
+        //for bots
+        if (typeof KingaroxBots !== 'undefined') {
+            let CheckWichTabCursorX = application.getActiveTab().cursorX;
+            let CheckWichTabCursorY = application.getActiveTab().cursorY;
+
+            if (window.user.startedBots /*&& window.user.isAlive*/ ) {
+                window.user.mouseX = ~~(CheckWichTabCursorX + this.mapOffsetX)
+                window.user.mouseY = ~~(CheckWichTabCursorY + this.mapOffsetY)
+                window.connection.send(window.buffers.mousePosition(window.user.mouseX, window.user.mouseY /*, window.user.ghostX, window.user.ghostY*/ ));
+            }
         }
-        let a = this.cursorX;
-        let b = this.cursorY;
-        if (tempsett.pause) {
-            a = this.targetX;
-            b = this.targetY;
+
+
+        //
+
+
+        if (tempsett.pause || this.type === 3) {
+            cursorX = this.targetX;
+            cursorY = this.targetY;
+            if (typeof CheckWichTabCursorX !== 'undefined' && CheckWichTabCursorY !== 'undefined') {
+                CheckWichTabCursorX = this.targetX;
+                CheckWichTabCursorY = this.targetY;
+            }
         }
-        a = this.serverX(a);
-        b = this.serverY(b);
+
+        cursorX = this.serverX(cursorX);
+        cursorY = this.serverY(cursorY);
         const c = this.createView(13);
         c.setUint8(0, 16);
-        c.setInt32(1, a, true);
-        c.setInt32(5, b, true);
+        c.setInt32(1, cursorX, true);
+        c.setInt32(5, cursorY, true);
         c.setUint32(9, this.protocolKey, true);
         this.sendMessage(c);
     }
     sendAccessToken(a, b, c) {
-        if (!this.integrity) {
-            return;
-        }
-        if (this.accessTokenSent) {
-            return;
-        }
-        if (!c) {
+        if (!this.integrity) return;
+        if (this.accessTokenSent) return;
+
+        if (!c)
             c = 102;
-        }
-        const d = 5;
-        const f = a.length;
-        const g = master.client_version_string.length;
+
+        const d = 5,
+            f = a.length,
+            g = master.client_version_string.length;
         let h = [c, 8, 1, 18];
         this.writeUint32(h, f + g + 23);
         h.push(8, 10, 82);
@@ -1166,14 +1230,12 @@ class Client {
         this.log('Received client version:', a, b);
     }
     generateClientKey(a, b) {
-        if (!a.length || !b.byteLength) {
-            return null;
-        }
+        if (!a.length || !b.byteLength) return null;
         let c = null;
-        const d = 1540483477;
-        const f = a.match(/(ws+:\/\/)([^:]*)(:\d+)?/)[2];
-        const g = f.length + b.byteLength;
-        const h = new Uint8Array(g);
+        const d = 1540483477,
+            f = a.match(/(ws+:\/\/)([^:]*)(:\d+)?/)[2],
+            g = f.length + b.byteLength,
+            h = new Uint8Array(g);
         for (let n = 0; n < f.length; n++) {
             h[n] = f.charCodeAt(n);
         }
@@ -1181,8 +1243,8 @@ class Client {
         const i = new DataView(h.buffer);
         let j = g - 1;
         const k = (j - 4 & -4) + 4 | 0;
-        let l = j ^ 255;
-        let m = 0;
+        let l = j ^ 255,
+            m = 0;
         while (j > 3) {
             c = Math.imul(i.getInt32(m, true), d) | 0;
             l = (Math.imul(c >>> 24 ^ c, d) | 0) ^ (Math.imul(l, d) | 0);
@@ -1203,9 +1265,10 @@ class Client {
                 c = l;
                 break;
         }
-        if (c != l) {
+
+        if (c != l)
             c = Math.imul(h[k] ^ l, d) | 0;
-        }
+
         l = c >>> 13;
         c = l ^ c;
         c = Math.imul(c, d) | 0;
@@ -1222,22 +1285,20 @@ class Client {
         return a >>> 15 ^ a;
     }
     shiftMessage(a, b, c) {
-        if (!c) {
+        if (!c)
             for (var d = 0; d < a.byteLength; d++) {
                 a.setUint8(d, a.getUint8(d) ^ b >>> d % 4 * 8 & 255);
-            }
-        } else {
-            for (var d = 0; d < a.length; d++) {
-                a.writeUInt8(a.readUInt8(d) ^ b >>> d % 4 * 8 & 255, d);
-            }
-        }
+            } else
+                for (var d = 0; d < a.length; d++) {
+                    a.writeUInt8(a.readUInt8(d) ^ b >>> d % 4 * 8 & 255, d);
+                }
         return a;
     }
     decompressMessage(a) {
-        const b = window.buffer.Buffer;
-        const c = new b(a.buffer);
-        const d = new b(c.readUInt32LE(1));
-        return this.uncompressBuffer(c.slice(5), d);
+        const b = window.buffer.Buffer,
+            c = new b(a.buffer),
+            d = new b(c.readUInt32LE(1));
+        this.uncompressBuffer(c.slice(5), d);
         return d;
     }
     uncompressBuffer(a, b) {
@@ -1256,8 +1317,8 @@ class Client {
             }
             const h = a[c++] | a[c++] << 8;
             if (h === 0 || h > d) return -(c - 2);
-            let k = f & 15;
-            let l = k + 240;
+            let k = f & 15,
+                l = k + 240;
             while (l === 255) {
                 l = a[c++];
                 k += l;
@@ -1324,6 +1385,13 @@ class Client {
                     this.playerColor = null;
                     this.emit('spawn', this);
                     application.emit('spawn', this);
+                    //for bots
+
+                    if (typeof KingaroxBots !== 'undefined') {
+                        window.user.isAlive = true;
+                        if (window.user.startedBots) window.connection.send(new Uint8Array([5, Number(window.user.isAlive)]).buffer);
+                    }
+                    //
                 }
 
                 break;
@@ -1441,6 +1509,13 @@ class Client {
                         mass: m,
                         inView: false
                     });
+                    if (application.tabs[0].playerPosition == 1 || application.tabs[0].ghostCells.length == 0) { //Yahnych координати призраков или игрока если он топ1
+                        //window.user.ghostX = ~~(this.playerX + this.mapOffsetX);
+                        //window.user.ghostY = ~~(this.playerY + this.mapOffsetY);
+                    } else { //Yahnych
+                        window.user.ghostX = ~~(this.ghostCells[0].x + this.mapOffsetX);
+                        window.user.ghostY = ~~(this.ghostCells[0].y + this.mapOffsetY);
+                    }
                 }
 
                 if (settings.mapLocalFix3 && this.ghostCellsStep == 1 && this.ghostCells[0]) {
@@ -1456,6 +1531,7 @@ class Client {
                     this.emit('requestQuadrant', this);
 
                 application.handleGhostCells(this);
+
                 break;
             case 85:
                 this.gotCaptcha = true;
@@ -1531,156 +1607,36 @@ class Client {
                     this.battleRoyale.joined = false;
                 }
 
-                if (j & 3) {
-                    this.battleRoyale.state = a.getUint8(c++);
-                    this.battleRoyale.x = a.getInt32(c, true);
-                    c += 4;
-                    this.battleRoyale.y = a.getInt32(c, true);
-                    c += 4;
-                    this.battleRoyale.radius = a.getUint32(c, true);
-                    c += 4;
-                    this.battleRoyale.shrinkTime = a.getUint32(c, true) * 1000;
-                    c += 4;
+  const AGAR_CONST = Object.freeze((() => {
+    // WSVGA
+    const VIEWPORT_BASE_WIDTH = 1024;
+    const VIEWPORT_BASE_HEIGHT = 600;
+    // field of view size is simply multiplied by these
+    const FREE_SPECTATE = 4.95;
+    const DEFAULT = 1.995;
+    // Length of an edge of the agario map. Note, that the map is square.
+    const MAP_EDGE_LENGTH = Math.sqrt(200000000);
+    const VIEWPORT_FREE_SPECTATE_WIDTH = VIEWPORT_BASE_WIDTH * FREE_SPECTATE;
+    const VIEWPORT_FREE_SPECTATE_HEIGHT = VIEWPORT_BASE_HEIGHT * FREE_SPECTATE;
+    const VIEWPORT_FREE_SPECTATE_WIDTH_HALF = VIEWPORT_FREE_SPECTATE_WIDTH / 2;
+    const VIEWPORT_FREE_SPECTATE_HEIGHT_HALF = VIEWPORT_FREE_SPECTATE_HEIGHT / 2;
 
-                    if (this.battleRoyale.shrinkTime) {
-                        this.battleRoyale.timeLeft = ~~((this.battleRoyale.shrinkTime - Date.now() + this.serverTimeDiff) / 1000);
+    return {
+        MAP_EDGE_LENGTH,
+        VIEWPORT_BASE_WIDTH,
+        VIEWPORT_BASE_HEIGHT,
+        VIEWPORT_MULTIPLIER: Object.freeze({
+            FREE_SPECTATE,
+            DEFAULT,
+        }),
 
-                        if (this.battleRoyale.timeLeft < 0)
-                            this.battleRoyale.timeLeft = 0;
-                    }
-                }
-
-                if (j & 2) {
-                    this.battleRoyale.targetX = a.getInt32(c, true);
-                    c += 4;
-                    this.battleRoyale.targetY = a.getInt32(c, true);
-                    c += 4;
-                    this.battleRoyale.targetRadius = a.getUint32(c, true);
-                }
-
-                break;
-            case 179:
-                this.log(179);
-                var j = a.getUint8(c);
-                const C = window.decodeURIComponent(window.escape(b()));
-                let D = null;
-
-                if (!j) {
-                    D = window.decodeURIComponent(window.escape(b()));
-                    this.log('179', C, D);
-                }
-
-                break;
-            case 180:
-                this.battleRoyale.joined = false;
-                this.battleRoyale.rank = [];
-                this.battleRoyale.playerRank = a.getUint32(c, true);
-                c += 8;
-                const E = a.getUint16(c, true);
-                c += 2;
-                for (var h = 0; h < E; h++) {
-                    const V = window.decodeURIComponent(window.escape(b())),
-                        W = a.getUint32(c, true);
-                    c += 4;
-
-                    this.battleRoyale.rank.push({
-                        place: W,
-                        name: V
-                    });
-                }
-                break;
-            case 226:
-                const F = a.getUint16(1, true);
-                a = this.createView(3);
-                a.setUint8(0, 227);
-                a.setUint16(1, F);
-                this.sendMessage(a);
-                break;
-            case 241:
-                this.protocolKey = a.getUint32(c, true);
-                const G = new Uint8Array(a.buffer, c += 4);
-                this.clientKey = this.generateClientKey(this.ws, G);
-                this.estabilished = true;
-                application.emit('estabilished', this);
-                this.emit('estabilished', this);
-                var s = '',
-                    t = a.getUint32(c, true);
-                for (var u = 5; u < 11; u++) {
-                    s += String.fromCharCode(a.getUint8(c += 1, true));
-                }
-                this.log('Received protocol key:', this.protocolKey, 'v' + s);
-                break;
-            case 242:
-                this.serverTime = a.getUint32(c, true) * 1000;
-                this.serverTimeDiff = Date.now() - this.serverTime;
-                break;
-            case 255:
-                this.handleSubmessage(a);
-                break;
-            case 16:
-                this.updateCells(new buffer.Buffer(a.buffer), c);
-                this.countPps();
-                break;
-            case 64:
-                const H = () => {
-                    for (var X = '';;) {
-                        const Y = v.readUInt8(c++);
-                        if (Y == 0) break;
-                        X += String.fromCharCode(Y);
-                    }
-                    return X;
-                };
-                var v = new buffer.Buffer(a.buffer);
-                this.viewMinX = v.readDoubleLE(c);
-                c += 8;
-                this.viewMinY = v.readDoubleLE(c);
-                c += 8;
-                this.viewMaxX = v.readDoubleLE(c);
-                c += 8;
-                this.viewMaxY = v.readDoubleLE(c);
-                c += 8;
-                c += 4;
-                try {
-                    const X = H();
-
-                    if (X) {
-                        this.estabilished = true;
-                        application.emit('estabilished', this);
-                        this.emit('estabilished', this);
-                        this.log('string', X);
-                    }
-                } catch (Y) {}
-                this.setMapOffset(this.viewMinX, this.viewMinY, this.viewMaxX, this.viewMaxY);
-                break;
-            default:
-                this.log('Unknown opcode:', a.getUint8(0), a);
-                break;
-        }
+        VIEWPORT_FREE_SPECTATE_WIDTH,
+        VIEWPORT_FREE_SPECTATE_HEIGHT,
+        VIEWPORT_FREE_SPECTATE_WIDTH_HALF,
+        VIEWPORT_FREE_SPECTATE_HEIGHT_HALF
     }
-    disconnectMessage(a) {
-        switch (a) {
-            case 1:
-                this.error('User disconnected. Incompatible client');
-                break;
-            case 2:
-                this.error('User disconnected. Packet not authorized');
-                break;
-            case 3:
-                this.error('User disconnected. Login elsewhere');
-                break;
-            case 4:
-                this.error('User disconnected. Server offline');
-                break;
-            case 5:
-                this.error('User disconnected. User banned');
-                break;
-            case 6:
-                this.error('User disconnected. Ping error');
-                break;
-            case 7:
-                this.error('User disconnected. Unknown game type');
-                break;
-    require = function() {
+})());
+require = function() {
     return function f(g, h, j) {
         function k(p, q) {
             if (!h[p]) {
@@ -1770,289 +1726,260 @@ class Client {
         './length.js': 3
     }]
 }, {}, []);
-var varint = require('varint');
-const AGAR_CONST = Object.freeze((() => {
-    // WSVGA
-    const VIEWPORT_BASE_WIDTH = 1024;
-    const VIEWPORT_BASE_HEIGHT = 600;
-    // field of view size is simply multiplied by these
-    const FREE_SPECTATE = 4.95;
-    const DEFAULT = 1.995;
-    // Length of an edge of the agario map. Note, that the map is square.
-    const MAP_EDGE_LENGTH = Math.sqrt(200000000);
-    const VIEWPORT_FREE_SPECTATE_WIDTH = VIEWPORT_BASE_WIDTH * FREE_SPECTATE;
-    const VIEWPORT_FREE_SPECTATE_HEIGHT = VIEWPORT_BASE_HEIGHT * FREE_SPECTATE;
-    const VIEWPORT_FREE_SPECTATE_WIDTH_HALF = VIEWPORT_FREE_SPECTATE_WIDTH / 2;
-    const VIEWPORT_FREE_SPECTATE_HEIGHT_HALF = VIEWPORT_FREE_SPECTATE_HEIGHT / 2;
-
-    return {
-        MAP_EDGE_LENGTH,
-        VIEWPORT_BASE_WIDTH,
-        VIEWPORT_BASE_HEIGHT,
-        VIEWPORT_MULTIPLIER: Object.freeze({
-            FREE_SPECTATE,
-            DEFAULT,
-        }),
-
-        VIEWPORT_FREE_SPECTATE_WIDTH,
-        VIEWPORT_FREE_SPECTATE_HEIGHT,
-        VIEWPORT_FREE_SPECTATE_WIDTH_HALF,
-        VIEWPORT_FREE_SPECTATE_HEIGHT_HALF
-    }
-})());
-
-var Texture = new(class {
-    constructor() {
-        this.skinMap = new Map();
-        this.downloadedSkins = new Map();
-        this.pi2 = 2 * Math.PI;
-    }
-    render() {
-        this.skinMap.clear();
-    }
-    cacheKey(a, b) {
-        if (!a || !b) return;
-        this.skinMap.set(a, b);
-    }
-    getCustomSkin(a) {
-        const b = this.skinMap.get(a);
-        if (!b) return false;
-        const c = this.downloadedSkins.get(b);
-        return undefined === c ? (this.downloadSkin(b), false) : c;
-    }
-    getVanillaSkin(a) {
-        const b = this.downloadedSkins.get('https://configs-web.agario.miniclippt.com/live/v15/2886/' + (a.substr(1, 1).toUpperCase() + a.slice(2)) + '.png');
-        return undefined === b ? (this.downloadSkin(''), false) : b;
-    }
-    downloadSkin(a) {
-        this.downloadedSkins.set(a, false);
-        const b = new Image();
-        b.crossOrigin = 'anonymous';
-
-        b.onload = () => {
-            const c = document.createElement('canvas');
-            c.width = 512;
-            c.height = 512;
-            const d = c.getContext('2d');
-            d.beginPath();
-            d.arc(256, 256, 256, 0, this.pi2, true);
-            d.clip();
-            d.drawImage(b, 0, 0, 512, 512);
-            new Image();
-            b.onload = null;
-            b.src = c.toDataURL();
-            this.downloadedSkins.set(a, b);
-        };
-
-        b.src = a;
-    }
-})();
-var Texts = new(class {
-    constructor() {
-        this.nickCaches = new Map();
-        this.massCaches = new Map();
-        this.maxCacheLife = 1000;
-        this.massUpdateInterval = settings.massUpdateInterval || 500;
-        this.quality = 0.4;
-        this.nickShadowCtx = this.newShadowContext();
-        this.massShadowCtx = this.newShadowContext();
-        this.canvasPool = [];
-    }
-    setMassUpdateInterval() {
-        this.massUpdateInterval = settings.massUpdateInterval || 500;
-    }
-    nick(a) {
-        var b = theme.namesScale;
-        if (a.targetNick === '') return false;
-        const c = a.targetSize * drawRender.scale * b;
-        if (c < 10 && settings.autoHideNames) return false;
-        const d = this.nickCaches.get(a.targetNick) || this.newNickCache(a.targetNick);
-        d.lastUsedAt = Date.now();
-        const f = 0 | Math.min(c / 50, 7),
-            g = d.level[f];
-        if (g) return g;
-        const h = this.getNewCanvas(),
-            i = h.getContext('2d'),
-            j = 50 * (f + 1) * this.quality,
-            k = theme.strokeScale * (j / 10),
-            l = 50 * 5 * 0.8,
-            m = theme.strokeScale * (l / 10);
-        h.height = j + k * 4;
-        h.width = 0 | this.getNickWidth(a.targetNick, j) + k;
-        h.originW = (this.getNickWidth(a.targetNick, l) + m) / 650;
-        h.originH = h.height * (h.originW / h.width);
-        i.font = theme.namesFontWeight + ' ' + j + 'px ' + theme.namesFontFamily;
-        i.textBaseline = 'middle';
-        i.textAlign = 'center';
-        if (settings.namesStroke2 === 1) {
-            i.strokeStyle = theme.namesStrokeColor;
-            i.lineWidth = k * theme.strokeScale;
-            i.lineJoin = 'miter';
-            i.miterLimit = 0;
-            i.strokeText(a.targetNick, h.width >> 1, h.height >> 1);
-        } else if (settings.namesStroke2 === 2) {
-            i.fillStyle = theme.namesStrokeColor;
-            i.globalAlpha = 0.75;
-            i.fillRect(0, 0, h.width, h.height);
-            i.globalAlpha = 1;
+var varint = require('varint'),
+    Texture = new(class {
+        constructor() {
+            this.skinMap = new Map();
+            this.vanillaSkinMap = new Map();
+            this.vanillaCustomSkinMap = new Map();
+            this.downloadedSkins = new Map();
+            this.pi2 = 2 * Math.PI;
         }
-        i.fillStyle = theme.namesColor;
-        i.fillText(a.targetNick, h.width >> 1, h.height >> 1);
-        d.level[f] = h;
-        return h;
-    }
-    newNickCache(a) {
-        const b = new nickObject();
-        this.nickCaches.set(a, b);
-        return b;
-    }
-    getNickHeight(a, b) {
-        return b + ~~(b * 0.4);
-    }
-    getNickWidth(a, b) {
-        return this.nickShadowCtx.measureText(a).width * b / 25;
-    }
-    setNickCtxFont() {
-        this.nickCaches.clear();
-        this.nickShadowCtx.font = '700 25px ' + theme.namesFontFamily;
-    }
-    mass(a) {
-        var b = a.isVirus ? theme.virMassScale / 2 : theme.namesScale / 3;
-        const c = a.targetSize * drawRender.scale * b;
-        const d = 0 | Math.min(c / 50, 7);
-        if (!a.isVirus && c < 10 && settings.autoHideMass || a.size < 40) return false;
-        const f = this.massCaches.get(a.id) || this.newMassCache(a.id);
-        f.lastUsedAt = Date.now();
-        let g = settings.shortMass && a.mass > 999 ? (0 | a.mass / 100) / 10 + 'k' : a.mass;
-        if (a.isVirus && a.mass < 200) {
-            const i = ~~(a.targetSize * a.targetSize / 100);
-            if (settings.virMassType === 2) {
-                g = this.calcVirusShots(i);
-            } else {
-                g = i;
+        render() {
+            this.skinMap.clear();
+        }
+        cacheKey(a, b) {
+            if (!a || !b) return;
+            this.skinMap.set(a, b);
+        }
+        getCustomSkin(a) {
+            const b = this.skinMap.get(a);
+            if (!b) return false;
+            const c = this.downloadedSkins.get(b);
+            return undefined === c ? (this.downloadSkin(b), false) : c;
+        }
+        getVanillaSkin(a) {
+            const b = this.vanillaSkinMap.get(a);
+            if (!b) return false;
+            const c = this.downloadedSkins.get(b);
+            return c === undefined ? (this.downloadSkin(b), false) : c;
+        }
+        getVanillaCustomSkin(a) {
+            const b = this.vanillaCustomSkinMap.get(a);
+            if (!b) {
+                this.vanillaCustomSkinMap.set(a, 'https://configs.agario.miniclippt.com/live/custom_skins/' + a.replace('%custom', 'skin_custom') + '.png');
+                return false;
             }
-            if (g !== f.mass) {
-                f.needsRedraw = true;
+            const c = this.downloadedSkins.get(b);
+            return c === undefined ? (this.downloadSkin(b), false) : c;
+        }
+        getVanillaSkinsLinks(a) {
+            const b = a.gameConfig['Gameplay - Equippable Skins'],
+                c = a.gameConfig['Gameplay - Free Skins'];
+            for (let d = 0; d < c.length; d++) {
+                this.vanillaSkinMap.set(c[d].id, 'https://configs-web.agario.miniclippt.com/live/v15/' + master.latest_config_id + '/' + c[d].image);
+            }
+            for (let f = 0; f < b.length; f++) {
+                if (b[f].image != 'uses_spine')
+                    this.vanillaSkinMap.set(b[f].productId.replace('skin_', '%'), 'https://configs-web.agario.miniclippt.com/live/v15/' + master.latest_config_id + '/' + b[f].image);
             }
         }
-        f.fontSize = 50 * (d + 1) * 0.9;
-        const h = Date.now() - f.lastUpdateAt;
-        if (f.needsRedraw || h > this.massUpdateInterval) {
-            f.mass = g;
+        downloadSkin(a) {
+            this.downloadedSkins.set(a, false);
+            const b = new Image();
+            b.crossOrigin = 'anonymous';
+
+            b.onload = () => {
+                const c = document.createElement('canvas');
+                c.width = 512;
+                c.height = 512;
+                const d = c.getContext('2d');
+                d.beginPath();
+                d.arc(256, 256, 256, 0, this.pi2, true);
+                d.clip();
+                d.drawImage(b, 0, 0, 512, 512);
+                new Image();
+                b.onload = null;
+                b.src = c.toDataURL();
+                this.downloadedSkins.set(a, b);
+            };
+
+            b.src = a;
         }
-        f.canvas || (f.canvas = this.getNewCanvas(), f.ctx = f.canvas.getContext('2d'));
-        if (f.needsRedraw) {
-            f.needsRedraw = false;
-            const j = f.canvas,
-                k = f.ctx,
-                l = theme.strokeScale * (f.fontSize / 10),
-                m = 50 * 5 * 0.8,
-                n = theme.strokeScale * (m / 10);
-            j.height = f.fontSize + l;
-            j.width = 0 | this.getMassWidth(f.mass, f.fontSize) + l;
-            j.originW = (this.getMassWidth(f.mass, m) + n) / 650;
-            j.originH = j.height * (j.originW / j.width);
-            k.font = theme.massFontWeight + ' ' + (0 | f.fontSize) + 'px ' + theme.massFontFamily;
-            k.textBaseline = 'middle';
-            k.textAlign = 'center';
-            if (settings.massStroke2 === 1) {
-                k.strokeStyle = theme.massStrokeColor;
-                k.lineWidth = l;
-                k.lineJoin = 'miter';
-                k.miterLimit = 0;
-                k.strokeText(f.mass, j.width >> 1, j.height >> 1);
-            } else {
-                if (settings.massStroke2 === 2) {
-                    k.fillStyle = theme.massStrokeColor;
-                    k.globalAlpha = 0.75;
-                    k.fillRect(0, 0, j.width, j.height);
-                    k.globalAlpha = 1;
-                }
+    })(),
+    Texts = new(class {
+        constructor() {
+            this.nickCaches = new Map();
+            this.massCaches = new Map();
+            this.maxCacheLife = 1000;
+            this.massUpdateInterval = settings.massUpdateInterval || 500;
+            this.quality = 0.4;
+            this.nickShadowCtx = this.newShadowContext();
+            this.massShadowCtx = this.newShadowContext();
+            this.canvasPool = [];
+        }
+        setMassUpdateInterval() {
+            this.massUpdateInterval = settings.massUpdateInterval || 500;
+        }
+        nick(a) {
+            var b = theme.namesScale;
+            if (a.targetNick === '') return false;
+            const c = a.targetSize * drawRender.scale * b;
+            if (c < 10 && settings.autoHideNames) return false;
+            const d = this.nickCaches.get(a.targetNick) || this.newNickCache(a.targetNick);
+            d.lastUsedAt = Date.now();
+            const f = 0 | Math.min(c / 50, 7),
+                g = d.level[f];
+            if (g) return g;
+            const h = this.getNewCanvas(),
+                i = h.getContext('2d'),
+                j = 50 * (f + 1) * this.quality,
+                k = theme.strokeScale * (j / 10),
+                l = 50 * 5 * 0.8,
+                m = theme.strokeScale * (l / 10);
+            h.height = j + k * 4;
+            h.width = 0 | this.getNickWidth(a.targetNick, j) + k;
+            h.originW = (this.getNickWidth(a.targetNick, l) + m) / 650;
+            h.originH = h.height * (h.originW / h.width);
+            i.font = theme.namesFontWeight + ' ' + j + 'px ' + theme.namesFontFamily;
+            i.textBaseline = 'middle';
+            i.textAlign = 'center';
+            if (settings.namesStroke2 === 1) {
+                i.strokeStyle = theme.namesStrokeColor;
+                i.lineWidth = k * theme.strokeScale;
+                i.lineJoin = 'miter';
+                i.miterLimit = 0;
+                i.strokeText(a.targetNick, h.width >> 1, h.height >> 1);
+            } else if (settings.namesStroke2 === 2) {
+                i.fillStyle = theme.namesStrokeColor;
+                i.globalAlpha = 0.75;
+                i.fillRect(0, 0, h.width, h.height);
+                i.globalAlpha = 1;
             }
-            k.fillStyle = theme.massColor;
-            k.fillText(f.mass, j.width >> 1, j.height >> 1);
-            f.lastUpdateAt = Date.now();
+            i.fillStyle = theme.namesColor;
+            i.fillText(a.targetNick, h.width >> 1, h.height >> 1);
+            d.level[f] = h;
+            return h;
         }
-        return f.canvas;
-    }
-    newMassCache(a) {
-        const b = new massObject();
-        this.massCaches.set(a, b);
-        return b;
-    }
-    getMassWidth(a, b) {
-        return this.massShadowCtx.measureText(a).width * b / 25;
-    }
-    setMassCtxFont() {
-        this.massCaches.clear();
-        this.massShadowCtx.font = '700 25px ' + theme.massFontFamily;
-    }
-    getScreenRadius(a) {
-        return a * drawRender.scale;
-    }
-    isSmall(a) {
-        return settings.autoHideText === 'on' && this.getScreenRadius(a.targetSize) < 20;
-    }
-    calcVirusShots(a) {
-        return ~~((200 - a) / 14);
-    }
-    getNewCanvas() {
-        return this.canvasPool.shift() || document.createElement('canvas');
-    }
-    newShadowContext() {
-        const a = document.createElement('canvas').getContext('2d');
-        a.font = '700 25px ubuntu';
-        return a;
-    }
-    clear(a) {
-        if (a === 'nick') {
-            this.nickCaches.forEach((b, c) => {
+        newNickCache(a) {
+            const b = new nickObject();
+            this.nickCaches.set(a, b);
+            return b;
+        }
+        getNickHeight(a, b) {
+            return b + ~~(b * 0.4);
+        }
+        getNickWidth(a, b) {
+            return this.nickShadowCtx.measureText(a).width * b / 25;
+        }
+        setNickCtxFont() {
+            this.nickCaches.clear();
+            this.nickShadowCtx.font = '700 25px ' + theme.namesFontFamily;
+        }
+        mass(a) {
+            var b = a.isVirus ? theme.virMassScale / 2 : theme.namesScale / 3;
+            const c = a.targetSize * drawRender.scale * b,
+                d = 0 | Math.min(c / 50, 7);
+            if (!a.isVirus && c < 10 && settings.autoHideMass || a.size < 40) return false;
+            const f = this.massCaches.get(a.id) || this.newMassCache(a.id);
+            f.lastUsedAt = Date.now();
+            let g = settings.shortMass && a.mass > 999 ? (0 | a.mass / 100) / 10 + 'k' : a.mass;
+            if (a.isVirus && a.mass < 200) {
+                const i = ~~(a.targetSize * a.targetSize / 100);
+                settings.virMassType === 2 ? g = this.calcVirusShots(i) : g = i;
+
+                if (g !== f.mass)
+                    f.needsRedraw = true;
+            }
+            f.fontSize = 50 * (d + 1) * 0.9;
+            const h = Date.now() - f.lastUpdateAt;
+
+            if (f.needsRedraw || h > this.massUpdateInterval)
+                f.mass = g;
+
+            f.canvas || (f.canvas = this.getNewCanvas(), f.ctx = f.canvas.getContext('2d'));
+            if (f.needsRedraw) {
+                f.needsRedraw = false;
+                const j = f.canvas,
+                    k = f.ctx,
+                    l = theme.strokeScale * (f.fontSize / 10),
+                    m = 50 * 5 * 0.8,
+                    n = theme.strokeScale * (m / 10);
+                j.height = f.fontSize + l;
+                j.width = 0 | this.getMassWidth(f.mass, f.fontSize) + l;
+                j.originW = (this.getMassWidth(f.mass, m) + n) / 650;
+                j.originH = j.height * (j.originW / j.width);
+                k.font = theme.massFontWeight + ' ' + (0 | f.fontSize) + 'px ' + theme.massFontFamily;
+                k.textBaseline = 'middle';
+                k.textAlign = 'center';
+                settings.massStroke2 === 1 ? (k.strokeStyle = theme.massStrokeColor, k.lineWidth = l, k.lineJoin = 'miter', k.miterLimit = 0, k.strokeText(f.mass, j.width >> 1, j.height >> 1)) : settings.massStroke2 === 2 && (k.fillStyle = theme.massStrokeColor, k.globalAlpha = 0.75, k.fillRect(0, 0, j.width, j.height), k.globalAlpha = 1);
+                k.fillStyle = theme.massColor;
+                k.fillText(f.mass, j.width >> 1, j.height >> 1);
+                f.lastUpdateAt = Date.now();
+            }
+            return f.canvas;
+        }
+        newMassCache(a) {
+            const b = new massObject();
+            this.massCaches.set(a, b);
+            return b;
+        }
+        getMassWidth(a, b) {
+            return this.massShadowCtx.measureText(a).width * b / 25;
+        }
+        setMassCtxFont() {
+            this.massCaches.clear();
+            this.massShadowCtx.font = '700 25px ' + theme.massFontFamily;
+        }
+        getScreenRadius(a) {
+            return a * drawRender.scale;
+        }
+        isSmall(a) {
+            return settings.autoHideText === 'on' && this.getScreenRadius(a.targetSize) < 20;
+        }
+        calcVirusShots(a) {
+            return ~~((200 - a) / 14);
+        }
+        getNewCanvas() {
+            return this.canvasPool.shift() || document.createElement('canvas');
+        }
+        newShadowContext() {
+            const a = document.createElement('canvas').getContext('2d');
+            a.font = '700 25px ubuntu';
+            return a;
+        }
+        clear(a) {
+            if (a === 'nick') this.nickCaches.forEach((b, c) => {
                 this.nickCaches.delete(c);
-                var d;
-                var f = b.level;
+                var d, f = b.level;
                 for (var g = 0; g < f.length; g++) {
-                    if (d = f[g]) {
+                    if (d = f[g])
                         this.resetCanvas(d);
-                    }
                 }
             });
-        }
-        if (a === 'mass') {
-            this.massCaches.forEach((b, c) => {
+
+            if (a === 'mass') this.massCaches.forEach((b, c) => {
                 this.massCaches.delete(c);
                 if (this.canvasPool.length >= 50) return;
                 var d = b.canvas;
                 this.resetCanvas(d);
             });
         }
-    }
-    cleaner() {
-        this.nickCaches.forEach((a, b) => {
-            if (Date.now() - a.lastUsedAt > this.maxCacheLife) {
-                this.nickCaches.delete(b);
-                var c;
-                var d = a.level;
-                for (var f = 0; f < d.length; f++) {
-                    if (c = d[f]) {
-                        this.resetCanvas(c);
+        cleaner() {
+            this.nickCaches.forEach((a, b) => {
+                if (Date.now() - a.lastUsedAt > this.maxCacheLife) {
+                    this.nickCaches.delete(b);
+                    var c, d = a.level;
+                    for (var f = 0; f < d.length; f++) {
+                        if (c = d[f])
+                            this.resetCanvas(c);
                     }
                 }
-            }
-        });
+            });
 
-        this.massCaches.forEach((a, b) => {
-            if (Date.now() - a.lastUsedAt > this.maxCacheLife) {
-                this.massCaches.delete(b);
-                if (this.canvasPool.length >= 50) return;
-                var c = a.canvas;
-                this.resetCanvas(c);
-            }
-        });
-    }
-    resetCanvas(a) {
-        !a || this.canvasPool.length >= 75 || (a.width = 0, this.canvasPool.push(a));
-    }
-})();
+            this.massCaches.forEach((a, b) => {
+                if (Date.now() - a.lastUsedAt > this.maxCacheLife) {
+                    this.massCaches.delete(b);
+                    if (this.canvasPool.length >= 50) return;
+                    var c = a.canvas;
+                    this.resetCanvas(c);
+                }
+            });
+        }
+        resetCanvas(a) {
+            !a || this.canvasPool.length >= 75 || (a.width = 0, this.canvasPool.push(a));
+        }
+    })();
 class nickObject {
     constructor() {
         this.lastUsedAt = Date.now();
@@ -2072,6 +1999,7 @@ class massObject {
     }
     set mass(a) {
         this._mass = a;
+
         if (this._mass !== this.lastMass) {
             this.lastMass = this._mass;
             this.needsRedraw = true;
@@ -2114,7 +2042,33 @@ class Cell {
         this.redrawed = 0;
         this.time = 0;
         this.skin = null;
+        this.hasVanillaCustomSkin = false;
         this.pi2 = 2 * Math.PI;
+        this.container = null;
+        this.graphic = null;
+    }
+    initPixi() {
+        this.container = new PIXI.Container();
+        this.graphic = new PIXI.Graphics();
+        this.container.addChild(this.graphic);
+        drawRender.app.stage.addChild(this.container);
+    }
+    upldatePixi(a, b, c, d, f, g) {
+        this.drawCellPixi();
+    }
+    drawCellPixi() {
+        this.graphic.clear();
+        this.graphic.beginFill(this.color.replace('#', '0x'), 1);
+        this.graphic.drawCircle(0, 0, 10);
+        this.graphic.endFill();
+    }
+    renderPixi() {
+        this.container.position.x = this.x;
+        this.container.position.y = this.y;
+        this.container.scale.x = this.container.scale.y = this.size / 10;
+    }
+    removeFromStagePixi() {
+        drawRender.app.stage.removeChild(this.container);
     }
     update(a, b, c, d, f, g) {
         this.x = a;
@@ -2123,44 +2077,6 @@ class Cell {
         this.isPlayerCell = f;
         this.setMass(c);
         this.setNick(g);
-    }
-    removeCell() {
-        this.removed = true;
-        let a = this.c.cells.indexOf(this);
-        if (a != -1) {
-            this.c.cells.splice(a, 1);
-            if (this.c.cellAID.hasOwnProperty(this.accountID)) {
-                let b = this.c.cellAID[this.accountID].indexOf(this.id);
-                if (b != -1) {
-                    this.c.cellAID[this.accountID].splice(b, 1);
-                    if (this.c.cellAID[this.accountID].length == 0) delete this.c.cellAID[this.accountID];
-                }
-            }
-            if (settings.virusesRange) {
-                a = this.c.viruses.indexOf(this);
-                if (a != -1) {
-                    this.c.viruses.splice(a, 1);
-                }
-            }
-        } else {
-            a = this.c.food.indexOf(this);
-            if (a != -1) {
-                this.c.food.splice(a, 1);
-            }
-        }
-        a = this.c.playerCells.indexOf(this);
-        if (a != -1) {
-            this.c.removePlayerCell = true;
-            this.c.playerCells.splice(a, 1);
-            a = this.c.playerCellIDs.indexOf(this.id);
-            if (a != -1) {
-                this.c.playerCellIDs.splice(a, 1);
-            }
-        }
-        if (this.redrawed) {
-            this.c.removedCells.push(this);
-        }
-        delete this.c.indexedCells[this.id];
     }
     moveCell() {
         const a = this.c.time - this.time;
@@ -2176,25 +2092,27 @@ class Cell {
         }
         if (b == 1) {
             const c = this.c.removedCells.indexOf(this);
-            if (c != -1) {
+
+            if (c != -1)
                 this.c.removedCells.splice(c, 1);
-            }
         }
     }
     draw(a, b, c) {
         this.redrawed++;
-        if (b) {
+
+        if (b)
             this.moveCell();
-        }
+
         const d = a.globalAlpha;
-        if (this.removed) {
+
+        if (this.removed)
             a.globalAlpha *= 1 - this.alpha;
-        }
+
         const f = a.globalAlpha;
         let g = false;
-        const h = ~~(this.isFood ? this.size + theme.foodSize : this.size);
+        const h = this.isFood ? this.size + theme.foodSize : this.size;
         a.beginPath();
-        a.arc(~~this.x, ~~this.y, h, 0, this.pi2, false);
+        a.arc(this.x, this.y, h, 0, this.pi2, false);
         a.closePath();
         if (this.isFood) {
             a.fillStyle = this.color;
@@ -2207,80 +2125,85 @@ class Cell {
                 a.globalAlpha *= theme.virusAlpha;
                 g = true;
             }
-            if (settings.virColors && this.c.play) {
-                a.fillStyle = application.setVirusColor(h);
-                a.strokeStyle = application.setVirusStrokeColor(h);
-            } else {
-                a.fillStyle = theme.virusColor;
-                a.strokeStyle = theme.virusStrokeColor;
-            }
+
+            settings.virColors && this.c.play ? (a.fillStyle = application.setVirusColor(h), a.strokeStyle = application.setVirusStrokeColor(h)) : (a.fillStyle = theme.virusColor, a.strokeStyle = theme.virusStrokeColor);
             if (this.size >= 148) a.fillStyle = '#000000';
             a.fill();
+
             if (g) {
                 a.globalAlpha = f;
                 g = false;
             }
+
             a.lineWidth = theme.virusStrokeSize;
             a.stroke();
-            if (settings.virMassType === 0) {} else if (settings.virMassType === 3 && this.size < 148) {
-                a.fillStyle = a.strokeStyle;
-                a.beginPath();
-                a.arc(this.x, this.y, ~~(3 * (this.size - 100)), 0, this.pi2, true);
-                a.closePath();
-                a.fill();
-            } else {
-                this.mass = ~~(this.size * this.size / 100);
-                var i = Texts.mass(this);
-                if (i) {
-                    var j = i.originW * this.size * theme.virMassScale;
-                    var k = i.originH * this.size * theme.virMassScale;
-                    a.drawImage(i, ~~(this.x - (j >> 1)), ~~(this.y - (k >> 1)), ~~j, ~~k);
+            if (settings.virMassType === 0) {} else {
+                if (settings.virMassType === 3 && this.size < 148) {
+                    a.fillStyle = a.strokeStyle;
+                    a.beginPath();
+                    a.arc(this.x, this.y, 3 * (this.size - 100), 0, this.pi2, true);
+                    a.closePath();
+                    a.fill();
+                } else {
+                    this.mass = ~~(this.size * this.size / 100);
+                    var i = Texts.mass(this);
+                    if (i) {
+                        var j = i.originW * this.size * theme.virMassScale,
+                            k = i.originH * this.size * theme.virMassScale;
+                        a.drawImage(i, ~~(this.x - (j >> 1)), ~~(this.y - (k >> 1)), ~~j, ~~k);
+                    }
                 }
             }
             a.globalAlpha = d;
             return;
         }
+
         if (settings.transparentCells) {
             a.globalAlpha *= theme.cellsAlpha;
             g = true;
         }
 
-        let l = drawRender.nickToColorTable[this.targetNick] || this.color;
-        drawRender.nickToColorTable[this.targetNick] = l;
-
+        let l = this.color;
         if (application.play) {
-            if (this.isPlayerCell) {
-                if (settings.myCustomColor) {
+            if (this.isPlayerCell)
+                if (settings.myCustomColor)
                     l = profiles.masterProfile.color;
-                }
-            } else if (settings.oppColors && !settings.oppRings) {
+                else if (settings.oppColors && !settings.oppRings)
                 l = this.oppColor;
-            }
         }
         a.fillStyle = l;
         a.fill();
+
         if (g) {
             a.globalAlpha = f;
             g = false;
         }
+
         let m = null;
-        if (settings.customSkins && tempsett.showCustomSkins) {
-            m = Texture.getCustomSkin(this.targetNick);
+        if (tempsett.showAnySkins) {
+            if (settings.customSkins) m = Texture.getCustomSkin(this.targetNick);
+
+            if (!m && settings.vanillaSkins)
+                this.hasVanillaCustomSkin ? m = Texture.getVanillaCustomSkin(this.skin) : m = Texture.getVanillaSkin(this.skin);
+
             if (m) {
                 if ((settings.transparentSkins || this.c.play && settings.oppColors) && !(this.isPlayerCell && !settings.myTransparentSkin) || this.isPlayerCell && settings.myTransparentSkin) {
                     a.globalAlpha *= theme.skinsAlpha;
                     g = true;
                 }
-                a.drawImage(m, ~~(this.x - h), ~~(this.y - h), 2 * h, 2 * h);
+
+                a.drawImage(m, this.x - h, this.y - h, 2 * h, 2 * h);
+
                 if (g) {
                     a.globalAlpha = f;
                     g = false;
                 }
             }
         }
-        if (settings.teammatesInd && !this.isPlayerCell && h <= 200 && (m || Texture.skinMap.has(this.targetNick))) {
+
+        if (settings.teammatesInd && !this.isPlayerCell && h <= 200 && (m || Texture.skinMap.has(this.targetNick)))
             drawRender.drawTeammatesInd(a, ~~this.x, ~~this.y, h);
-        }
+
         let n = false;
         if (!this.isPlayerCell) {
             n = drawRender.setAutoHideCellInfo(h);
@@ -2289,13 +2212,13 @@ class Cell {
                 return;
             }
         }
-        if (this.isPlayerCell && c && application.activeTab === this.c.type) {
+        if (this.isPlayerCell && c && settings.mbRings && application.activeTab === this.c.type) {
             const q = h / 100 * 10;
             a.lineWidth = q;
             a.globalAlpha = f;
             a.strokeStyle = theme.mboxActiveCellStroke;
             a.beginPath();
-            a.arc(~~this.x, ~~this.y, h - q / 2, 0, this.pi2, false);
+            a.arc(this.x, this.y, h - q / 2, 0, this.pi2, false);
             a.closePath();
             a.stroke();
             a.globalAlpha = 1;
@@ -2304,20 +2227,19 @@ class Cell {
         if (settings.showNames && !(this.isPlayerCell && settings.hideMyName) && !(m && settings.hideTeammatesNames)) {
             var o = Texts.nick(this);
             if (o) {
-                var j = o.originW * this.size * theme.namesScale;
-                var k = o.originH * this.size * theme.namesScale;
-                var p = ~~this.y - ~~(k / 2);
-                a.drawImage(o, ~~(this.x - (j >> 1)), ~~(this.y - (k >> 1)), ~~j, ~~k);
+                var j = o.originW * this.size * theme.namesScale,
+                    k = o.originH * this.size * theme.namesScale;
+                a.drawImage(o, this.x - (j >> 1), this.y - (k >> 1), j, k);
             }
         }
         if (settings.showMass && !(this.isPlayerCell && settings.hideMyMass) && !(settings.hideEnemiesMass && !this.isPlayerCell && !this.isVirus)) {
             this.mass = ~~(this.size * this.size / 100);
             var i = Texts.mass(this);
             if (i) {
-                var j = i.originW * this.size * theme.massScale / 2;
-                var k = i.originH * this.size * theme.massScale / 2;
-                var p = !settings.showNames || this.isPlayerCell && settings.hideMyName ? this.y - (k >> 1) : this.size / 4 + ~~this.y;
-                a.drawImage(i, ~~(this.x - (j >> 1)), ~~p, ~~j, ~~k);
+                var j = i.originW * this.size * theme.massScale / 2,
+                    k = i.originH * this.size * theme.massScale / 2,
+                    p = !settings.showNames || this.isPlayerCell && settings.hideMyName ? this.y - (k >> 1) : this.size / 4 + this.y;
+                a.drawImage(i, this.x - (j >> 1), p, j, k);
             }
         }
         a.globalAlpha = d;
@@ -2329,39 +2251,40 @@ function Node(a, b) {
     this.offset = b;
     this.contentType = 1;
     this.uncompressedSize = 0;
+
     this.setContentType = function() {
         this.contentType = this.readUint32();
     };
+
     this.setUncompressedSize = function() {
         this.uncompressedSize = this.readUint32();
     };
+
     this.compareBytesGt = (c, d) => {
-        const f = c < 0;
-        const g = d < 0;
-        if (f != g) {
-            return f;
-        }
+        const f = c < 0,
+            g = d < 0;
+        if (f != g) return f;
         return c > d;
     };
+
     this.skipByte = function() {
         const c = this.readByte();
-        if (c < 128) {
-            return;
-        }
+        if (c < 128) return;
         this.skipByte();
     };
+
     this.readByte = function() {
         return this.view.getUint8(this.offset++);
     };
+
     this.readUint32 = function() {
-        let c = 0;
-        let d = 0;
+        let c = 0,
+            d = 0;
         while (true) {
             const f = this.readByte();
             if (this.compareBytesGt(32, d)) {
-                if (f >= 128) {
-                    c |= (f & 127) << d;
-                } else {
+                if (f >= 128) c |= (f & 127) << d;
+                else {
                     c |= f << d;
                     break;
                 }
@@ -2373,15 +2296,16 @@ function Node(a, b) {
         }
         return c;
     };
+
     this.readFlag = function() {
         return this.readUint32() >>> 3;
     };
 }
 var proto = 'syntax=\"proto3\";\x0amessage index {\x0a  sint32 hasmessage = 1;\x0a  Message_data data = 2;\x0a}\x0amessage Message_data {\x0a  uint32 opcode = 1;\x0a  optional Login_response data = 11;\x0a}\x0a\x0a  message Empty {\x0a  }\x0a\x0amessage Login_response {\x0a\x0a  message TOKENS {\x0a    required string auth = 1;\x0a    required string alt = 2;\x0a    required string gdpr = 3;\x0a    required string xsolla = 4;\x0a  }\x0a\x0a  required TOKENS tokens = 1;\x0a  required uint32 currentGameState = 2;\x0a  required uint32 latestConfiguration = 5;\x0a\x0a  message SERVERINFO {\x0a    required string host = 1;\x0a    required uint32 tcpPort = 2;\x0a    required uint32 udpPort = 3;\x0a    required string awsRegion = 4;\x0a  }\x0a\x0a  required SERVERINFO serverInfo = 6;\x0a\x0a  message USERINFO {\x0a    required string userId = 1;\x0a    required string displayName = 2;\x0a    required int32 xp = 3;\x0a    required int32 level = 4;\x0a    required bool isPayingUser = 5;\x0a    required bool hasLoggedIntoMobile = 6;\x0a    required bool isNewUser = 7;\x0a\x0a    message REALMINFO {\x0a      required int32 realm = 1;\x0a      required string realmId = 2;\x0a      required string avatarUrl = 3;\x0a    }\x0a\x0a    required REALMINFO realmInfo = 8;\x0a    required int32 extraInitialMass = 9;\x0a\x0a    message ACTIONCOUNTERS {\x0a      required int32 questsCompleted = 1;\x0a      required int32 potionsObtained = 2;\x0a      required int32 skinsCreated = 3;\x0a    }\x0a\x0a    required ACTIONCOUNTERS actionCounters = 10;\x0a    required string latestCountryCode = 11;\x0a    required int32 accountAge = 12;\x0a  }\x0a\x0a  required USERINFO userInfo = 7;\x0a\x0a  message USERSTATS {\x0a    uint32 gamesPlayed = 1;\x0a    uint64 massConsumed = 2;\x0a    uint64 allTimeScore = 3;\x0a    uint32 highestMass = 4;\x0a    uint32 longestTimeAlive = 5;\x0a    uint32 mostCellsEaten = 6;\x0a  }\x0a\x0a  required USERSTATS userStats = 8;\x0a\x0a  message USERWALLET {\x0a    required int32 type = 1;\x0a    required string productId = 2;\x0a    required int32 amount = 3;\x0a  }\x0a\x0a  repeated USERWALLET userWallet = 9;\x0a  repeated Empty Settings = 10;\x0a  repeated Empty userBoosts = 11;\x0a  repeated Empty userTimedEvents = 12;\x0a\x0a  message USERGIFTS {\x0a    repeated Empty claimable = 0;\x0a    repeated Empty claimedFrom = 1;\x0a    repeated Empty sentTo = 2;\x0a    repeated Empty requestedTo = 3;\x0a    repeated string requestedFrom = 4;\x0a  }\x0a\x0a  required USERGIFTS userGifts = 13;\x0a\x0a  message SOFTUPGRADE {\x0a    required bool isAvailable = 1;\x0a    required bool rewardWasHandedOut = 2;\x0a  }\x0a\x0a  required SOFTUPGRADE softUpgrade = 14;\x0a  repeated Empty userAbTestGroups = 15;\x0a  repeated Empty userActiveQuests = 16;\x0a\x0a  message USERPOTIONS {\x0a    required int32 slot = 1;\x0a    required int32 status = 2;\x0a    required int32 secondsRemaining = 3;\x0a    required string productId = 4;\x0a  }\x0a\x0a  repeated USERPOTIONS userPotions = 17;\x0a  required string userSessionId = 18;\x0a\x0a  message USERSUBSCRIPTIONS {\x0a    repeated Empty active = 1;\x0a  }\x0a\x0a  required USERSUBSCRIPTIONS userSubscriptions = 20;\x0a\x0a  message USERREWARDS {\x0a    required int32 __for = 1;\x0a    required int32 activeSlot = 2;\x0a\x0a    message USERWALLETITEMS {\x0a      required int32 type = 1;\x0a      required string productId = 2;\x0a      required int32 amount = 3;\x0a    }\x0a\x0a    repeated USERWALLETITEMS userWalletItems = 3;\x0a  }\x0a\x0a  repeated USERREWARDS userRewards = 21;\x0a  repeated Empty userUnapprovedSkinsIds = 22;\x0a\x0a  message USERLEAGUESINFO {\x0a    required int32 secondsUntilReset = 1;\x0a  }\x0a\x0a  optional USERLEAGUESINFO userLeaguesInfo = 23;\x0a}\x0a\x0a\x0a';
 try {
-    var root = protobuf.parse(proto).root;
-    var mobileData = root.lookupType('index');
-} catch (a5c) {}
+    var root = protobuf.parse(proto).root,
+        mobileData = root.lookupType('index');
+} catch (a4c) {}
 class Client {
     constructor(a, b) {
         eventify(this);
@@ -2401,10 +2325,12 @@ class Client {
         this.gotCaptcha = false;
         this.quadrant = null;
         this.realQuadrant = null;
+        this.lastRealQuadrant = null;
         this.lastQuadrant = null;
         this.mirrorV = false;
         this.mirrorH = false;
         this.ghostCellsStep = 0;
+        this.connectionTime = 0;
         this.totalPackets = 0;
         this.isFreeSpectate = false;
         this.isSpectateEnabled = false;
@@ -2451,14 +2377,17 @@ class Client {
         this.camMinY = 0;
         this.staticX = 0;
         this.staticY = 0;
+
         this.bound = {
             left: 0,
             right: 0,
             top: 0,
             bottom: 0
         };
+
         this.viewportW2s = 0;
         this.viewportH2s = 0;
+
         this.viewport = [
             [
                 [0, 0],
@@ -2467,6 +2396,7 @@ class Client {
                 [0, 0]
             ]
         ];
+
         this.availableViewport = [
             [
                 [0, 0],
@@ -2475,6 +2405,7 @@ class Client {
                 [0, 0]
             ]
         ];
+
         this.unavailableViewport = [
             [
                 [0, 0],
@@ -2483,13 +2414,16 @@ class Client {
                 [0, 0]
             ]
         ];
+
         this.$cells = new Map();
         this.$playerCells = new Map();
         this.$cellsID = new Set();
+
         this.cellRange = {
             max: 0,
             min: 0
         };
+
         this.cellShift = 0;
         this.cellAID = {};
         this.indexedCells = {};
@@ -2532,6 +2466,7 @@ class Client {
         this.targetX = 0;
         this.targetY = 0;
         this.targetDistance = 0;
+
         this.battleRoyale = {
             state: 0,
             players: 0,
@@ -2549,6 +2484,7 @@ class Client {
             playerRank: 0,
             joined: false
         };
+
         this.sendPositionInterval = null;
         this.play = false;
         this.pause = false;
@@ -2590,26 +2526,33 @@ class Client {
         this.viewX = this.protocol_viewX = 0;
         this.viewY = this.protocol_viewY = 0;
         this.leaderboard = [];
-        this.sendPositionInterval = setInterval(() => {
-            this.sendCursorPosition();
-        }, 40);
         if (!a) return false;
+        if (typeof KingaroxBots !== 'undefined') {
+            window.game.url = a;
+            window.user.isAlive = false;
+            window.user.macroFeedInterval = null;
+        }
         this.integrity = a.indexOf('agar.io') > -1;
         this.client_protocol = a.indexOf('~') > -1 ? 6 : 22;
         this.socket = new WebSocket(a);
         this.socket.binaryType = 'arraybuffer';
+
         this.socket.onopen = () => {
             this.onOpen();
         };
+
         this.socket.onmessage = c => {
             this.onMessage(c);
         };
+
         this.socket.onerror = c => {
             this.onError(c);
         };
+
         this.socket.onclose = c => {
             this.onClose(c);
         };
+
         application.emit('connecting', this);
     }
     onOpen() {
@@ -2617,10 +2560,17 @@ class Client {
         this.time = Date.now();
         let a = this.createView(5);
         a.setUint8(0, 254);
+        if (typeof KingaroxBots !== 'undefined') {
+            if (!window.game.protocolVersion) window.game.protocolVersion = 22;
+        }
         a.setUint32(1, this.client_protocol, true);
         this.sendMessage(a);
         a = this.createView(5);
         a.setUint8(0, 255);
+        if (typeof KingaroxBots !== 'undefined') {
+
+            if (!window.game.clientVersion) window.game.clientVersion = master.client_version;
+        }
         a.setUint32(1, master.client_version, true);
         this.sendMessage(a);
         this.connectionOpened = true;
@@ -2719,42 +2669,53 @@ class Client {
     }
     doubleSplit() {
         this.sendSplit();
+
         setTimeout(() => {
             this.sendSplit();
         }, 40);
     }
     popSplit() {
         this.sendSplit();
+
         setTimeout(() => {
             this.sendSplit();
         }, 200);
     }
     tripleSplit() {
         this.sendSplit();
+
         setTimeout(() => {
             this.sendSplit();
         }, 40);
+
         setTimeout(() => {
             this.sendSplit();
         }, 80);
     }
     split16() {
         this.sendSplit();
+
         setTimeout(() => {
             this.sendSplit();
         }, 40);
+
         setTimeout(() => {
             this.sendSplit();
         }, 80);
+
         setTimeout(() => {
             this.sendSplit();
         }, 120);
     }
     sendNick(a) {
-        this.playerNick = a;
 
+        window.lastNick = a;
+        window.myTurn = true;
+
+        this.playerNick = a;
         if (this.integrity) agarCaptcha.requestCaptchaV3('play', b => {
             this.sendNick2(a, b);
+
             if (this.gotCaptcha) {
                 this.log('Connection have unsolved recaptcha!');
                 application.emit('captcha', this);
@@ -2765,46 +2726,76 @@ class Client {
             this.sendNick2(a, '0');
     }
     sendNick2(a, b) {
-        a = unescape(encodeURIComponent(this.playerNick));
-        var c = this.createView(1 + a.length + 1 + b.length + 1);
-        var d = 1;
-        for (let f = 0; f < a.length; f++, d++) c.setUint8(d, a.charCodeAt(f));
-        d++;
-        for (let g = 0; g < b.length; g++, d++) c.setUint8(d, b.charCodeAt(g));
-        this.sendMessage(c);
+        this.playerNick = a;
+        a = window.unescape(window.encodeURIComponent(a));
+        const view = this.createView(3 + a.length + b.length);
+        let buftes = [];
+        for (let i = 0; i < 3 + a.length + b.length; i++) buftes.push(0);
+        for (let length = 0; length < a.length; length++) {
+            view.setUint8(length + 1, a.charCodeAt(length));
+            //buftes[length+1] = nick.charCodeAt(length)
+        }
+        for (let len = 0; len < b.length; len++) {
+            view.setUint8(a.length + 2 + len, b.charCodeAt(len));
+            //buftes[nick.length + 2 + len] = token.charCodeAt(len);
+        }
+        this.sendMessage(view);
+        //console.log(buftes);
+        myTurn = false;
+        //return recaptchaExecuteLoop();
     }
+
     sendCursorPosition() {
-        if (!this.isSocketOpen() || !this.connectionOpened || !this.clientKey && this.integrity) {
-            return;
+
+        if (!this.isSocketOpen() || !this.connectionOpened || !this.clientKey && this.integrity) return;
+
+        let cursorX = this.cursorX;
+        let cursorY = this.cursorY;
+
+        //for bots
+        if (typeof KingaroxBots !== 'undefined') {
+            let CheckWichTabCursorX = application.getActiveTab().cursorX;
+            let CheckWichTabCursorY = application.getActiveTab().cursorY;
+
+            if (window.user.startedBots /*&& window.user.isAlive*/ ) {
+                window.user.mouseX = ~~(CheckWichTabCursorX + this.mapOffsetX)
+                window.user.mouseY = ~~(CheckWichTabCursorY + this.mapOffsetY)
+                window.connection.send(window.buffers.mousePosition(window.user.mouseX, window.user.mouseY /*, window.user.ghostX, window.user.ghostY*/ ));
+            }
         }
-        let a = this.cursorX;
-        let b = this.cursorY;
-        if (tempsett.pause) {
-            a = this.targetX;
-            b = this.targetY;
+
+
+        //
+
+
+        if (tempsett.pause || this.type === 3) {
+            cursorX = this.targetX;
+            cursorY = this.targetY;
+            if (typeof CheckWichTabCursorX !== 'undefined' && CheckWichTabCursorY !== 'undefined') {
+                CheckWichTabCursorX = this.targetX;
+                CheckWichTabCursorY = this.targetY;
+            }
         }
-        a = this.serverX(a);
-        b = this.serverY(b);
+
+        cursorX = this.serverX(cursorX);
+        cursorY = this.serverY(cursorY);
         const c = this.createView(13);
         c.setUint8(0, 16);
-        c.setInt32(1, a, true);
-        c.setInt32(5, b, true);
+        c.setInt32(1, cursorX, true);
+        c.setInt32(5, cursorY, true);
         c.setUint32(9, this.protocolKey, true);
         this.sendMessage(c);
     }
     sendAccessToken(a, b, c) {
-        if (!this.integrity) {
-            return;
-        }
-        if (this.accessTokenSent) {
-            return;
-        }
-        if (!c) {
+        if (!this.integrity) return;
+        if (this.accessTokenSent) return;
+
+        if (!c)
             c = 102;
-        }
-        const d = 5;
-        const f = a.length;
-        const g = master.client_version_string.length;
+
+        const d = 5,
+            f = a.length,
+            g = master.client_version_string.length;
         let h = [c, 8, 1, 18];
         this.writeUint32(h, f + g + 23);
         h.push(8, 10, 82);
@@ -2848,14 +2839,12 @@ class Client {
         this.log('Received client version:', a, b);
     }
     generateClientKey(a, b) {
-        if (!a.length || !b.byteLength) {
-            return null;
-        }
+        if (!a.length || !b.byteLength) return null;
         let c = null;
-        const d = 1540483477;
-        const f = a.match(/(ws+:\/\/)([^:]*)(:\d+)?/)[2];
-        const g = f.length + b.byteLength;
-        const h = new Uint8Array(g);
+        const d = 1540483477,
+            f = a.match(/(ws+:\/\/)([^:]*)(:\d+)?/)[2],
+            g = f.length + b.byteLength,
+            h = new Uint8Array(g);
         for (let n = 0; n < f.length; n++) {
             h[n] = f.charCodeAt(n);
         }
@@ -2863,8 +2852,8 @@ class Client {
         const i = new DataView(h.buffer);
         let j = g - 1;
         const k = (j - 4 & -4) + 4 | 0;
-        let l = j ^ 255;
-        let m = 0;
+        let l = j ^ 255,
+            m = 0;
         while (j > 3) {
             c = Math.imul(i.getInt32(m, true), d) | 0;
             l = (Math.imul(c >>> 24 ^ c, d) | 0) ^ (Math.imul(l, d) | 0);
@@ -2885,9 +2874,10 @@ class Client {
                 c = l;
                 break;
         }
-        if (c != l) {
+
+        if (c != l)
             c = Math.imul(h[k] ^ l, d) | 0;
-        }
+
         l = c >>> 13;
         c = l ^ c;
         c = Math.imul(c, d) | 0;
@@ -2904,22 +2894,20 @@ class Client {
         return a >>> 15 ^ a;
     }
     shiftMessage(a, b, c) {
-        if (!c) {
+        if (!c)
             for (var d = 0; d < a.byteLength; d++) {
                 a.setUint8(d, a.getUint8(d) ^ b >>> d % 4 * 8 & 255);
-            }
-        } else {
-            for (var d = 0; d < a.length; d++) {
-                a.writeUInt8(a.readUInt8(d) ^ b >>> d % 4 * 8 & 255, d);
-            }
-        }
+            } else
+                for (var d = 0; d < a.length; d++) {
+                    a.writeUInt8(a.readUInt8(d) ^ b >>> d % 4 * 8 & 255, d);
+                }
         return a;
     }
     decompressMessage(a) {
-        const b = window.buffer.Buffer;
-        const c = new b(a.buffer);
-        const d = new b(c.readUInt32LE(1));
-        return this.uncompressBuffer(c.slice(5), d);
+        const b = window.buffer.Buffer,
+            c = new b(a.buffer),
+            d = new b(c.readUInt32LE(1));
+        this.uncompressBuffer(c.slice(5), d);
         return d;
     }
     uncompressBuffer(a, b) {
@@ -2938,8 +2926,8 @@ class Client {
             }
             const h = a[c++] | a[c++] << 8;
             if (h === 0 || h > d) return -(c - 2);
-            let k = f & 15;
-            let l = k + 240;
+            let k = f & 15,
+                l = k + 240;
             while (l === 255) {
                 l = a[c++];
                 k += l;
@@ -3006,6 +2994,13 @@ class Client {
                     this.playerColor = null;
                     this.emit('spawn', this);
                     application.emit('spawn', this);
+                    //for bots
+
+                    if (typeof KingaroxBots !== 'undefined') {
+                        window.user.isAlive = true;
+                        if (window.user.startedBots) window.connection.send(new Uint8Array([5, Number(window.user.isAlive)]).buffer);
+                    }
+                    //
                 }
 
                 break;
@@ -3123,6 +3118,13 @@ class Client {
                         mass: m,
                         inView: false
                     });
+                    if (application.tabs[0].playerPosition == 1 || application.tabs[0].ghostCells.length == 0) { //Yahnych координати призраков или игрока если он топ1
+                        //window.user.ghostX = ~~(this.playerX + this.mapOffsetX);
+                        //window.user.ghostY = ~~(this.playerY + this.mapOffsetY);
+                    } else { //Yahnych
+                        window.user.ghostX = ~~(this.ghostCells[0].x + this.mapOffsetX);
+                        window.user.ghostY = ~~(this.ghostCells[0].y + this.mapOffsetY);
+                    }
                 }
 
                 if (settings.mapLocalFix3 && this.ghostCellsStep == 1 && this.ghostCells[0]) {
@@ -3138,6 +3140,7 @@ class Client {
                     this.emit('requestQuadrant', this);
 
                 application.handleGhostCells(this);
+
                 break;
             case 85:
                 this.gotCaptcha = true;
@@ -3394,18 +3397,18 @@ class Client {
         }
     }
     countPps() {
-        if (!settings.showStatsPPS) {
-            return;
-        }
+        if (!settings.showStatsPPS) return;
         const a = Date.now();
-        if (!this.ppsLastRequest) {
+
+        if (!this.ppsLastRequest)
             this.ppsLastRequest = a;
-        }
+
         if (a - this.ppsLastRequest >= 1000) {
             this.pps = this.totalPackets;
             this.totalPackets = 0;
             this.ppsLastRequest = a;
         }
+
         this.totalPackets++;
     }
     handleSubmessage(a) {
@@ -3549,6 +3552,8 @@ class Client {
         this.mirrorH = d;
     }
     flipCells(a, b) {
+        //his.playerX = /*Math.round*/ (window.user.ghostX / (this.ghostCells[0].x + this.mapOffsetX)) < 0 ? -1 : 1;
+        //this.playerY = /*Math.round*/ (window.user.ghostY / (this.ghostCells[0].y + this.mapOffsetY)) < 0 ? -1 : 1;
         for (var c in this.indexedCells) {
             const d = this.indexedCells[c];
             d.x = b ? this.invflipX(d.x) : this.flipX(d.x);
@@ -3575,24 +3580,23 @@ class Client {
         this.mirrorH = false;
         this.mirrorV = false;
         this.ghostCellsStep = 0;
+
         this.bound = {
             left: 0,
             right: 0,
             top: 0,
             bottom: 0
         };
+
         this.gameMode = null;
         this.modeInt = 3;
         this.ghostCells = [];
         this.play = false;
-        this.cellAID = {};
-        this.indexedCells = {};
-        this.cells = [];
-        this.playerCells = [];
-        this.playerCellIDs = [];
+        for (let a in this.indexedCells) {
+            const b = this.indexedCells[a];
+            this.removeCell(b);
+        }
         this.ghostCells = [];
-        this.food = [];
-        this.viruses = [];
     }
     setMapOffset(a, b, c, d) {
         if (c - a > 14000 && d - b > 14000 || !this.integrity) {
@@ -3636,6 +3640,10 @@ class Client {
 
             this.mapOffsetFixed = true;
             this.log('Map offset fixed (x, y):', this.mapOffsetX, this.mapOffsetY);
+            //bots
+            window.user.offsetX = this.mapOffsetX; //Yahnych
+            window.user.offsetY = this.mapOffsetY;
+            //
             this.emit('offset', this);
         } else {
             this.viewportMinX = this.receiveX(a);
@@ -3644,7 +3652,6 @@ class Client {
             this.viewportMaxY = this.receiveY(d);
         }
     }
-
     updateBound() {
         this.cells.forEach(a => {
             this.bound.left = a.targetX;
@@ -3654,22 +3661,20 @@ class Client {
         });
     }
     updateStaticBound(a) {
-        const b = {
-            x: 0,
-            y: 0
-        };
+        let b = 0,
+            c = 0;
 
-        if (this.bound.left > a.targetX - b.x + a.size)
-            this.bound.left = a.targetX - b.x + a.size;
+        if (this.bound.left > a.targetX - b + a.size)
+            this.bound.left = a.targetX - b + a.size;
 
-        if (this.bound.right < a.targetX - b.x - a.size)
-            this.bound.right = a.targetX - b.x - a.size;
+        if (this.bound.right < a.targetX - b - a.size)
+            this.bound.right = a.targetX - b - a.size;
 
-        if (this.bound.top > a.targetY - b.y + a.size)
-            this.bound.top = a.targetY - b.y + a.size;
+        if (this.bound.top > a.targetY - c + a.size)
+            this.bound.top = a.targetY - c + a.size;
 
-        if (this.bound.bottom < a.targetY - b.y - a.size)
-            this.bound.bottom = a.targetY - b.y - a.size;
+        if (this.bound.bottom < a.targetY - c - a.size)
+            this.bound.bottom = a.targetY - c - a.size;
     }
     isInViewHSLO(a) {
         const b = a.targetX,
@@ -3718,18 +3723,14 @@ class Client {
         }
     }
     isInViewport(a, b, c) {
-        if (a + c < this.protocol_viewX - this.viewportW2s || b + c < this.protocol_viewY - this.viewportH2s || a - c > this.protocol_viewX + this.viewportW2s || b - c > this.protocol_viewY + this.viewportH2s) {
-            return false;
-        }
+        if (a + c < this.protocol_viewX - this.viewportW2s || b + c < this.protocol_viewY - this.viewportH2s || a - c > this.protocol_viewX + this.viewportW2s || b - c > this.protocol_viewY + this.viewportH2s) return false;
         return true;
     }
     isInViewport2(a) {
-        var b = a.targetX;
-        var c = a.targetY;
-        var d = a.size;
-        if (b + d < this.bound.left || c + d < this.bound.top || b - d > this.bound.right || c - d > this.bound.bottom) {
-            return false;
-        }
+        var b = a.targetX,
+            c = a.targetY,
+            d = a.size;
+        if (b + d < this.bound.left || c + d < this.bound.top || b - d > this.bound.right || c - d > this.bound.bottom) return false;
         return true;
     }
     circleInViewport(a, b, c) {
@@ -3750,11 +3751,9 @@ class Client {
         return h * h + i * i <= c * c;
     }
     isInView(a, b, c) {
-        var d = drawRender.canvasWidth / 2 / this.scale;
-        var f = drawRender.canvasHeight / 2 / this.scale;
-        if (a + c < this.viewX - d || b + c < this.viewY - f || a - c > this.viewX + d || b - c > this.viewY + f) {
-            return false;
-        }
+        var d = drawRender.canvasWidth / 2 / this.scale,
+            f = drawRender.canvasHeight / 2 / this.scale;
+        if (a + c < this.viewX - d || b + c < this.viewY - f || a - c > this.viewX + d || b - c > this.viewY + f) return false;
         return true;
     }
     updateCells(a, c) {
@@ -3895,6 +3894,12 @@ class Client {
             this.isSpectateEnabled = false;
             application.emit('death', this);
             this.emit('death', this);
+            //for bots
+            if (typeof KingaroxBots !== 'undefined') {
+                window.user.isAlive = false;
+                if (window.user.startedBots) window.connection.send(new Uint8Array([5, Number(window.user.isAlive)]).buffer);
+            }
+            //
         }
 
         (async() => {
@@ -3902,6 +3907,7 @@ class Client {
             this.compareCells();
         })();
     }
+    getCell(a) {}
     removeCell(a) {
         a.removed = true;
         let b = this.cells.indexOf(a);
@@ -3914,30 +3920,36 @@ class Client {
                     if (this.cellAID[a.accountID].length == 0) delete this.cellAID[a.accountID];
                 }
             }
+
             if (settings.virusesRange) {
                 b = this.viruses.indexOf(a);
-                if (b != -1) {
+
+                if (b != -1)
                     this.viruses.splice(b, 1);
-                }
             }
         } else {
             b = this.food.indexOf(a);
-            if (b != -1) {
+
+            if (b != -1)
                 this.food.splice(b, 1);
-            }
         }
         b = this.playerCells.indexOf(a);
+
         if (b != -1) {
             this.removePlayerCell = true;
             this.playerCells.splice(b, 1);
             b = this.playerCellIDs.indexOf(a.id);
-            if (b != -1) {
+
+            if (b != -1)
                 this.playerCellIDs.splice(b, 1);
-            }
         }
-        if (a.redrawed) {
+
+        if (window.pix)
+            a.removeFromStagePixi();
+
+        if (a.redrawed)
             this.removedCells.push(a);
-        }
+
         delete this.indexedCells[a.id];
     }
     color2Hex(a) {
@@ -3960,26 +3972,34 @@ class Client {
             n = i;
             o = j;
             p = 0;
-        } else if (a >= 60 && a < 120) {
-            n = j;
-            o = i;
-            p = 0;
-        } else if (a >= 120 && a < 180) {
-            n = 0;
-            o = i;
-            p = j;
-        } else if (a >= 180 && a < 240) {
-            n = 0;
-            o = j;
-            p = i;
-        } else if (a >= 240 && a < 300) {
-            n = j;
-            o = 0;
-            p = i;
-        } else if (a >= 300 && a < 360) {
-            n = i;
-            o = 0;
-            p = j;
+        } else {
+            if (a >= 60 && a < 120) {
+                n = j;
+                o = i;
+                p = 0;
+            } else {
+                if (a >= 120 && a < 180) {
+                    n = 0;
+                    o = i;
+                    p = j;
+                } else {
+                    if (a >= 180 && a < 240) {
+                        n = 0;
+                        o = j;
+                        p = i;
+                    } else {
+                        if (a >= 240 && a < 300) {
+                            n = j;
+                            o = 0;
+                            p = i;
+                        } else if (a >= 300 && a < 360) {
+                            n = i;
+                            o = 0;
+                            p = j;
+                        }
+                    }
+                }
+            }
         }
         n = Math.round((n + k) * 255).toString(16);
         o = Math.round((o + k) * 255).toString(16);
@@ -3993,10 +4013,10 @@ class Client {
         this.cells.sort((a, b) => a.size == b.size ? a.id - b.id : a.size - b.size);
     }
     calculatePlayerMassAndPosition() {
-        let a = 0;
-        let b = 0;
-        let c = 0;
-        let d = 0;
+        let a = 0,
+            b = 0,
+            c = 0,
+            d = 0;
         const f = this.playerCells.length;
         for (let g = 0; g < f; g++) {
             const h = this.playerCells[g];
@@ -4016,26 +4036,20 @@ class Client {
     recalculatePlayerMass() {
         this.playerScore = Math.max(this.playerScore, this.playerMass);
         if (settings.virColors || settings.splitRange || settings.oppColors || settings.oppRings || settings.showStatsSTE) {
-            const a = this.playerCells;
-            const b = a.length;
+            const a = this.playerCells,
+                b = a.length;
             a.sort((c, d) => c.size == d.size ? c.id - d.id : c.size - d.size);
             this.playerMinMass = ~~(a[0].size * a[0].size / 100);
             this.playerMaxMass = ~~(a[b - 1].size * a[b - 1].size / 100);
             this.playerSplitCells = b;
         }
         if (settings.showStatsSTE) {
-            const c = this.selectBiggestCell ? this.playerMaxMass : this.playerMinMass;
-            if (c > 35) {
-                this.STE = ~~(c * (c < 1000 ? 0.35 : 0.38));
-            } else {
-                this.STE = null;
-            }
+            const c = tempsett.selectBiggestCell ? this.playerMaxMass : this.playerMinMass;
+            c > 35 ? this.STE = ~~(c * (c < 1000 ? 0.35 : 0.38)) : this.STE = null;
         }
     }
     compareCells() {
-        if (!this.play) {
-            return;
-        }
+        if (!this.play) return;
         if (settings.oppColors || settings.oppRings || settings.splitRange) {
             if (settings.oppRings || settings.splitRange) {
                 this.biggerSTECellsCache = [];
@@ -4044,20 +4058,19 @@ class Client {
                 this.smallerCellsCache = [];
                 this.STECellsCache = [];
             }
+
             for (const a of this.cells) {
-                if (a.isVirus) {
-                    continue;
-                }
-                const b = ~~(a.size * a.size / 100);
-                const c = this.selectBiggestCell ? this.playerMaxMass : this.playerMinMass;
-                const d = b / c;
-                const f = c < 1000 ? 0.35 : 0.38;
-                if (settings.oppColors && !settings.oppRings) {
+                if (a.isVirus) continue;
+                const b = ~~(a.size * a.size / 100),
+                    c = tempsett.selectBiggestCell ? this.playerMaxMass : this.playerMinMass,
+                    d = b / c,
+                    f = c < 1000 ? 0.35 : 0.38;
+
+                if (settings.oppColors && !settings.oppRings)
                     a.oppColor = this.setCellOppColor(a.isPlayerCell, d, f);
-                }
-                if (!a.isPlayerCell && (settings.splitRange || settings.oppRings)) {
+
+                if (!a.isPlayerCell && (settings.splitRange || settings.oppRings))
                     this.cacheCells(a, d, f);
-                }
             }
         }
     }
@@ -4084,21 +4097,17 @@ class Client {
         }
     }
     setCellOppColor(a, b, c) {
-        if (a) {
-            return profiles.masterProfile.color;
-        }
-        if (b > 11) {
-            return '#FF008C';
-        } else if (b >= 2.5) {
-            return '#BE00FF';
-        } else if (b >= 1.25) {
-            return '#FF0A00';
-        } else if (b < 1.25 && b > 0.75) {
-            return '#FFDC00';
-        } else if (b > c) {
-            return '#00C8FF';
-        } else {
-            return '#64FF00';
+        if (a) return profiles.masterProfile.color;
+        if (b > 11) return '#FF008C';
+        else {
+            if (b >= 2.5) return '#BE00FF';
+            else {
+                if (b >= 1.25) return '#FF0A00';
+                else {
+                    if (b < 1.25 && b > 0.75) return '#FFDC00';
+                    else return b > c ? '#00C8FF' : '#64FF00';
+                }
+            }
         }
     }
     setTargetPosition(a, b) {
@@ -4115,32 +4124,5 @@ class Client {
     }
     removeEvents() {
         this.events = {};
-    }
-}
-class ClientDummy {
-    constructor() {
-
-    }
-    cells = [];
-    indexedCells = {};
-    cellAID = {};
-    viruses = [];
-    food = [];
-    playerCells = [];
-    removedCells = { push: () => 0, indexOf: () => -1 };
-    time = Date.now();
-
-    flushCellsData() {
-        this.cells = [];
-        this.indexedCells = {};
-        this.cellAID = [];
-        this.viruses = [];
-        this.food = [];
-        this.playerCells = [];
-        this.removedCells = { push: () => 0, indexOf: () => -1 };
-    }
-
-    sortCells() {
-        this.cells.sort((A, B) => A.size == B.size ? A.id - B.id : A.size - B.size);
     }
 }

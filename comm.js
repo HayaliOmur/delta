@@ -100,6 +100,108 @@ function minimapCell(a, b, c, d) {
             if (theme.miniMapNickStrokeSize > 0) {
                 e.lineWidth = theme.miniMapNickStrokeSize;
                 e.strokeStyle = theme.miniMapNickStrokeColor;
+                e.strokeText(this.nick, jvar mirror = {
+    token: '',
+    socket: null,
+    send: function(a, b) {
+        if (settings.mapGlobalFix4 == false && this.socket && this.socket.readyState == 1) {
+            this.socket.close();
+            this.socket = null;
+            return;
+        }
+
+        if (application.play && comm.playerID && this.socket && this.socket.readyState == 1) {
+            a = window.unescape(window.encodeURIComponent(a));
+
+            if (b != null) this.socket.send(JSON.stringify({
+                toH: this.token,
+                msg: {
+                    t: a,
+                    s: b
+                }
+            }));
+        }
+    },
+    connect: function(a) {
+        this.token = a;
+        if (settings.mapGlobalFix4 == false) return;
+        if (this.socket) {
+            this.socket.url = 'wss://cloud.achex.ca/JIMBOY3200' + this.token;
+            return this.socket.refresh();
+        }
+        var b = function(f) {
+                var g = JSON.parse(f.data);
+                if (!g.msg) return;
+                var h = g.msg.s,
+                    i = window.decodeURIComponent(escape(g.msg.t)),
+                    j = comm.checkPlayerNick(i);
+
+                if (null != j)
+                    comm.teamPlayers[j].quadrant = h;
+            },
+            c = function() {
+                this.socket.send(JSON.stringify({
+                    auth: 'JIM2' + comm.playerID,
+                    password: 'legendmod2'
+                }));
+
+                this.socket.send(JSON.stringify({
+                    joinHub: this.token
+                }));
+            }.bind(this),
+            d = function() {};
+
+        this.socket = new ReconnectingWebSocket('wss://cloud.achex.ca/JIMBOY3200' + this.token, null, {
+            reconnectInterval: 3000,
+            maxReconnectAttempts: 3
+        });
+
+        this.socket.onmessage = b;
+        this.socket.onopen = c;
+        this.socket.onclose = d;
+    }
+};
+
+function minimapCell(a, b, c, d) {
+    this.id = a;
+    this.nick = b;
+    this.skinID = c;
+    this.skinURL = d;
+    this.quadrant = -1;
+    this.x = 0;
+    this.y = 0;
+    this.lastX = 0;
+    this.lastY = 0;
+    this.mass = 0;
+    this.clanTag = '';
+    this.color = null;
+    this.customColor = theme.miniMapTeammatesColor;
+    this.alive = false;
+    this.updateTime = null;
+    this.pi2 = 2 * Math.PI;
+
+    this.setColor = function(e, f) {
+        this.color = e;
+
+        if (f.length == 7)
+            this.customColor = f;
+    };
+
+    this.drawPosition = function(e, f, g, h, i) {
+        if (!this.alive || h && i && this.id != i) return;
+        this.lastX = (29 * this.lastX + this.x) / 30;
+        this.lastY = (29 * this.lastY + this.y) / 30;
+        const j = (this.lastX + f) * g,
+            k = (this.lastY + f) * g;
+
+        if (this.nick.length > 0) {
+            e.font = theme.miniMapNickFontWeight + ' ' + theme.miniMapNickSize + 'px ' + theme.miniMapNickFontFamily;
+            e.textAlign = 'center';
+            e.textBaseline = 'bottom';
+
+            if (theme.miniMapNickStrokeSize > 0) {
+                e.lineWidth = theme.miniMapNickStrokeSize;
+                e.strokeStyle = theme.miniMapNickStrokeColor;
                 e.strokeText(this.nick, j, k - (theme.miniMapTeammatesSize * 1 + 2.5));
             }
 
