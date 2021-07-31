@@ -297,7 +297,8 @@ window.master = new(class {
 
         this.csRegions = {
             'wss://delta-server.glitch.me': 'Antarctic',
-            'wss://delta-selffeed.glitch.me': 'Zimbabve'
+            'wss://delta-selffeed.glitch.me': 'Zimbabve',
+            'wss://imsolo.pro:2109' : 'Arctida'
         };
 
         this.agRegions = {
