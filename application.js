@@ -1543,7 +1543,8 @@ const QServer = new(class {
             });
 
             $(document).on('click', '#server-connect', () => {
-                this.connect($('#server-ws').val());
+                application.getActiveTab().connect(application.ws);
+              ($('#server-ws').val());
             });
 
             $(document).on('click', '#server-reconnect', () => {
