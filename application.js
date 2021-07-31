@@ -1563,13 +1563,25 @@ const QServer = new(class {
           
           
             $(document).on('click', '#spectators', () => {
+              if (this.ws) {
                 application.initFullSpect();
-                toastr.success("Spectators activated.");
+                toastr.info("Spectators activated.");
+                
+              }else {
+                 toastr.error("Connect to a server first.");
+
+              }
+
+                
             });
           
             $(document).on('click', '#close-spectators', () => {
+              if (this.ws) {
                 application.destroyFullSpect();
-                Settings.error("Spectators closed.");
+                toastr.error("Spectators closed.");
+              }else{
+                toastr.error("Connect to a server first.");
+              }
             });
 
             master.on('newserver', () => {
