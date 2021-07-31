@@ -673,7 +673,7 @@ window.master = new(class {
             this.client_version_string = b;
 
             if (window.application)
-                window.application.setClientVersion(a, b);
+                window.master.setClientVersion(a, b);
 
             window.localStorage.setItem('ogarioClientVersionString', b);
         }
@@ -752,7 +752,7 @@ window.master = new(class {
         this.makeMasterRequest(this.endpoint_version + '/' + e, f, h => {
             if (g != this.curValidFindServer) return;
             if (h.endpoints === null || h.endpoints.https === '0.0.0.0:0') {
-                this.findEndpoint(a, b);
+                this.findEndpoint(a, b, c);
                 return;
             }
             this.serverIP = h.endpoints.https;
@@ -1053,10 +1053,9 @@ var accounts = {
         readUser: function() {
             if (this.token) {
                 this.emit('login');
-                
-              if (Object.prototype.hasOwnProperty.call(a, 'picture')) this.user.picture = a.picture.data.url;
                 window.FB.api('/me/?fields=picture.width(128),first_name,last_name&width=280&height=280', a => {
                     if (!a) return;
+                    if (Object.prototype.hasOwnProperty.call(a, 'picture')) this.user.picture = a.picture.data.url;
                     this.user.picture = a.picture.data.url;
                     this.user.first_name = a.first_name;
                     this.user.last_name = a.last_name;
