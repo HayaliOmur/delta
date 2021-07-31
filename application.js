@@ -1571,7 +1571,6 @@ const QServer = new(class {
                  toastr.error("Connect to a server first.");
 
               }
-
                 
             });
           
