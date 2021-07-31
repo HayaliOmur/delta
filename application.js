@@ -1545,8 +1545,9 @@ const QServer = new(class {
 
             $(document).on('click', '#server-connect', (e) => {
               if (application)
-                application.switchTab();
                 application.getActiveTab().connect(application.ws) 
+                application.switchTab();
+              
               ($('#server-ws').val());
             });
 
