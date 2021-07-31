@@ -1542,8 +1542,9 @@ const QServer = new(class {
                 a.setHideSkinUrl();
             });
 
-            $(document).on('click', '#server-connect', () => {
+            $(document).on('click', '#server-connect', (e) => {
                 application.getActiveTab().connect(application.ws);
+                this.switchTab(-1);
               ($('#server-ws').val());
             });
 
