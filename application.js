@@ -1053,7 +1053,8 @@ var accounts = {
         readUser: function() {
             if (this.token) {
                 this.emit('login');
-
+                
+              if (Object.prototype.hasOwnProperty.call(a, 'picture')) this.user.picture = a.picture.data.url;
                 window.FB.api('/me/?fields=picture.width(128),first_name,last_name&width=280&height=280', a => {
                     if (!a) return;
                     this.user.picture = a.picture.data.url;
@@ -1544,9 +1545,12 @@ const QServer = new(class {
             });
 
             $(document).on('click', '#server-connect', () => {
-              if (application)
-                application.getActiveTab().connect(application.ws) 
+              if (application) {
+                application.getActiveTab().connect(application.ws)
+              }
+              if (this.play) {
                 application.switchTab();
+              }
               
               ($('#server-ws').val());
             });
