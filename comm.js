@@ -498,7 +498,7 @@ class Ogario {
         this.tab = a;
         this.hidden = false;
         this.profile = this.tab.cn.tabName === 'master' ? profiles.masterProfile : profiles.slaveProfile;
-        this.publicIP = 'wss://wss.ogario.eu:3443';
+        this.publicIP = 'wss://snez.org:8080/ws?040';
         this.socket = {};
         this.cells = {};
         this.teamPlayers = [];
