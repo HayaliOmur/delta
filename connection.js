@@ -1,4 +1,4 @@
-it needs somconst AGAR_CONST = Object.freeze((() => {
+const AGAR_CONST = Object.freeze((() => {
     // WSVGA
     const VIEWPORT_BASE_WIDTH = 1024;
     const VIEWPORT_BASE_HEIGHT = 600;
@@ -13,7 +13,7 @@ it needs somconst AGAR_CONST = Object.freeze((() => {
     const VIEWPORT_FREE_SPECTATE_HEIGHT_HALF = VIEWPORT_FREE_SPECTATE_HEIGHT / 2;
 
     return {
-        MAP_EDGE_LENGTH,it needs som
+        MAP_EDGE_LENGTH,
         VIEWPORT_BASE_WIDTH,
         VIEWPORT_BASE_HEIGHT,
         VIEWPORT_MULTIPLIER: Object.freeze({

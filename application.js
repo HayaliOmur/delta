@@ -1,24 +1,3 @@
-const spectatePoints = [];
-(function() {
-    let a = -10000 + 5000,
-        b = -8485.2 + 2828;
-    for (let c = 0; c < 15; c++) {
-        spectatePoints.push({
-            x: a,
-            y: b
-        });
-
-        b += 2828;
-        if (c == 4) {
-            a += 5000;
-            b = -8485.2 + 2828;
-        }
-        if (c == 9) {
-            a += 5000;
-            b = -8485.2 + 2828;
-        }
-    }
-}());
 var profiles = new(class {
     constructor() {
         var a = this;
@@ -291,11 +270,7 @@ window.master = new(class {
 
         this.csRegions = {
             'wss://delta-server.glitch.me': 'Antarctic',
-            'wss://delta-selffeed.glitch.me': 'Zimbabve',
-            'wss://imsolo.pro:2109' : 'Arctida',
-          'wss://imsolo.pro:2104' : 'Rookery',
-          'wss://imsolo.pro:2108' : 'Dagestan'
-          
+            'wss://delta-selffeed.glitch.me': 'Zimbabve'
         };
 
         this.agRegions = {
@@ -1304,35 +1279,10 @@ const QServer = new(class {
         initSpectate() {
             this.initClient('spectate');
             this.tab.spectate.connect(this.ws);
+
             this.tab.spectate.on('estabilished', a => {
                 a.sendSpectate();
             });
-
-            if (this.dm) this.tab.spectate.on('gh', a => {
-                a.setQuadrant(this.tab.master.quadrant);
-            });
-        },
-              initRegion(a) {
-            const b = this.initClient('region' + a);
-            b.connect(this.ws);
-
-            b.on('estabilished', d => {
-                d.sendFreeSpectate();
-                d.sendSpectate();
-                b.targetX = spectatePoints[a].x;
-                b.targetY = spectatePoints[a].y;
-            });
-        },
-        initFullSpect() {
-
-            for (var a = 0; a < 15; a++) {
-                this.initRegion(a);
-            }
-        },
-        destroyFullSpect() {
-            for (var a = 0; a < 15; a++) {
-                this.destroyClient('region' + a);
-            }
         },
         get play() {
             if (this.tab.master && this.tab.master.play) return true;
@@ -1881,9 +1831,14 @@ const QServer = new(class {
             this.getWS(this.ws);
             this.activeTab = 0;
             this.destroyClient('slave');
+            if (typeof spectators === 'undefined') {
+                console.log('[SPECTATORS] Acces denied.');
+            } else {
+                spectators.destroyFullSpect();
 
-            for (var tab of this.tabs) {
-                tab.connect(a);
+            }
+            for (var b of this.tabs) {
+                b.connect(a);
             }
         },
         disconnect() {
