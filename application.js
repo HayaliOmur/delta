@@ -638,14 +638,13 @@ window.master = new(class {
     }
     setClientVersion(a, b) {
         console.log('[ENV] Your client version:', this.client_version, this.client_version_string);
-
         if (this.client_version != a) {
             console.log('[ENV] Changing client version...');
             this.client_version = a;
             this.client_version_string = b;
 
             if (window.application)
-                window.application.setClientVersion(a, b);
+                application.setClientVersion(a, b);
 
             window.localStorage.setItem('ogarioClientVersionString', b);
         }
@@ -1831,12 +1830,7 @@ const QServer = new(class {
             this.getWS(this.ws);
             this.activeTab = 0;
             this.destroyClient('slave');
-            if (typeof spectators === 'undefined') {
-                console.log('[SPECTATORS] Acces denied.');
-            } else {
-                spectators.destroyFullSpect();
 
-            }
             for (var b of this.tabs) {
                 b.connect(a);
             }

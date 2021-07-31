@@ -918,11 +918,7 @@ class Client {
         this.viewY = this.protocol_viewY = 0;
         this.leaderboard = [];
         if (!a) return false;
-        if (typeof KingaroxBots !== 'undefined') {
-            window.game.url = a;
-            window.user.isAlive = false;
-            window.user.macroFeedInterval = null;
-        }
+
         this.integrity = a.indexOf('agar.io') > -1;
         this.client_protocol = a.indexOf('~') > -1 ? 6 : 23;
         this.socket = new WebSocket(a);
@@ -951,17 +947,12 @@ class Client {
         this.time = Date.now();
         let a = this.createView(5);
         a.setUint8(0, 254);
-        if (typeof KingaroxBots !== 'undefined') {
-            if (!window.game.protocolVersion) window.game.protocolVersion = 22;
-        }
+
         a.setUint32(1, this.client_protocol, true);
         this.sendMessage(a);
         a = this.createView(5);
         a.setUint8(0, 255);
-        if (typeof KingaroxBots !== 'undefined') {
 
-            if (!window.game.clientVersion) window.game.clientVersion = master.client_version;
-        }
         a.setUint32(1, master.client_version, true);
         this.sendMessage(a);
         this.connectionOpened = true;
@@ -1143,20 +1134,7 @@ class Client {
         let cursorX = this.cursorX;
         let cursorY = this.cursorY;
 
-        //for bots
-        if (typeof KingaroxBots !== 'undefined') {
-            let CheckWichTabCursorX = application.getActiveTab().cursorX;
-            let CheckWichTabCursorY = application.getActiveTab().cursorY;
 
-            if (window.user.startedBots /*&& window.user.isAlive*/ ) {
-                window.user.mouseX = ~~(CheckWichTabCursorX + this.mapOffsetX)
-                window.user.mouseY = ~~(CheckWichTabCursorY + this.mapOffsetY)
-                window.connection.send(window.buffers.mousePosition(window.user.mouseX, window.user.mouseY /*, window.user.ghostX, window.user.ghostY*/ ));
-            }
-        }
-
-
-        //
 
 
         if (tempsett.pause || this.type === 3) {
@@ -1385,13 +1363,7 @@ class Client {
                     this.playerColor = null;
                     this.emit('spawn', this);
                     application.emit('spawn', this);
-                    //for bots
 
-                    if (typeof KingaroxBots !== 'undefined') {
-                        window.user.isAlive = true;
-                        if (window.user.startedBots) window.connection.send(new Uint8Array([5, Number(window.user.isAlive)]).buffer);
-                    }
-                    //
                 }
 
                 break;
@@ -1509,13 +1481,7 @@ class Client {
                         mass: m,
                         inView: false
                     });
-                    if (application.tabs[0].playerPosition == 1 || application.tabs[0].ghostCells.length == 0) { //Yahnych координати призраков или игрока если он топ1
-                        //window.user.ghostX = ~~(this.playerX + this.mapOffsetX);
-                        //window.user.ghostY = ~~(this.playerY + this.mapOffsetY);
-                    } else { //Yahnych
-                        window.user.ghostX = ~~(this.ghostCells[0].x + this.mapOffsetX);
-                        window.user.ghostY = ~~(this.ghostCells[0].y + this.mapOffsetY);
-                    }
+
                 }
 
                 if (settings.mapLocalFix3 && this.ghostCellsStep == 1 && this.ghostCells[0]) {
@@ -2031,10 +1997,7 @@ class Client {
 
             this.mapOffsetFixed = true;
             this.log('Map offset fixed (x, y):', this.mapOffsetX, this.mapOffsetY);
-            //bots
-            window.user.offsetX = this.mapOffsetX; //Yahnych
-            window.user.offsetY = this.mapOffsetY;
-            //
+
             this.emit('offset', this);
         } else {
             this.viewportMinX = this.receiveX(a);
@@ -2285,12 +2248,7 @@ class Client {
             this.isSpectateEnabled = false;
             application.emit('death', this);
             this.emit('death', this);
-            //for bots
-            if (typeof KingaroxBots !== 'undefined') {
-                window.user.isAlive = false;
-                if (window.user.startedBots) window.connection.send(new Uint8Array([5, Number(window.user.isAlive)]).buffer);
-            }
-            //
+
         }
 
         (async() => {
