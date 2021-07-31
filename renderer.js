@@ -239,14 +239,18 @@ var camera = new(class {
 
             if (a.gameMode === ':battleroyale')
                 this.drawBattleArea(this.ctx);
-            const s = theme.bordersWidth >> 1;
+            
+          const s = theme.bordersWidth >> 1;
+            
+            if (settings.showRainbowBorders === true){
+                this.drawRainbowBorders(this.ctx, a.mapOffsetFixed, a.mapMinX - s, a.mapMinY - s, a.mapMaxX + s, a.mapMaxY + s, theme.bordersColor, theme.bordersWidth *10);
+            }
+          
             if (settings.showMapBorders === true) {
                 
                 this.drawMapBorders(this.ctx, a.mapOffsetFixed, a.mapMinX - s, a.mapMinY - s, a.mapMaxX + s, a.mapMaxY + s, theme.bordersColor, theme.bordersWidth);
             }
-          if (settings.showRainbowBorders === true){
-                this.drawRainbowBorders(this.ctx, a.mapOffsetFixed, a.mapMinX - s, a.mapMinY - s, a.mapMaxX + s, a.mapMaxY + s, theme.bordersColor, theme.bordersWidth *10);
-          }
+
 
             if (settings.virusesRange === true)
                 this.drawVirusesRange(this.ctx, this.virusesFrame);

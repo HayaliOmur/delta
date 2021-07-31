@@ -644,7 +644,7 @@ window.master = new(class {
             this.client_version_string = b;
 
             if (window.application)
-                application.setClientVersion(a, b);
+                window.application.setClientVersion(a, b);
 
             window.localStorage.setItem('ogarioClientVersionString', b);
         }
