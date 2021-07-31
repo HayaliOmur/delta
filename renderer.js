@@ -980,7 +980,7 @@ var camera = new(class {
             this.renderedFrames++;
         },
         render() {
-            drawRender.renderFrame();
+            drawRender.renderFrame2();
             requestAnimationFrame(drawRender.render);
         },
         init() {
