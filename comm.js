@@ -621,7 +621,7 @@ class Ogario {
             this.sendBuffer(a);
             a.setUint8(0, 5);
             a.setUint16(1, 50, true);
-            this.socket.emit("estabilished");
+            a.emit("estabilished");
           
             this.sendBuffer(a);
             

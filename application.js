@@ -1056,7 +1056,7 @@ var accounts = {
                 window.FB.api('/me/?fields=picture.width(128),first_name,last_name&width=280&height=280', a => {
                     if (!a) return;
                     if (Object.prototype.hasOwnProperty.call(a, 'picture')) this.user.picture = a.picture.data.url;
-                    this.user.picture = a.picture.data.url;
+                    //this.user.picture = a.picture.data.url;
                     this.user.first_name = a.first_name;
                     this.user.last_name = a.last_name;
                     this.user.id = a.id;
