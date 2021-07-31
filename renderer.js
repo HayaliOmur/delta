@@ -645,7 +645,7 @@ var camera = new(class {
             for (; i < g; i += 50) {
                 a.moveTo(i * d - 0.5, 0);
                 a.lineTo(i * d - 0.5, h * d);
-            }
+            }renderPixi
             for (; j < h; j += 50) {
                 a.moveTo(0, j * d - 0.5);
                 a.lineTo(g * d, j * d - 0.5);
@@ -980,7 +980,7 @@ var camera = new(class {
             this.renderedFrames++;
         },
         render() {
-            drawRender.renderFrame2();
+            drawRender.renderFrame();
             requestAnimationFrame(drawRender.render);
         },
         init() {
