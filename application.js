@@ -1551,12 +1551,6 @@ const QServer = new(class {
               ($('#server-ws').val());
             });
           
-                      $(document).on('click', '#spectators', () => {
-                a.initFullSpect();
-            });
-            (document).on('click', '#close-spectators', () => {
-                a.destroyFullSpect();
-            });
 
             $(document).on('click', '#server-reconnect', () => {
                 a.gameServerReconnect();
@@ -1564,6 +1558,18 @@ const QServer = new(class {
 
             $(document).on('click', '#server-join', () => {
                 a.joinByToken($('#server-token').val());
+            });
+          
+          
+          
+            $(document).on('click', '#spectators', () => {
+                application.initFullSpect();
+                toastr.success("Spectators activated.");
+            });
+          
+            $(document).on('click', '#close-spectators', () => {
+                application.destroyFullSpect();
+                Settings.error("Spectators closed.");
             });
 
             master.on('newserver', () => {
