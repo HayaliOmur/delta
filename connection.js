@@ -713,7 +713,7 @@ class Client {
         this._camX = 0;
         this._camY = 0;
         this.integrity = true;
-        this.client_protocol = 22;
+        this.client_protocol = 23;
         this.client_version_string = '3.10.9';
         this.client_version = 31009;
         this.gotCaptcha = false;
@@ -913,7 +913,7 @@ class Client {
         }, 40);
         if (!a) return false;
         this.integrity = a.indexOf('agar.io') > -1;
-        this.client_protocol = a.indexOf('~') > -1 ? 6 : 22;
+        this.client_protocol = a.indexOf('~') > -1 ? 6 : 23;
         this.socket = new WebSocket(a);
         this.socket.binaryType = 'arraybuffer';
         this.socket.onopen = () => {

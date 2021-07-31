@@ -2,8 +2,8 @@ const keyBlind = {};
 var hotkeys = {};
 const hotkeysCommand = {
     'hk-feed': {
-        label: dict('hk-feed'),
-        defaultKey: 'E',
+        label: dictonary['hk-feed'],
+        defaultKey: 'W',
         keyDown() {
             if (application)
                 application.feed();
@@ -12,8 +12,8 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-macroFeed': {
-        label: dict('hk-macroFeed'),
-        defaultKey: 'W',
+        label: dictonary['hk-macroFeed'],
+        defaultKey: 'E',
         keyDown() {
             if (application)
                 application.macroFeed(true);
@@ -25,7 +25,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-split': {
-        label: dict('hk-split'),
+        label: dictonary['hk-split'],
         defaultKey: 'SPACE',
         keyDown() {
             if (application)
@@ -35,7 +35,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-doubleSplit': {
-        label: dict('hk-doubleSplit'),
+        label: dictonary['hk-doubleSplit'],
         defaultKey: 'Q',
         keyDown() {
             if (application)
@@ -65,7 +65,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-split16': {
-        label: dict('hk-split16'),
+        label: dictonary['hk-split16'],
         defaultKey: 'SHIFT',
         keyDown() {
             if (application)
@@ -75,7 +75,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-pause': {
-        label: dict('hk-pause'),
+        label: dictonary['hk-pause'],
         defaultKey: 'R',
         keyDown() {
             if (application)
@@ -85,7 +85,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-switchPlayer': {
-        label: dict('hk-switchPlayer'),
+        label: dictonary['hk-switchPlayer'],
         defaultKey: 'TAB',
         keyDown() {
             if (application)
@@ -95,7 +95,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-showTop5': {
-        label: dict('hk-showTop5'),
+        label: dictonary['hk-showTop5'],
         defaultKey: 'V',
         keyDown() {
             if (Settings)
@@ -105,7 +105,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-showTime': {
-        label: dict('hk-showTime'),
+        label: dictonary['hk-showTime'],
         defaultKey: 'ALT+T',
         keyDown() {
             if (Settings)
@@ -115,7 +115,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-showSplitRange': {
-        label: dict('hk-showSplitRange'),
+        label: dictonary['hk-showSplitRange'],
         defaultKey: 'U',
         keyDown() {
             if (Settings)
@@ -125,7 +125,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-showSplitInd': {
-        label: dict('hk-showSplitInd'),
+        label: dictonary['hk-showSplitInd'],
         defaultKey: 'I',
         keyDown() {
             if (Settings)
@@ -135,7 +135,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-showTeammatesInd': {
-        label: dict('hk-showTeammatesInd'),
+        label: dictonary['hk-showTeammatesInd'],
         defaultKey: 'ALT+I',
         keyDown() {
             if (Settings)
@@ -145,7 +145,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-showOppColors': {
-        label: dict('hk-showOppColors'),
+        label: dictonary['hk-showOppColors'],
         defaultKey: 'O',
         keyDown() {
             if (Settings)
@@ -155,7 +155,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-toggleSkins': {
-        label: dict('hk-toggleSkins'),
+        label: dictonary['hk-toggleSkins'],
         defaultKey: 'K',
         keyDown() {
             if (Settings)
@@ -165,7 +165,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-transparentSkins': {
-        label: dict('hk-transparentSkins'),
+        label: dictonary['hk-transparentSkins'],
         defaultKey: '',
         keyDown() {
             if (Settings)
@@ -175,7 +175,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-showSkins': {
-        label: dict('hk-showSkins'),
+        label: dictonary['hk-showSkins'],
         defaultKey: 'S',
         keyDown() {
             if (Settings)
@@ -185,7 +185,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-showStats': {
-        label: dict('hk-showStats'),
+        label: dictonary['hk-showStats'],
         defaultKey: 'ALT+S',
         keyDown() {
             if (Settings)
@@ -195,7 +195,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-toggleCells': {
-        label: dict('hk-toggleCells'),
+        label: dictonary['hk-toggleCells'],
         defaultKey: 'D',
         keyDown() {
             if (Settings)
@@ -205,7 +205,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-showFood': {
-        label: dict('hk-showFood'),
+        label: dictonary['hk-showFood'],
         defaultKey: 'X',
         keyDown() {
             if (Settings)
@@ -215,7 +215,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-showGrid': {
-        label: dict('hk-showGrid'),
+        label: dictonary['hk-showGrid'],
         defaultKey: 'G',
         keyDown() {
             if (Settings)
@@ -225,7 +225,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-showMiniMapGuides': {
-        label: dict('hk-showMiniMapGuides'),
+        label: dictonary['hk-showMiniMapGuides'],
         defaultKey: 'ALT+G',
         keyDown() {
             if (Settings)
@@ -235,7 +235,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-hideChat': {
-        label: dict('hk-hideChat'),
+        label: dictonary['hk-hideChat'],
         defaultKey: 'H',
         keyDown() {
             if (Settings)
@@ -245,7 +245,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-showHUD': {
-        label: dict('hk-showHUD'),
+        label: dictonary['hk-showHUD'],
         defaultKey: 'ALT+H',
         keyDown() {
             if (Settings)
@@ -255,7 +255,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-copyLb': {
-        label: dict('hk-copyLb'),
+        label: dictonary['hk-copyLb'],
         defaultKey: 'L',
         keyDown() {
             if (Settings)
@@ -265,7 +265,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-showLb': {
-        label: dict('hk-showLb'),
+        label: dictonary['hk-showLb'],
         defaultKey: 'ALT+L',
         keyDown() {
             if (Settings)
@@ -275,7 +275,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-toggleAutoZoom': {
-        label: dict('hk-toggleAutoZoom'),
+        label: dictonary['hk-toggleAutoZoom'],
         defaultKey: '',
         keyDown() {
             if (Settings)
@@ -285,7 +285,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-resetZoom': {
-        label: dict('hk-resetZoom'),
+        label: dictonary['hk-resetZoom'],
         defaultKey: 'ALT+Z',
         keyDown() {
             if (Settings)
@@ -298,7 +298,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-showBgSectors': {
-        label: dict('hk-showBgSectors'),
+        label: dictonary['hk-showBgSectors'],
         defaultKey: 'B',
         keyDown() {
             if (Settings)
@@ -307,8 +307,18 @@ const hotkeysCommand = {
         keyUp: null,
         type: 'normal'
     },
+    'hk-hideBots': {
+        label: dictonary['hk-hideBots'],
+        defaultKey: 'ALT+B',
+        keyDown() {
+            if (Settings)
+                Settings.setHideSmallBots();
+        },
+        keyUp: null,
+        type: 'normal'
+    },
     'hk-showNames': {
-        label: dict('hk-showNames'),
+        label: dictonary['hk-showNames'],
         defaultKey: 'N',
         keyDown() {
             if (Settings)
@@ -318,7 +328,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-hideTeammatesNames': {
-        label: dict('hk-hideTeammatesNames'),
+        label: dictonary['hk-hideTeammatesNames'],
         defaultKey: '',
         keyDown() {
             if (Settings)
@@ -328,7 +338,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-showMass': {
-        label: dict('hk-showMass'),
+        label: dictonary['hk-showMass'],
         defaultKey: 'M',
         keyDown() {
             if (Settings)
@@ -338,7 +348,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-showMiniMap': {
-        label: dict('hk-showMiniMap'),
+        label: dictonary['hk-showMiniMap'],
         defaultKey: 'ALT+M',
         keyDown() {
             if (Settings)
@@ -348,7 +358,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-showQuest': {
-        label: dict('hk-showQuest'),
+        label: dictonary['hk-showQuest'],
         defaultKey: '',
         keyDown() {
             if (Settings)
@@ -358,7 +368,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-quickResp': {
-        label: dict('hk-quickResp'),
+        label: dictonary['hk-quickResp'],
         defaultKey: 'TILDE',
         keyDown() {
             if (application)
@@ -368,7 +378,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-autoResp': {
-        label: dict('hk-autoResp'),
+        label: dictonary['hk-autoResp'],
         defaultKey: '',
         keyDown() {
             if (Settings)
@@ -378,7 +388,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-zoom1': {
-        label: dict('hk-zoomLevel') + ' 1',
+        label: dictonary['hk-zoomLevel'] + ' 1',
         defaultKey: 'ALT+1',
         keyDown() {
             drawRender.zoomValue = 0.5;
@@ -387,7 +397,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-zoom2': {
-        label: dict('hk-zoomLevel') + ' 2',
+        label: dictonary['hk-zoomLevel'] + ' 2',
         defaultKey: 'ALT+2',
         keyDown() {
             drawRender.zoomValue = 0.25;
@@ -396,7 +406,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-zoom3': {
-        label: dict('hk-zoomLevel') + ' 3',
+        label: dictonary['hk-zoomLevel'] + ' 3',
         defaultKey: 'ALT+3',
         keyDown() {
             drawRender.zoomValue = 0.125;
@@ -405,7 +415,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-zoom4': {
-        label: dict('hk-zoomLevel') + ' 4',
+        label: dictonary['hk-zoomLevel'] + ' 4',
         defaultKey: 'ALT+4',
         keyDown() {
             drawRender.zoomValue = 0.075;
@@ -414,7 +424,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-zoom5': {
-        label: dict('hk-zoomLevel') + ' 5',
+        label: dictonary['hk-zoomLevel'] + ' 5',
         defaultKey: 'ALT+5',
         keyDown() {
             drawRender.zoomValue = 0.05;
@@ -422,8 +432,18 @@ const hotkeysCommand = {
         keyUp: null,
         type: 'normal'
     },
+    'hk-toggleDeath': {
+        label: dictonary['hk-toggleDeath'],
+        defaultKey: 'Z',
+        keyDown() {
+            if (comm)
+                comm.toggleDeath();
+        },
+        keyUp: null,
+        type: 'normal'
+    },
     'hk-clearChat': {
-        label: dict('hk-clearChat'),
+        label: dictonary['hk-clearChat'],
         defaultKey: 'C',
         keyDown() {
             if (comm)
@@ -436,7 +456,7 @@ const hotkeysCommand = {
         type: 'normal'
     },
     'hk-chatMessage': {
-        label: dict('hk-chatMessage'),
+        label: dictonary['hk-chatMessage'],
         defaultKey: 'ENTER',
         keyDown() {
             if (comm)
@@ -599,7 +619,11 @@ const hotkeysCommand = {
         label: 'Bot Split',
         defaultKey: 'T',
         keyDown() {
-            if (window.user.startedBots /*&& window.user.isAlive*/ ) window.connection.send(new Uint8Array([2]).buffer)
+            localStorage.send = JSON.stringify({
+                e: 'fn',
+                key: 'sendSplit',
+                _: Math.random()
+            });
         },
         keyUp: null,
         type: 'normal'
@@ -608,7 +632,11 @@ const hotkeysCommand = {
         label: 'Bot Feed',
         defaultKey: 'A',
         keyDown() {
-            if (window.user.startedBots /*&& window.user.isAlive*/ ) window.connection.send(new Uint8Array([3]).buffer)
+            localStorage.send = JSON.stringify({
+                e: 'fn',
+                key: 'sendFeed',
+                _: Math.random()
+            });
         },
         keyUp: null,
         type: 'normal'
@@ -617,61 +645,16 @@ const hotkeysCommand = {
         label: 'Bot Ai',
         defaultKey: 'F',
         keyDown() {
-            if (window.user.startedBots /*&& window.user.isAlive*/ ) {
-                if (!window.bots.ai) {
-                    document.getElementById('botsAI').style.color = '#00C02E'
-                    document.getElementById('botsAI').innerText = 'Enabled'
-                    document.getElementById('botsAI2').style.color = '#00C02E'
-                    document.getElementById('botsAI2').innerText = 'Enabled'
-                    window.bots.ai = true
-                    window.connection.send(new Uint8Array([4, Number(window.bots.ai)]).buffer)
-                } else {
-                    document.getElementById('botsAI').style.color = '#DA0A00'
-                    document.getElementById('botsAI').innerText = 'Disabled'
-                    document.getElementById('botsAI2').style.color = '#DA0A00'
-                    document.getElementById('botsAI2').innerText = 'Disabled'
-                    window.bots.ai = false
-                    window.connection.send(new Uint8Array([4, Number(window.bots.ai)]).buffer)
-                }
-            }
+            localStorage.send = JSON.stringify({
+                e: 'env',
+                key: 'ai',
+                _: Math.random()
+            });
         },
         keyUp: null,
         type: 'normal'
     }
 };
-
-function onKonamiCode() {
-    var a = '',
-        b = [{
-            key: '696987878282',
-            fn: () => {
-                application.dm = true;
-                application.tab.spectate ? application.destroyClient('spectate') : application.initSpectate();
-            }
-        }, {
-            key: '828265658383',
-            fn: () => {
-                application.dm = true;
-                application.tab.region0 ? application.destroyFullSpect() : application.initFullSpect();
-            }
-        }];
-    document.addEventListener('keydown', function(c) {
-        a += '' + c.keyCode;
-        var d = true;
-        for (const f of b) {
-            if (f.key.indexOf(a) === 0)
-                d = false;
-
-            if (a === f.key) {
-                a = '' + c.keyCode;
-                Settings.displayChatInfo('', 'Activated');
-                return f.fn();
-            }
-        }
-        if (d) a = '' + c.keyCode;
-    });
-}
-onKonamiCode();
 const hotkeysSetup = {
     lastPressedKey: '',
     lastKeyId: '',
@@ -680,16 +663,21 @@ const hotkeysSetup = {
     loadDefaultHotkeys() {
         hotkeys = {};
         for (const a in hotkeysCommand) {
-            if (hotkeysCommand.hasOwnProperty(a))
+            if (hotkeysCommand.hasOwnProperty(a)) {
                 hotkeys[hotkeysCommand[a].defaultKey] = a;
+            }
         }
         hotkeys['spec-messageKey'] = this.defaultMessageKey;
     },
     loadHotkeys() {
-        window.localStorage.getItem('ogarioHotkeys2') !== null ? hotkeys = JSON.parse(window.localStorage.getItem('ogarioHotkeys2')) : this.loadDefaultHotkeys();
-
-        if (window.localStorage.getItem('ogarioCommands') !== null)
+        if (window.localStorage.getItem('ogarioHotkeys2') !== null) {
+            hotkeys = JSON.parse(window.localStorage.getItem('ogarioHotkeys2'));
+        } else {
+            this.loadDefaultHotkeys();
+        }
+        if (window.localStorage.getItem('ogarioCommands') !== null) {
             chatCommand = JSON.parse(window.localStorage.getItem('ogarioCommands'));
+        }
     },
     saveHotkeys() {
         window.localStorage.setItem('ogarioHotkeys2', JSON.stringify(hotkeys));
@@ -697,28 +685,26 @@ const hotkeysSetup = {
     },
     saveCommands() {
         $('#hotkeys .command-in').each(function() {
-            const a = $(this),
-                b = a.attr('id');
-
-            if (chatCommand.hasOwnProperty(b))
+            const a = $(this);
+            const b = a.attr('id');
+            if (chatCommand.hasOwnProperty(b)) {
                 chatCommand[b] = a.val();
+            }
         });
-
         window.localStorage.setItem('ogarioCommands', JSON.stringify(chatCommand));
     },
     resetHotkeys() {
         this.loadDefaultHotkeys();
-
         $('#hotkeys-cfg .custom-key-in').each(function() {
             const a = $(this).attr('id');
-
-            if (hotkeysCommand[a])
+            if (hotkeysCommand[a]) {
                 $(this).val(hotkeysCommand[a].defaultKey);
+            }
         });
     },
     setHotkeysMenu() {
         const a = this;
-        $('#hotkeys').append('\x0a        <div id=\"hotkeys-cfg\"></div>\x0a        <div id=\"hotkeys-inst\"><ul><li>' + dict('hk-inst-assign') + '</li><li>' + dict('hk-inst-delete') + '</li><li>' + dict('hk-inst-keys') + '</li></ul>\x0a        </div>');
+        $('#hotkeys').append('\x0a        <div id=\"hotkeys-cfg\"></div>\x0a        <div id=\"hotkeys-inst\"><ul><li>' + dictonary['hk-inst-assign'] + '</li><li>' + dictonary['hk-inst-delete'] + '</li><li>' + dictonary['hk-inst-keys'] + '</li></ul>\x0a        </div>');
         $('#hotkeys-bottom').html('\x0a        <div class=\"input-group-row\">\x0a            <div class=\"input-box-cell\"><div class=\"button b\" id=\"reset-hotkeys\"><i class=\"fas fa-trash-restore\"></i> ' + dictonary.restoreSettings + '</div></div>\x0a            <div class=\"input-box-cell\"><div class=\"button b\" id=\"save-hotkeys\"><i class=\"fas fa-save\"></i> ' + dictonary.saveSett + '</div></div>\x0a        </div>');
         for (const b in hotkeysCommand) {
             if (hotkeysCommand.hasOwnProperty(b)) {
@@ -733,32 +719,29 @@ const hotkeysSetup = {
                 if (c.type === 'command') {
                     const f = b.replace('hk-', '');
                     $('#hotkeys-cfg').append('\x0a                    <div class=\"hotkey-box\">\x0a                    <div class=\"hotkey-title\"><input id=\"' + f + '\" class=\"command-in\" value=\"' + chatCommand[f] + '\" maxlength=\"80\" /></div>\x0a                    <div class=\"default-key\"><div>' + c.defaultKey + '</div></div>\x0a                    <div class=\"custom-key\"><input id=\"' + b + '\" class=\"custom-key-in\" value=\"' + d + '\" /></div>\x0a                    </div>');
-                } else $('#hotkeys-cfg').append('<div class=\"hotkey-box\">\x0a                    <div class=\"hotkey-title\"><div>' + c.label + '</div></div>\x0a                    <div class=\"default-key\"><div>' + c.defaultKey + '</div></div>\x0a                    <div class=\"custom-key\"><input id=\"' + b + '\" class=\"custom-key-in\" value=\"' + d + '\" /></div>\x0a                    </div>');
+                } else {
+                    $('#hotkeys-cfg').append('<div class=\"hotkey-box\">\x0a                    <div class=\"hotkey-title\"><div>' + c.label + '</div></div>\x0a                    <div class=\"default-key\"><div>' + c.defaultKey + '</div></div>\x0a                    <div class=\"custom-key\"><input id=\"' + b + '\" class=\"custom-key-in\" value=\"' + d + '\" /></div>\x0a                    </div>');
+                }
             }
         }
-
         $(document).on('click', '#reset-hotkeys', g => {
             g.preventDefault();
             a.resetHotkeys();
             g.target.p = g.target.p || g.target.innerHTML;
             g.target.innerHTML = dictonary.saved;
-
             setTimeout(() => {
                 g.target.innerHTML = g.target.p;
             }, 500);
         });
-
         $(document).on('click', '#save-hotkeys', g => {
             g.preventDefault();
             a.saveHotkeys();
             g.target.p = g.target.p || g.target.innerHTML;
             g.target.innerHTML = dictonary.saved;
-
             setTimeout(() => {
                 g.target.innerHTML = g.target.p;
             }, 500);
         });
-
         $(document).on('click', '.hotkeys-link', g => {
             $('#hotkeys').fadeIn(500);
             $('#hotkeys-cfg').perfectScrollbar('update');
@@ -766,12 +749,13 @@ const hotkeysSetup = {
         });
     },
     getPressedKey(a) {
-        let b = '',
-            c = '';
-        if (a.ctrlKey || a.keyCode == 17)
+        let b = '';
+        let c = '';
+        if (a.ctrlKey || a.keyCode == 17) {
             b = 'CTRL';
-        else if (a.altKey || a.keyCode == 18)
+        } else if (a.altKey || a.keyCode == 18) {
             b = 'ALT';
+        }
         switch (a.keyCode) {
             case 9:
                 c = 'TAB';
@@ -821,7 +805,9 @@ const hotkeysSetup = {
                 break;
         }
         if (b !== '') {
-            if (c !== '') return b + '+' + c;
+            if (c !== '') {
+                return b + '+' + c;
+            }
             return b;
         }
         return c;
@@ -840,21 +826,29 @@ const hotkeysSetup = {
         return b;
     },
     setHotkey(a, b) {
-        if (!b || this.lastPressedKey === a && this.lastKeyId === b) return;
+        if (!b || this.lastPressedKey === a && this.lastKeyId === b) {
+            return;
+        }
         const c = $('#' + b).val();
         this.deleteHotkey(c, b);
-        if (a === 'DEL') return;
+        if (a === 'DEL') {
+            return;
+        }
         if (hotkeys[a] && hotkeys[a] !== b) {
-            const d = hotkeys[a],
-                e = this.setDefaultHotkey(d);
-            e ? (hotkeys[e] = d, $('#' + d).val(e)) : this.deleteHotkey(a, d);
+            const d = hotkeys[a];
+            const e = this.setDefaultHotkey(d);
+            if (e) {
+                hotkeys[e] = d;
+                $('#' + d).val(e);
+            } else {
+                this.deleteHotkey(a, d);
+            }
         }
         hotkeys[a] = b;
         $('#' + b).val(a);
-
-        if (b === 'hk-chatMessage')
+        if (b === 'hk-chatMessage') {
             hotkeys['spec-messageKey'] = a;
-
+        }
         this.lastPressedKey = a;
         this.lastKeyId = b;
     },
@@ -865,7 +859,9 @@ const hotkeysSetup = {
 };
 document.onkeydown = a => {
     const b = hotkeysSetup.getPressedKey(a);
-    if (a.target.tagName === 'INPUT' && a.target.className !== hotkeysSetup.inputClassName && b !== hotkeys['spec-messageKey']) return;
+    if (a.target.tagName === 'INPUT' && a.target.className !== hotkeysSetup.inputClassName && b !== hotkeys['spec-messageKey']) {
+        return;
+    }
     if (b !== '' && !keyBlind[b]) {
         keyBlind[b] = true;
         if (b === 'ESC') {
@@ -881,81 +877,89 @@ document.onkeydown = a => {
         if (hotkeys[b]) {
             a.preventDefault();
             const c = hotkeys[b];
-
-            if (c !== '' && hotkeysCommand[c])
-                if (hotkeysCommand[c].keyDown)
+            if (c !== '' && hotkeysCommand[c]) {
+                if (hotkeysCommand[c].keyDown) {
                     hotkeysCommand[c].keyDown();
+                }
+            }
         }
     }
-}, document.onkeyup = a => {
+};
+document.onkeyup = a => {
     const b = hotkeysSetup.getPressedKey(a);
     if (b !== '') {
         if (hotkeys[b]) {
             const c = hotkeys[b];
-
-            if (c !== '' && hotkeysCommand[c])
-                if (hotkeysCommand[c].keyUp)
+            if (c !== '' && hotkeysCommand[c]) {
+                if (hotkeysCommand[c].keyUp) {
                     hotkeysCommand[c].keyUp();
+                }
+            }
         }
         keyBlind[b] = false;
     }
-}, window.onmousedown = a => {
+};
+window.onmousedown = a => {
     if (!$('#overlays').is(':visible')) {
         if (a.which == 2) {
-            if (settings.mouseMiddleFn !== 'false') {
+
+
+            if (!settings.mouseTricksplit) {
                 a.preventDefault();
-                if (hotkeysCommand[settings.mouseMiddleFn] && hotkeysCommand[settings.mouseMiddleFn].keyDown) hotkeysCommand[settings.mouseMiddleFn].keyDown();
+                comm.sendCommand(10);
+
+            } else {
+                a.preventDefault();
+                application && application.split16();
+
             }
+
         } else {
-            if (settings.mouseLeftFn !== 'false') {
+            if (settings.mouseSplit) {
                 if (a.which == 1 && !settings.mouseInvert || a.which == 3 && settings.mouseInvert) {
-                    if (a.target.tagName === 'INPUT') return;
-                    if (a.target.tagName === 'CANVAS') {
-                        if (hotkeysCommand[settings.mouseLeftFn] && hotkeysCommand[settings.mouseLeftFn].keyDown) hotkeysCommand[settings.mouseLeftFn].keyDown();
-                    }
+                    a.preventDefault();
+
+                    if (application)
+                        application.split();
                 }
             }
-            if (settings.mouseRightFn !== 'false') {
+            if (settings.mouseFeed) {
                 if (a.which == 3 && !settings.mouseInvert || a.which == 1 && settings.mouseInvert) {
-                    if (a.target.tagName === 'INPUT') return;
-                    if (a.target.tagName === 'CANVAS') {
-                        if (hotkeysCommand[settings.mouseRightFn] && hotkeysCommand[settings.mouseRightFn].keyDown) hotkeysCommand[settings.mouseRightFn].keyDown();
-                    }
+                    a.preventDefault();
+
+                    if (application)
+                        application.macroFeed(true);
                 }
             }
         }
     }
-}, window.onmouseup = a => {
-    if (a.which == 2) {
-        if (settings.mouseMiddleFn !== 'false') {
-            if (hotkeysCommand[settings.mouseMiddleFn] && hotkeysCommand[settings.mouseMiddleFn].keyUp) hotkeysCommand[settings.mouseMiddleFn].keyUp();
-        }
-    } else {
-        if (settings.mouseLeftFn !== 'false') {
-            if (a.which == 1 && !settings.mouseInvert || a.which == 3 && settings.mouseInvert) {
-                if (hotkeysCommand[settings.mouseLeftFn] && hotkeysCommand[settings.mouseLeftFn].keyUp) hotkeysCommand[settings.mouseLeftFn].keyUp();
-            }
-        }
-        if (settings.mouseRightFn !== 'false') {
-            if (a.which == 3 && !settings.mouseInvert || a.which == 1 && settings.mouseInvert) {
-                if (hotkeysCommand[settings.mouseRightFn] && hotkeysCommand[settings.mouseRightFn].keyUp) hotkeysCommand[settings.mouseRightFn].keyUp();
-            }
+};
+window.onmouseup = a => {
+    if (settings.mouseFeed) {
+        if (a.which == 3 && !settings.mouseInvert || a.which == 1 && settings.mouseInvert) {
+            if (application)
+                application.macroFeed(false);
         }
     }
-}, window.onbeforeunload = a => {
-    if (application.play) return dictonary.exit;
-    else return;
+};
+window.onbeforeunload = a => {
+    if (application.play) {
+        return dictonary.exit;
+    } else {
+        return;
+    }
 };
 
 function spectateBlind() {
-    window.onkeydown = a => {
-        if (81 == a.keyCode && window.application)
+    window.onkeydown = e => {
+        if (81 == e.keyCode && window.application)
             window.application.sendFreeSpectate();
     };
-
-    window.onkeyup = a => {};
+    window.onkeyup = e => {};
 }
-spectateBlind(), hotkeysSetup.init(), OverlayScrollbars(document.querySelectorAll('.scrollable'), {
+spectateBlind();
+hotkeysSetup.init();
+OverlayScrollbars(document.querySelectorAll('.scrollable'), {
     scrollbars: {
         visibility: 'visible',
         autoHide: 'leave',

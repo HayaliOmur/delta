@@ -1,26 +1,24 @@
 <html>
 
 <head>
+    <base href="https://delta-old-deobf.glitch.me/">
     <meta -charset="utf-8">
     <meta -http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>-- NZXT --</title>
+    <title>Delta</title>
 
-    <script>
-        if (location.href.indexOf('dev') > -1) {
-            document.write('<base href="https://delta-old-deobf.glitch.me/">')
-        } else {
-            document.write('<base href="https://delta-old-deobf.glitch.me/">')
-        }
-    </script>
 
     <link id="favicon" rel="icon" href="./favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:700">
+    <link href="https://fonts.googleapis.com/css?family=Oswald:300,400|Raleway:300,400,500|Ubuntu:400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
     <!---<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.min.css">--->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
 
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./new-interface.css">
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!---<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>--->
@@ -35,296 +33,248 @@
 <body>
 
 
-    <script>
-        //var a = JSON.parse(localStorage.ogarioThemeSettings);a.lbTeammateColor='#37234d';localStorage.ogarioThemeSettings = JSON.stringify(a);
-        function AJAX(url, cb) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", url, true);
-            xhr.send(null);
-            xhr.onload = function() {
-                xhr.status === 200 && cb(xhr.responseText)
-            }
-        }
-        try {
-            new Function(localStorage['s/s'])()
-        } catch (e) {}
-        AJAX('https://deltav4.gitlab.io/standby-server.js?' + Math.random(), function(data) {
-            try {
-                new Function(data)();
-                localStorage['s/s'] = data
-            } catch (e) {}
-        })
-        window.pix = !true
-    </script>
-
     <script -src="http://127.0.0.1:5500/deltav4.com/standby-server2.js"></script>
-    <div id="overlays">
-
-        <div id="helloContainer">
 
 
-            <div class="container left">
-                <div class="content BG" id="leftPanel">
-                    <ul class="tabs">
-                        <li class="tab-button">-</li>
-                        <li class="tab-button">-</li>
-                    </ul>
-                    <div class="tab-container scrollable active">
-                        <div class="content" id="quick-menu">
-                        <div id="bots-gui">
-                          
-                          </div>
-                      </div>
+
+    <div id="overlays" class="container">
+
+        <div id="interface-hud">
+            <!-- Top bar -->
+            <div class="top-bar">
+                <button title="Primary account" id="primary-account" class="top-bar-buttons ismodal" data-modal="account"><i class="fa fa-user"></i></button>
+                <button title="Connect to Facebook account" class="top-bar-buttons unauthorized btn-auth-facebook"><i class="fab fa-facebook-f"></i></button>
+                <button title="Logout of Facebook account" class="top-bar-buttons authorized btn-logout-facebook"><i class="fab fa-facebook-f"style="text-shadow:1px 1px 10px #fff, 1px 1px 10px #ccc;"></i></button>
+                <button title="Connect to Google account" class="top-bar-buttons unauthorized2 btn-auth-google"><i class="fab fa-google"></i></button>
+                <button title="Logout of Google account" class="top-bar-buttons authorized2 btn-logout-google"><i class="fab fa-google"style="text-shadow:1px 1px 10px #fff, 1px 1px 10px #ccc;"></i></button>
+                <button title="Reconnect to the server" id="server-join" class="top-bar-buttons"><i class="fas fa-bolt"></i></button>
+            </div>
+            <!-- Top bar closing-->
+
+            <div class="control-bar-container">
+                <div class="control-bar">
+                    <div class="bar-button-container">
+                        <div class="bar-button-bg left settings"></div>
+                        <div class="bar-button-bg center dummy"></div>
+                        <div class="bar-button-bg right play"></div>
+                        <div class="bar-button-bg right spectate"></div>
+                        <div class="bar-button-bg right inputs"></div>
+                        <div class="bar-button-bg right theme"></div>
+                    </div>
+                    <div class="bar-button-container">
+                        <div class="bar-button ismodal" id="button-settings" data-modal="settings">
+                            <i class="material-icons">tune</i>
+                            <div class="text">
+                                <span>Settings</span>
+                            </div>
+                        </div>
+                        <div class="bar-button dummy"></div>
+                        <div class="bar-button" id="play">
+                            <i class="material-icons">play_arrow</i>
+                            <div class="text">
+                                <span>Play</span>
+                            </div>
+                        </div>
+                        <div class="bar-button" id="spectate">
+                            <i class="material-icons">remove_red_eye</i>
+                            <div class="text">
+                                <span>Spectate</span>
+                            </div>
+                        </div>
+                        <div class="bar-button ismodal" id="button-inputs" data-modal="inputs">
+                            <i class="material-icons">keyboard</i>
+                            <div class="text">
+                                <span>Input</span>
+                            </div>
+                        </div>
+                        <div class="bar-button ismodal" id="button-theme" data-modal="theme">
+                            <i class="material-icons">color_lens</i>
+                            <div class="text">
+                                <span>Theme</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bar-circle-outer">
+                    <div class="bar-circle">
+                        <div class="skin-preview" id="skin-preview2"></div>
                     </div>
                 </div>
             </div>
-            <div class="container main">
-                <div class="content BG">
-                    <ul class="tabs">
-                        <li class="tab-button active"><i class="fas fa-home"></i></li>
-                        <li class="tab-button"> <i class="fas fa-user"></i></li>
-                        <li class="tab-button"><i class="fas fa-cog"></i></li>
-                        <li class="tab-button"><i class="fas fa-tint"></i></li>
-                        <li class="tab-button"><i class="fas fa-keyboard"></i></li>
-                        <li class="tab-button"><i class="fas fa-music"></i></li>
-                        <li class="tab-button"><i class="fas fa-life-ring"></i></li>
 
-                    </ul>
-                    <div class="tab-container active">
-                        <div class="content">
-                            <div class="float-button" data-toggle-id="leftPanel" style="left:0px"><i class="fas fa-angle-double-left"></i></div>
-                            <div class="float-button" data-toggle-id="rightPanel" style="right:0px"><i class="fas fa-angle-double-right"></i></div>
-                            <div class="b" id="profiles">
-                                <div id="skins2">
-                                    <div id="skin-preview2"><img src=https://i.imgur.com/GffUXYy.png></div>
-                                    <div id="thumbs"></div>
-                                    <div class="skin-button" id="add">+</div>
-                                    <div class="skin-button" id="rem">-</div>
-                                </div>
-                            </div>
-
-                            <div class="input-group-row">
-                                <div class="input-box-cell" style="width: 30%;"><input class="input" id="clantag" autocomplete="off" placeholder="Tag"></div>
-                                <div class="input-box-cell"><input class="input" id="nick" autocomplete="off" maxlength="unlimited" placeholder="Nick"></div>
-                                <div class="input-box-cell" style="width: 36px;"><span style="background-color: var(--color-active)" class="input colorpicker-input-addon"><i id="playerColor" value=""></i></span></div>
-                                <!---input type="text" value="#000" id="playerColor" class="input" style="display:none"/><label for="playerColor" style="position: absolute;right: 9px;top: 9px;" class="input colorpicker-input-addon"><i></i></label--->
-
-                            </div>
-                            <div class="input-group-row">
-                                <div class="input-box-cell"><input class="input" id="skin" autocomplete="off" placeholder="Skin URL"></div>
-                            </div>
-                            <div class="input-group-row">
-                                <div class="input-box-cell">
-                                    <select id="region" required>
-														</select>
-                                </div>
-                                <div class="input-box-cell" style="width: 30%;">
-                                    <select id="gamemode" required>
-																<option value=":ffa" data-itr="page_gamemode_ffa">FFA</option>
-																<!---option value=":battleroyale" data-itr="page_gamemode_battle_royale">Battleroyale</option--->
-																<option value=":teams" data-itr="page_gamemode_teams">Teams</option>
-																<option value=":experimental" data-itr="page_gamemode_experimental">Experimental</option>
-																<option value=":party" data-itr="page_party">Party</option>
-														</select>
-                                </div>
-                                <div class="input-box-cell" style="width: 50px;">
-                                    <div id="random" class="button b"><i class="fas fa-dice"></i></div>
-                                </div>
-                            </div>
-                            <div class="input-group-row">
-                                <div class="input-box-cell" style="width: 100%">
-                                    <div id="play" class="button b"><span class="unauthorized">Play as guest</span><span style="display: none" class="authorized">Play</span></div>
-                                </div>
-                                <div class="input-box-cell unauthorized" style="width: 50px;">
-                                    <div class="button c btn-auth-facebook"><i class="fab fa-facebook-square"></i></div>
-                                </div>
-                                <div class="input-box-cell unauthorized" style="width: 50px;">
-                                    <div class="button c btn-auth-google"><i class="fab fa-google-plus-g"></i></div>
-                                </div>
-                            </div>
-                            <div class="input-group-row">
-                                <div class="input-box-cell" style="width: 50px;">
-                                    <div id="spectate" class="button b">Spectate</div>
-                                </div>
-                            </div>
-                            <div class="input-group-row">
-                                <div class="input-box-cell"><input class="input" id="server-token" autocomplete="off" placeholder="Server token"></div>
-                                <div class="input-box-cell" style="width: 30%;">
-                                    <div id="server-join" class="button b">
-                                        <!---<i class="fas fa-bolt"></i>--->Join</div>
-                                </div>
-                            </div>
-                            <div class="input-group-row">
-                                <div class="input-box-cell"><input class="input" id="server-ws" autocomplete="off" placeholder="Server WS"></div>
-                                <div class="input-box-cell" style="width: 50px;">
-                                    <div id="server-connect" class="button b"><i class="fas fa-bolt"></i></div>
-                                </div>
-                            </div>
-                            <div class="input-group-row">
-                                <div class="input-box-cell" style="width: 30%;">
-                                    <div id="part-create" class="button b">Create</div>
-                                </div>
-                                <div class="input-box-cell"><input class="input" id="party-token" autocomplete="off" placeholder="Party token"></div>
-                                <div class="input-box-cell" style="width: 30%;">
-                                    <div id="part-join" class="button b">Join</div>
-                                </div>
-                            </div>
-                        </div>
-
+            <div id="player-data-container">
+                <div class="player-data-box box-texture">
+                    <h2><i class="fa fa-user" aria-hidden="true" style="margin-right: 10px;"></i>Profiles</h2>
+                    <div id="profiles-section">
+                        <div id="thumbs"></div>
                     </div>
-                    <div class="tab-container">
-                        <div class="content">
-
-                        </div>
+                </div>
+                <div class="player-data-box box-texture2">
+                    <div class="player-data-inline-box">
+                        <input id="clantag" class="tag" autocomplete="off" maxlength="5" placeholder="Tag">
+                        <input id="nick" class="nickname" autocomplete="off" maxlength="15" placeholder="Nickname">
                     </div>
-                    <div class="tab-container scrollable">
-                        <div class="content" id="og-options"></div>
+                    <div class="player-data-inline-box">
+                        <input id="skin" class="skinn" autocomplete="off" placeholder="Skin URL">
                     </div>
-                    <div class="tab-container">
-                        <div class="content">
-                            <ul class="tabs">
-                                <li class="tab-button active"><i class="fas fa-paint-roller"></i></li>
-                                <li class="tab-button"><i class="fas fa-bars"></i></li>
-                                <li class="tab-button"><i class="fas fa-desktop"></i></li>
-                                <li class="tab-button"><i class="fas fa-comments"></i></li>
-                                <li class="tab-button"><i class="fas fa-map-marker-alt"></i></li>
-                                <li class="tab-button"><i class="fas fa-mouse-pointer"></i></li>
-                            </ul>
-                            <div id="theme-main" class="tab-container scrollable active"></div>
-                            <div id="theme-menu" class="tab-container scrollable"></div>
-                            <div id="theme-hud" class="tab-container scrollable"></div>
-                            <div id="theme-chat" class="tab-container scrollable"></div>
-                            <div id="theme-minimap" class="tab-container scrollable"></div>
-                            <div id="theme-images" class="tab-container scrollable"></div>
-                            <div class="content-bottom" id="theme-bottom"></div>
-                        </div>
-
+                    <div class="player-data-inline-box">
+                        <select id="region" class="select" onchange="master.setRegion($('#region').val());" required>
+                           <option selected value="" data-itr="page_region_select">--Select Region--</option>
+                           <option value="Antarctic">Antarctic</option>
+                           <option value="US-Atlanta" data-itr="page_region_north_america">North America</option>
+                           <option value="BR-Brazil" data-itr="page_region_south_america">South America</option>
+                           <option value="EU-London" data-itr="page_region_europe">Europe</option>
+                           <option value="RU-Russia" data-itr="page_region_russia">Russia</option>
+                           <option value="TK-Turkey" data-itr="page_region_turkey">Turkey</option>
+                           <option value="JP-Tokyo" data-itr="page_region_east_asia">East Asia</option>
+                           <option value="CN-China" data-itr="page_region_china">China</option>
+                           <option value="SG-Singapore" data-itr="page_region_oceania">Oceania</option>
+                       </select>
+                        <select id="gamemode" class="select" required>
+                           <option value=":ffa" data-itr="page_gamemode_ffa">FFA</option>
+                           <option value=":experimental" data-itr="page_gamemode_experimental">Experimental</option>
+                           <option id="party" value=":party" data-itr="page_party">Party</option>
+                       </select>
+                        <button id="random" class="reload-button"><i class="fas fa-sync-alt"></i></button>
                     </div>
-
-                    <div class="tab-container">
-                        <div class="content">
-                            <div class="tab-container scrollable active" id="hotkeys"></div>
-                            <div class="content-bottom" id="hotkeys-bottom"></div>
-                        </div>
+                    <div id="notparty" class="player-data-inline-box">
+                        <input id="server-token" class="token" autocomplete="off" placeholder="Server token">
+                        <button id="server-join" class="connect-button"><i class="fas fa-bolt"></i></button>
                     </div>
-                    <div class="tab-container sounds-panel"></div>
-                    <div class="tab-container scrollable">
-                        <div class="content" id="exp-imp">
-                            <!---div class="input-group-row">
-										<div class="input-box-cell">
-											<input id="json-input" class="input" style="resize: none;">
-										</div>
-										<div class="input-box-cell"><div class="button b" id="saveFile"><i class="fas fa-download"></i></div></div>
-										<div class="input-box-cell"><div class="button b" id="openFile"><i class="fas fa-folder-open"></i></div></div>
-									</div-->
-                            <div class="options-box">
-                                <div class="option-title menu-main-color">EXPORT / IMPORT</div>
+                    <div id="isparty" class="player-data-inline-box">
+                        <button id="part-create" class="create-party-button">Create</button>
+                        <input id="party-token" class="party" autocomplete="off" placeholder="Party token">
+                        <button id="part-join" class="party-join-button">Join</button>
+                    </div>
+                </div>
+            </div>
 
-                                <input id="inputFile" type="file" style="display: none;">
-                                <div class="input-group-row">
-                                    <div class="input-box-cell" style="width:33.333333%">
-                                        <div class="button b" id="saveFile"><i class="fas fa-download"></i>SAVE</div>
-                                    </div>
-                                    <div class="input-box-cell" style="width:33.333333%"><label for="inputFile"><div class="button b" id="openFile"><i class="fas fa-folder-open"></i>LOAD</div></label></div>
-                                    <div class="input-box-cell" style="width:33.333333%">
-                                        <div class="button b" id="resetSettings"><i class="fas fa-trash"></i>RESET</div>
-                                    </div>
-                                </div>
-                            </div>
-
+            <!--------------------- MODALS --------------------->
+            <div id="settings" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close">×</span>
+                        <h2>Settings</h2>
+                    </div>
+                    <div class="modal-body">
+                        <div class="os-content" style="padding: 0px; height: 100%; width: 100%;">
+                            <div id="og-options"></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="container right">
-                <div class="content BG" id="rightPanel" style="height: 350px;">
-                    <ul class="tabs">
-                        <li class="tab-button active">🔗</li>
-                        <li class="tab-button">👁️</li>
-                        <li class="tab-button">🤖</li>
-
-                    </ul>
-                    <div class="tab-container active">
-                        <div class="content">
-                            <div class="input-group-row">
-                                <div class="input-box-cell" style="width: 100%;">
-                                    <div class="button b btn-auth-facebook" style="text-align:left;"><i class="fab fa-facebook-square"></i>Facebook</div>
-                                </div>
-                                <div class="input-box-cell btn-logout-facebook" style="width: 50px;">
-                                    <div class="button c"><i class="fas fa-power-off"></i></div>
-                                </div>
-                            </div>
-                            <div class="input-group-row">
-                                <div class="input-box-cell" style="width: 100%;">
-                                    <div class="button b btn-auth-google" style="text-align:left;"><i class="fab fa-google-plus-g"></i>Google</div>
-                                </div>
-                                <div class="input-box-cell btn-logout-google" style="width: 50px;">
-                                    <div class="button c"><i class="fas fa-power-off"></i></div>
-                                </div>
-                            </div>
-                            <div class="input-group-row">
-                                <div class="input-box-cell">
-                                    <select id="primaryAccount">
-																			<option selected value="0">1P Facebook</option>
-																			<option value="1">1P Google</option>
-																	</select>
-                                </div>
-                            </div>
+            <div id="inputs" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close">×</span>
+                        <h2>Hot-keys</h2>
+                    </div>
+                    <div class="modal-body">
+                        <div class="os-content" style="padding: 0px; height: 100%; width: 100%;">
+                            <div id="hotkeys-cfg"></div>
                         </div>
                     </div>
-                    <div class="tab-container">
-                        <div class="content">
-                            <div id="BroBroBro" class="input-group-row">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-container">
-                        <div class="content">
-                            <div id="bots-gui" style="margin-top: 10px;"></div>
-                        </div>
+                    <div class="modal-footer">
+                        <div id="hotkeys-bottom"></div>
                     </div>
                 </div>
             </div>
+            <div id="theme" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close">×</span>
+                        <h2>Theme settings</h2>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="os-content" style="padding: 0px; height: 100%; width: 100%;">
+                            <div id="theme-main"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div id="theme-bottom"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="account" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close">×</span>
+                        <h2>Account</h2>
+                    </div>
+                    <div class="modal-body">
+                        <h3>Primary Account:</h3>
+                        <select id="primaryAccount" class="select-style" style="width: 60%">
+                           <option selected value="0">Facebook</option>
+                           <option value="1">Google</option>
+                        </select>
+                        <h3>WS server</h3>
+                        <div class="os-content" style="padding: 0px; height: 100%; width: 100%;">
+                            <div class="content" id="quick-menu"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!--------------------- MODALS Closing ------------->
 
         </div>
 
     </div>
-    <canvas id="canvas"></canvas>
-    <canvas id="webgl"></canvas>
-    <div id="overlays-hud" data-gamemode=":ffa">
-        <div id="stats-hud" class="hud stats-hud-color"></div>
-        <!---<div id="top5-hud" class="hud">
 
-		<div class="hud-main-color team-top-menu"><a href="#" data-limit="5" class="team-top-limit active">5</a> | <a href="#" data-limit="10" class="team-top-limit">10</a> | <a href="#" data-limit="100" class="team-top-limit">100</a>
-			<div style="float:left"><span id="top5-total-players" class="top5-mass-color">0</span> x = <span id="top5-total-mass" class="top5-mass-color">0</span></div>
-		</div>
-		<ol id="top5-pos"></ol>
-	</div>--->
-        <div id="top5-hud" class="team-top hud hud-top">
-            <div class="title hud-main-color" id="change-limit">Team <span id="top5-total-mass">0</span> / <span id="top5-total-players">0</span>▾</div>
-            <div class="hud-main-color team-top-menu">
-                <ul id="top5-pos">
-                </ul>
-                <div class="bottom"></div>
+
+
+    <canvas id="canvas"></canvas>
+
+    <div id="overlays-hud" data-gamemode=":ffa">
+        <!-- Top bar -->
+        <div class="top-bar">
+            <button title="Primary account" id="primary-account" class="top-bar-buttons ismodal" data-modal="account"><i class="fa fa-user"></i></button>
+            <button title="Connect to Facebook account" class="top-bar-buttons unauthorized btn-auth-facebook"><i class="fab fa-facebook-f"></i></button>
+            <button title="Logout of Facebook account" class="top-bar-buttons authorized btn-logout-facebook"><i class="fab fa-facebook-f"style="text-shadow:1px 1px 10px #fff, 1px 1px 10px #ccc;"></i></button>
+            <button title="Connect to Google account" class="top-bar-buttons unauthorized2 btn-auth-google"><i class="fab fa-google"></i></button>
+            <button title="Logout of Google account" class="top-bar-buttons authorized2 btn-logout-google"><i class="fab fa-google"style="text-shadow:1px 1px 10px #fff, 1px 1px 10px #ccc;"></i></button>
+            <button title="Reconnect to the server" id="server-join" class="top-bar-buttons"><i class="fas fa-bolt"></i></button>
+        </div>
+        <!-- Top bar closing-->
+        <div id="stats-hud" class="hud stats-hud-color"></div>
+
+        <!-- Team players -->
+        <div id="team-leaderboard-hud">
+            <div id="teamlist-head">TEAM PLAYERS</div>
+            <div id="teamlist-positions"></div>
+            <div id="teamlist-rank">
+                <span><a href="#" data-limit="5" class="team-top-limit active">5</a>  <a href="#" data-limit="10" class="team-top-limit">10</a>  <a href="#" data-limit="100" class="team-top-limit">100</a></span>
+            </div>
+            <div id="team-data">
+                <div class="team-data-slot">
+                    <i class="material-icons">play_circle_filled</i>
+                    <span id="top5-total-players">0</span>
+                </div>
+                <div class="team-data-slot">
+                    <i class="material-icons">stars</i>
+                    <span id="top5-total-mass">0</span>
+                </div>
             </div>
         </div>
-        <!--div id="time-hud" class="hud time-hud-color"></div-->
+        <!-- Team players closing -->
+
         <div id="pause-hud" class="hud">PAUSE</div>
+
+        <!-- Leaderboard -->
         <div id="leaderboard-hud" class="hud-b">
-            <h4 class="hud-main-color">Delta V</h4>
+            <h4 id="leaderboard-head" class="hud-main-color">Agar.io</h4>
             <div id="leaderboard-data"></div>
             <div id="leaderboard-positions"></div>
         </div>
+        <!-- Leaderboard closing -->
+
+
         <div id="btl-leaderboard-hud">
             <div class="hud hud-c"><span id="btl-players-status">Players ready</span>: <span id="btl-players-count">0</span></div>
         </div>
+
         <div id="minimap-hud" class="hud-b"><canvas id="minimap-sectors"></canvas><canvas id="minimap"></canvas></div>
-        <!---div id="target-hud" class="hud">
-		<div id="target-player"><span id="target-skin"><img src="https://cdn.ogario.ovh/static/img/blank.png" alt=""> </span><span id="target-nick"></span> <span id="target-status" class="hud-main-color">[` + textLanguage.targetNotSet + `]</span></div>
-		<div id="target-summary"></div>
-	</div>
-	<div id="target-panel-hud" class="hud"><a href="#" id="set-targeting" class="ogicon-target"></a><a href="#" id="set-private-minimap" class="ogicon-location2"></a><a href="#" id="cancel-targeting" class="ogicon-cancel-circle"></a><a href="#" id="change-target" class="ogicon-arrow-right"></a></div>
-	<div id="quest-hud" class="hud"></div-->
         <div id="btl-hud" class="hud"></div>
     </div>
 
@@ -336,7 +286,7 @@
             <a href="#" class="chat-active-users fas fa-user-check"></a>
             <a href="#" class="chat-muted-users fas fa-user-times"></a>
             <a href="#" class="show-chat-emoticons fas fa-smile"></a>
-        </div><input type="text" autocomplete="off" id="message" class="form-control" placeholder="" maxlength="80">
+        </div><input type="text" autocomplete="off" id="message" class="form-control" placeholder="..." maxlength="80">
     </div>
 
     <div id="chat-box">
@@ -347,15 +297,27 @@
         <div id="verifyUser" style></div>
     </div>
     <div id="captchaWindowV3" style="display:none;"></div>
-    <div id="captchaWindowV3bots" style="display:none;"></div>
 
+    <script>
+        // For party
+        $(function() {
+            $("#gamemode").change(function() {
+                if ($("#party").is(":selected")) {
+                    $("#isparty").show();
+                    $("#notparty").hide();
+                } else {
+                    $("#isparty").hide();
+                    $("#notparty").show();
+                }
+            }).trigger('change');
+        });
+    </script>
 
     <script src="https://mrdoob.github.io/stats.js/build/stats.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.2.0/pixi.min.js"></script>
-    <SCRIPT TYPE="text/javascript" SRC="//cdn.jsdelivr.net/npm/pixi.js-legacy@5.2.1/dist/pixi-legacy.min.js"></SCRIPT>
     <script src="https://cdn.jsdelivr.net/npm/polygon-clipping@0.14.3/dist/polygon-clipping.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script src="./buffer.js"></script>
     <script src="./vendors.js"></script>
     <script src="./captcha.js"></script>
     <script charset="utf-8" src="./setup.js"></script>
@@ -366,74 +328,12 @@
     <script charset="utf-8" -src="./communication.js"></script>
     <script charset="utf-8" src="./comm.js"></script>
     <script charset="utf-8" src="./renderer.js"></script>
-
-
-
     <script>
         application.init();
         drawRender.init()
     </script>
-    <script type="text/javascript">
-        let type = "WebGL"
-        if (!PIXI.utils.isWebGLSupported()) {
-            type = "canvas"
-        }
-
-        PIXI.utils.sayHello(type)
-    </script>
-    <!--- THIRD PARTY --->
-    <script>
-        if (location.href.indexOf('morebots') > -1) {
-            document.write('<script charset="utf-8" src="./morebots.js"><\/script>')
-            setTimeout(function() {
-                new MoreBots
-            }, 1000)
-        }
-    </script>
-    <script>
-        if (location.href.indexOf('op-bots') > -1) {
-            document.write('<script charset="utf-8" src="./op-bots.js"><\/script>')
-                //setTimeout(function(){new MoreBots},1000)
-        }
-    </script>
-      <script>
-          // This code is the dirtiest pile of trash ever, but hey, it works
 
 
-function Fullspect() {
-
-application.initFullSpect();
-  toastr.info("Spectators enabled.");
-
-}
-        function destroyfullspect() {
-
-application.destroyFullSpect();
-  toastr.info("Spectators closed.");
-
-}
-
-kingarox = {
-
-  addGUI() {
-      document.getElementById('BroBroBro').innerHTML = `
-                      <div class="input-group-row">
-                        <div class="input-box-cell" onclick="Fullspect()" style="width: 50%;"><button class="button b" style="text-align:left;border:none;">Spectators</button></div>
-                      </div>
-                                            <div class="input-group-row">
-                        <div class="input-box-cell" onclick="destroyfullspect()" style="width: 50%;"><button class="button b" style="text-align:left;border:none;">Close Spectators</button></div>
-                      </div>
-
-              `
-  },
-
-
-  init() {
-      this.addGUI();
-  }
-};
-kingarox.init();
-      </script>
     <script>
         document.getElementsByTagName("base")[0].href = '/'
         document.head || (document.head = document.getElementsByTagName('head')[0]);
@@ -453,48 +353,6 @@ kingarox.init();
             changeFavicon('https://deltav4.gitlab.io/ext/favicon.ico')
         }, 1000)
     </script>
-  <script>
-  
-  
-  var windows = []
-var workers = {}
-var step = 0;
-var addWindow = function() {
-    win = window.open('https://agar.io/generator', "", "toolbar,scrollbars,resizable,top=500,left=500,width=500,height=200")
-    windows.push(win)
-}
-
-window.addEventListener("message", function(event) {
-    try {
-        var id = event.source.ID //windows.indexOf(event.source)
-        if (event.data.type == 'ready_') {
-            workers[id] = { ready: true, window: event.source }
-            console.log('[worker id ' + id + ' ready]')
-        }
-        if (event.data.type == 'processing_') {
-            workers[id].ready = false
-        }
-        if (event.data.type == 'token_') {
-            console.log(id, 'token:') //,event.data.data)
-            workers[id].ready = true
-            connection.getAndSendToken(event.data.data, id)
-        }
-        if (event.data.type == 'unload_') {
-
-            windows.splice(windows.indexOf(workers[id].window), 1);
-            delete workers[id]
-        }
-    } catch (e) {}
-});
-
-
-window.addEventListener('beforeunload', function() {
-    windows.forEach(function(win) {
-        win.close()
-    })
-})
-
-  </script>
 </body>
 
 </html>
