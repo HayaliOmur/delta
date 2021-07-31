@@ -606,6 +606,7 @@ class Ogario {
     }
     connect() {
         this.closeConnection();
+        var e = this;
         console.log('Connecting main server');
         //this.publicIP = "wss://snez.org:8080/ws?040";
         this.socket = new WebSocket(this.publicIP);
@@ -614,16 +615,16 @@ class Ogario {
 
         this.socket.onopen = () => {
             console.log('Connected');
-            const a = this.createView(3);
-            a.setUint8(0, 0);
-            a.setUint16(1, 401, true);
+            var t = e.createView(3);
+            t.setUint8(0, 0);
+            t.setUint16(1, 401, true);
             
-            this.sendBuffer(a);
-            a.setUint8(0, 5);
-            a.setUint16(1, 50, true);
-            a.emit("estabilished");
+            e.sendBuffer(t);
+            t.setUint8(0, 5);
+            t.setUint16(1, 50, true);
+            e.emit("estabilished");
           
-            this.sendBuffer(a);
+            e.sendBuffer(t);
             
           this.lastFlush();
             this.setServerData();
