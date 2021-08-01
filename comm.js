@@ -606,27 +606,28 @@ class Ogario {
     }
     connect() {
         this.closeConnection();
-        var e = this;
-        console.log('Connecting main server');
+        this.setParty();
+        var app = this;
+        console.log(`[Application] Connecting to chat server`);
         //this.publicIP = "wss://snez.org:8080/ws?040";
-        this.socket = new WebSocket(this.publicIP);
+        this.socket = new WebSocket("wss://snez.org:8080/ws?030");
         this.socket.ogarioWS = true;
         this.socket.binaryType = 'arraybuffer';
 
         this.socket.onopen = () => {
-            console.log('Connected');
-            var t = e.createView(3);
-            t.setUint8(0, 0);
-            t.setUint16(1, 401, true);
+            console.log('[Application] Socket open chat server');
+            var buffer = app.createView(3);
+            buffer.setUint8(0, 0);
+            buffer.setUint16(1, 401, true);
             
-            e.sendBuffer(t);
-            t.setUint8(0, 5);
-            t.setUint16(1, 50, true);
-            e.emit("estabilished");
+            app.sendBuffer(buffer);
+            buffer.setUint8(0, 5);
+            buffer.setUint16(1, 50, true);
+            app.emit("estabilished");
           
-            e.sendBuffer(t);
+            app.sendBuffer(buffer);
             
-          this.lastFlush();
+            this.lastFlush();
             this.setServerData();
         };
 
@@ -635,12 +636,14 @@ class Ogario {
         };
 
         this.socket.onclose = a => {
-            console.log('Disconnected', a);
+            console.log('[Application] Socket close chat server', a);
+            app.flushData();
             this.reconnect();
         };
 
         this.socket.onerror = a => {
-            console.log('Connect error', a);
+            console.log(`[Application] Socket error chat server`, a);
+            app.flushData();
         };
     }
     closeConnection() {
