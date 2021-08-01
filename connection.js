@@ -1981,13 +1981,13 @@ class Client {
         if (right - left > 14000 && bottom - top > 14000 || !this.integrity) {
             if (this.mapOffsetFixed) return;
             if (this.integrity) {
-                var f = 14142;
-                this.mapShrinkW = f / (right - left);
-                this.mapShrinkH = f / (bottom - top);
-                left = this.shrinkX(left, right - left, f);
-                top = this.shrinkY(top, bottom - top, f);
-                right = this.shrinkX(right, right - left, f);
-                bottom = this.shrinkY(bottom, bottom - top, f);
+                var side = 14142;
+                this.mapShrinkW = side / (right - left);
+                this.mapShrinkH = side / (bottom - top);
+                left = this.shrinkX(left, right - left, side);
+                top = this.shrinkY(top, bottom - top, side);
+                right = this.shrinkX(right, right - left, side);
+                bottom = this.shrinkY(bottom, bottom - top, side);
             }
             this.mapShiftY = 0;
             this.mapShiftX = 0;
