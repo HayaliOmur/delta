@@ -549,6 +549,7 @@ const ExpImp = new(class {
                 'hk-split': 'hk-split',
                 'hk-macroFeed': 'hk-macroFeed',
                 'hk-split16': 'hk-split16',
+                'hk-split64': 'hk-split164',
                 'hk-doubleSplit': 'hk-doubleSplit',
                 'hk-switchPlayer': 'hk-switchPlayer',
                 chat_command: 'hk-comm10'
@@ -559,6 +560,7 @@ const ExpImp = new(class {
                 'hk-split': 'hk-split',
                 'hk-macroFeed': 'hk-macroFeed',
                 'hk-split16': 'hk-split16',
+                'hk-split64': 'hk-split64',
                 'hk-doubleSplit': 'hk-doubleSplit',
                 'hk-switchPlayer': 'hk-switchPlayer',
                 chat_command: 'hk-comm10'
@@ -567,6 +569,7 @@ const ExpImp = new(class {
             this.addOptionBox('.mouseGroup', 'mouseMiddleFn', {
                 none: 'false',
                 'hk-split16': 'hk-split16',
+                'hk-split64': 'hk-split64',
                 'hk-split': 'hk-split',
                 'hk-macroFeed': 'hk-macroFeed',
                 chat_command: 'hk-comm10'

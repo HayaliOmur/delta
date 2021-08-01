@@ -74,6 +74,16 @@ const hotkeysCommand = {
         keyUp: null,
         type: 'normal'
     },
+  'hk-split64': {
+        label: dict('hk-split64'),
+        defaultKey: 'SHIFT',
+        keyDown() {
+            if (application)
+                application.split64();
+        },
+        keyUp: null,
+        type: 'normal'
+    },
     'hk-pause': {
         label: dict('hk-pause'),
         defaultKey: 'R',

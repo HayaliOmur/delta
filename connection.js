@@ -1089,6 +1089,28 @@ class Client {
             this.sendSplit();
         }, 120);
     }
+      split64() {
+        this.sendSplit();
+
+        setTimeout(() => {
+            this.sendSplit();
+        }, 10);
+
+        setTimeout(() => {
+            this.sendSplit();
+        }, 20);
+
+        setTimeout(() => {
+            this.sendSplit();
+        }, 30);
+        
+        setTimeout(() => {
+            this.sendSplit();
+        }, 40);
+        setTimeout(() => {
+            this.sendSplit();
+        }, 50);
+    }
     sendNick(a) {
 
         window.lastNick = a;

@@ -1386,6 +1386,9 @@ const QServer = new(class {
         split16() {
             this.getActiveTab().split16();
         },
+        split64() {
+            this.getActiveTab().split64();
+        },
         tryResp() {
             function a() {
                 this.getActiveTab().sendNick(profiles[this.activeTab == 0 ? 'mainProfile' : 'slaveProfile'].nick);
