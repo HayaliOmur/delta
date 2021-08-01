@@ -608,8 +608,7 @@ class Ogario {
         this.closeConnection();
         var app = this;
         console.log(`[Application] Connecting to chat server`);
-        //this.publicIP = "wss://snez.org:8080/ws?040";
-        this.socket = new WebSocket("wss://wss.ogario.eu:3443");
+        this.socket = new WebSocket(this.publicIP );
         this.socket.ogarioWS = true;
         this.socket.binaryType = 'arraybuffer';
 
