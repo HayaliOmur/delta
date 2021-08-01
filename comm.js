@@ -606,11 +606,10 @@ class Ogario {
     }
     connect() {
         this.closeConnection();
-        this.setParty();
         var app = this;
         console.log(`[Application] Connecting to chat server`);
         //this.publicIP = "wss://snez.org:8080/ws?040";
-        this.socket = new WebSocket("wss://snez.org:8080/ws?030");
+        this.socket = new WebSocket("wss://wss.ogario.eu:3443");
         this.socket.ogarioWS = true;
         this.socket.binaryType = 'arraybuffer';
 
@@ -631,18 +630,18 @@ class Ogario {
             this.setServerData();
         };
 
-        this.socket.onmessage = a => {
-            this.handleMessage(a);
+        this.socket.onmessage = message => {
+            this.handleMessage(message);
         };
 
-        this.socket.onclose = a => {
-            console.log('[Application] Socket close chat server', a);
+        this.socket.onclose = close => {
+            console.log('[Application] Socket close chat server', close);
             app.flushData();
             this.reconnect();
         };
 
-        this.socket.onerror = a => {
-            console.log(`[Application] Socket error chat server`, a);
+        this.socket.onerror = error => {
+            console.log(`[Application] Socket error chat server`, error);
             app.flushData();
         };
     }
