@@ -897,7 +897,7 @@ class Client {
         return this.playerY + this.mapOffsetY;
     }
     connect(a) {
-        this.log('Connecting to game socket:', a);
+        console.log('Connecting to game socket:', a);
         const b = this;
         clearInterval(this.sendPositionInterval);
         this.closeConnection(true);
@@ -943,7 +943,7 @@ class Client {
         application.emit('connecting', this);
     }
     onOpen() {
-        this.log('Game server socket opened');
+        console.log('Game server socket opened');
         this.time = Date.now();
         let a = this.createView(5);
         a.setUint8(0, 254);
@@ -976,7 +976,7 @@ class Client {
         application.emit('error', this);
     }
     onClose(a) {
-        this.log('Game socket closed');
+        console.log('Game socket closed');
         this.flushCellsData();
         this.emit('closed');
 
@@ -1121,7 +1121,7 @@ class Client {
             this.sendNick2(a, b);
 
             if (this.gotCaptcha) {
-                this.log('Connection have unsolved recaptcha!');
+                console.log('Connection have unsolved recaptcha!');
                 application.emit('captcha', this);
             }
         });
@@ -1207,11 +1207,11 @@ class Client {
         this.sendMessage(j);
     }
     sendFbToken(a) {
-        this.log('Logging via FB');
+        console.log('Logging via FB');
         this.sendAccessToken(a, 2);
     }
     sendGplusToken(a) {
-        this.log('Logging via GL');
+        console.log('Logging via GL');
         this.sendAccessToken(a, 4);
     }
     sendRecaptcha(a) {
@@ -1227,7 +1227,7 @@ class Client {
     setClientVersion(a, b) {
         this.client_version = a;
         this.client_version_string = b;
-        this.log('Received client version:', a, b);
+        console.log('Received client version:', a, b);
     }
     generateClientKey(a, b) {
         if (!a.length || !b.byteLength) return null;
@@ -1274,7 +1274,7 @@ class Client {
         c = Math.imul(c, d) | 0;
         l = c >>> 15;
         c = l ^ c;
-        this.log('Generated client key:', c);
+        console.log('Generated client key:', c);
         return c;
     }
     shiftKey(a) {
@@ -1369,13 +1369,13 @@ class Client {
                 var f = this.indexedCells[w];
 
                 if (f) {
-                    this.log('IT HAPPENS');
+                    console.log('IT HAPPENS');
 
                     if (this.playerCells.indexOf(f) == -1) {
                         f.isPlayerCell = true;
                         this.playerColor = f.color;
                         this.playerCells.push(f);
-                        this.log('PLAYER CELL FIX!');
+                        console.log('PLAYER CELL FIX!');
                         toastr.info('Spawn fixed');
                     }
                 }
@@ -1478,7 +1478,7 @@ class Client {
                 application.handleLeaderboard(this);
                 break;
             case 54:
-                this.log(a);
+                console.log(a);
                 break;
             case 69:
                 var h = a.getUint16(c, true);
@@ -1507,7 +1507,7 @@ class Client {
                 }
 
                 if (settings.mapLocalFix3 && this.ghostCellsStep == 1 && this.ghostCells[0]) {
-                    this.log('Ready for reflection');
+                    console.log('Ready for reflection');
                     this.quadrant = this.calcQuadrant(this.ghostCells[0].x, this.ghostCells[0].y);
                     this.realQuadrant = this.calcQuadrant(this.ghostCells[0].rx, this.ghostCells[0].ry);
                     this.setQuadrant(this.lastQuadrant);
@@ -1523,7 +1523,7 @@ class Client {
                 break;
             case 85:
                 this.gotCaptcha = true;
-                this.log('Captcha requested');
+                console.log('Captcha requested');
                 application.emit('captcha', this);
                 break;
             case 102:
@@ -1624,14 +1624,14 @@ class Client {
 
                 break;
             case 179:
-                this.log(179);
+                console.log(179);
                 var j = a.getUint8(c);
                 const C = window.decodeURIComponent(window.escape(b()));
                 let D = null;
 
                 if (!j) {
                     D = window.decodeURIComponent(window.escape(b()));
-                    this.log('179', C, D);
+                    console.log('179', C, D);
                 }
 
                 break;
@@ -1672,7 +1672,7 @@ class Client {
                 for (var u = 5; u < 11; u++) {
                     s += String.fromCharCode(a.getUint8(c += 1, true));
                 }
-                this.log('Received protocol key:', this.protocolKey, 'v' + s);
+                console.log('Received protocol key:', this.protocolKey, 'v' + s);
                 break;
             case 242:
                 this.serverTime = a.getUint32(c, true) * 1000;
@@ -1711,13 +1711,13 @@ class Client {
                         this.estabilished = true;
                         application.emit('estabilished', this);
                         this.emit('estabilished', this);
-                        this.log('string', X);
+                        console.log('string', X);
                     }
                 } catch (Y) {}
                 this.setMapOffset(this.viewMinX, this.viewMinY, this.viewMaxX, this.viewMaxY);
                 break;
             default:
-                this.log('Unknown opcode:', a.getUint8(0), a);
+                console.log('Unknown opcode:', a.getUint8(0), a);
                 break;
         }
     }
@@ -1835,7 +1835,7 @@ class Client {
                 this.setMapOffset(this.viewMinX, this.viewMinY, this.viewMaxX, this.viewMaxY);
                 break;
             default:
-                this.log('[Connection] Unknown sub opcode:', a.readUInt8(0), a);
+                console.log('[Connection] Unknown sub opcode:', a.readUInt8(0), a);
                 break;
         }
     }
@@ -1900,35 +1900,35 @@ class Client {
         return a;
     }
     setQuadrant(a, b) {
-        var c = false,
-            d = false,
+        var mirrorV = false,
+            mirrorH = false,
             f = b || this.realQuadrant;
 
         if (a == false) {
-            c = false;
-            d = false;
+            mirrorV = false;
+            mirrorH = false;
         }
 
         if (f == 0) {
-            c = a == 2 || a == 3;
-            d = a == 1 || a == 2;
+            mirrorV = a == 2 || a == 3;
+            mirrorH = a == 1 || a == 2;
         } else {
             if (f == 1) {
-                c = a == 2 || a == 3;
-                d = a == 0 || a == 3;
+                mirrorV = a == 2 || a == 3;
+                mirrorH = a == 0 || a == 3;
             } else {
                 if (f == 2) {
-                    c = a == 1 || a == 0;
-                    d = a == 0 || a == 3;
+                    mirrorV = a == 1 || a == 0;
+                    mirrorH = a == 0 || a == 3;
                 } else if (f == 3) {
-                    c = a == 1 || a == 0;
-                    d = a == 1 || a == 2;
+                    mirrorV = a == 1 || a == 0;
+                    mirrorH = a == 1 || a == 2;
                 }
             }
         }
-        this.flipCells(c, d);
-        this.mirrorV = c;
-        this.mirrorH = d;
+        this.flipCells(mirrorV, mirrorH);
+        this.mirrorV = mirrorV;
+        this.mirrorH = mirrorH;
     }
     flipCells(a, b) {
         //his.playerX = /*Math.round*/ (window.user.ghostX / (this.ghostCells[0].x + this.mapOffsetX)) < 0 ? -1 : 1;
@@ -1977,55 +1977,55 @@ class Client {
         }
         this.ghostCells = [];
     }
-    setMapOffset(a, b, c, d) {
-        if (c - a > 14000 && d - b > 14000 || !this.integrity) {
+    setMapOffset(left, top, right, bottom) {
+        if (right - left > 14000 && bottom - top > 14000 || !this.integrity) {
             if (this.mapOffsetFixed) return;
             if (this.integrity) {
                 var f = 14142;
-                this.mapShrinkW = f / (c - a);
-                this.mapShrinkH = f / (d - b);
-                a = this.shrinkX(a, c - a, f);
-                b = this.shrinkY(b, d - b, f);
-                c = this.shrinkX(c, c - a, f);
-                d = this.shrinkY(d, d - b, f);
+                this.mapShrinkW = f / (right - left);
+                this.mapShrinkH = f / (bottom - top);
+                left = this.shrinkX(left, right - left, f);
+                top = this.shrinkY(top, bottom - top, f);
+                right = this.shrinkX(right, right - left, f);
+                bottom = this.shrinkY(bottom, bottom - top, f);
             }
             this.mapShiftY = 0;
             this.mapShiftX = 0;
-            var g = -((c - a) / 2),
-                h = -((d - b) / 2),
+            var g = -((right - left) / 2),
+                h = -((bottom - top) / 2),
                 i = 0,
                 j = 0;
-            let k = g - a + i,
-                l = h - b + j;
+            let k = g - left + i,
+                l = h - top + j;
             this.mapShiftX = i - k;
             this.mapShiftY = j - l;
-            a = this.shiftX(a);
-            b = this.shiftY(b);
-            c = this.shiftX(c);
-            d = this.shiftY(d);
-            this.mapOffsetX = (c - a) / 2 - c;
-            this.mapOffsetY = (d - b) / 2 - d;
-            this.mapMinX = a;
-            this.mapMinY = b;
-            this.mapMaxX = c;
-            this.mapMaxY = d;
+            left = this.shiftX(left);
+            top = this.shiftY(top);
+            right = this.shiftX(right);
+            bottom = this.shiftY(bottom);
+            this.mapOffsetX = (right - left) / 2 - right;
+            this.mapOffsetY = (bottom - top) / 2 - bottom;
+            this.mapMinX = left;
+            this.mapMinY = top;
+            this.mapMaxX = right;
+            this.mapMaxY = bottom;
             this.mapMidX = (this.mapMaxX + this.mapMinX) / 2;
             this.mapMidY = (this.mapMaxY + this.mapMinY) / 2;
 
             if (!this.mapOffsetFixed) {
-                this.viewX = (c + a) / 2;
-                this.viewY = (d + b) / 2;
+                this.viewX = (right + left) / 2;
+                this.viewY = (bottom + top) / 2;
             }
 
             this.mapOffsetFixed = true;
-            this.log('Map offset fixed (x, y):', this.mapOffsetX, this.mapOffsetY);
+            console.log('Map offset fixed (x, y):', this.mapOffsetX, this.mapOffsetY);
 
             this.emit('offset', this);
         } else {
-            this.viewportMinX = this.receiveX(a);
-            this.viewportMinY = this.receiveY(b);
-            this.viewportMaxX = this.receiveX(c);
-            this.viewportMaxY = this.receiveY(d);
+            this.viewportMinX = this.receiveX(left);
+            this.viewportMinY = this.receiveY(top);
+            this.viewportMaxX = this.receiveX(right);
+            this.viewportMaxY = this.receiveY(bottom);
         }
     }
     updateBound() {
