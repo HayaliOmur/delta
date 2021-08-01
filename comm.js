@@ -968,7 +968,8 @@ class Tab {
         }
     }
     addClient(a) {
-        if (this.cn.tabName !== 'master' && a === 'agartool') return console.log('agartool for !=master declined');
+        if (this.cn.tabName !== 'master' && a === 'agartool') 
+          return console.log('agartool for !=master declined');
         if (this.client[a]) return console.error('Chat client already exists!');
         const b = new chatApi[a](this);
         b.hidden = this.cn.tabName !== 'master';
