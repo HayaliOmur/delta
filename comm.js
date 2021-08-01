@@ -665,7 +665,7 @@ class Ogario {
     }
     strToBuff(a, b) {
         if (b === null) return 0;
-        const c = this.createView(1 + b.length * 2);
+        const c = this.createView(1 + 2 * b.length);
         c.setUint8(0, a);
         for (let d = 0; d < b.length; d++) {
             c.setUint16(1 + d * 2, b.charCodeAt(d), true);
@@ -685,6 +685,7 @@ class Ogario {
                 this.playerID = a.getUint32(1, true);
                 break;
             case 1:
+            
                 if (settings.mapGlobalFix && this.tab.cn.modeInt !== 3)
                     this.sendQuadrant(QServer.calcLocalQuadrant());
 
