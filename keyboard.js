@@ -76,7 +76,7 @@ const hotkeysCommand = {
     },
   'hk-split64': {
         label: dict('hk-split64'),
-        defaultKey: 'SHIFT',
+        defaultKey: '',
         keyDown() {
             if (application)
                 application.split64();
