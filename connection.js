@@ -712,7 +712,7 @@ class Client {
         this.integrity = true;
         this.client_protocol = 23;
         this.client_version_string = '3.11.2';
-        this.client_version = 31102;
+        this.client_version = 31109;
         this.gotCaptcha = false;
         this.quadrant = null;
         this.realQuadrant = null;
@@ -953,7 +953,7 @@ class Client {
         a = this.createView(5);
         a.setUint8(0, 255);
 
-        a.setUint32(1, this.client_version, true);
+        a.setUint32(1, master.client_version, true);
         this.sendMessage(a);
         this.connectionOpened = true;
         this.connectionTime = new Date();
@@ -966,7 +966,7 @@ class Client {
         a = new DataView(a.data);
 
         if (this.protocolKey)
-            a = this.shiftMessage(a, this.protocolKey ^ this.client_version);
+            a = this.shiftMessage(a, this.protocolKey ^ master.client_version);
 
         this.handleMessage(a);
     }
@@ -1186,14 +1186,14 @@ class Client {
 
         const d = 5,
             f = a.length,
-            g = this.client_version_string.length;
+            g = master.client_version_string.length;
         let h = [c, 8, 1, 18];
         this.writeUint32(h, f + g + 23);
         h.push(8, 10, 82);
         this.writeUint32(h, f + g + 18);
         h.push(8, b, 18, g + 8, 8, d, 18, g);
         for (var i = 0; i < g; i++) {
-            h.push(this.client_version_string.charCodeAt(i));
+            h.push(master.client_version_string.charCodeAt(i));
         }
         h.push(24, 0, 32, 0, 26);
         this.writeUint32(h, f + 3);
