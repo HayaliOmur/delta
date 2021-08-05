@@ -278,7 +278,7 @@ class Agartool {
         } catch (a) {}
         console.log('Search for room');
 
-        this.finderSocket = window.io.connect(this.publicIP, {
+        this.finderSocket = io.connect(this.publicIP, {
             query: 'version=5&server=' + encodeURIComponent(this.ws)
         });
 
