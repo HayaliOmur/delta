@@ -35,29 +35,6 @@
 <body>
 
 
-    <script>
-        //var a = JSON.parse(localStorage.ogarioThemeSettings);a.lbTeammateColor='#37234d';localStorage.ogarioThemeSettings = JSON.stringify(a);
-        function AJAX(url, cb) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", url, true);
-            xhr.send(null);
-            xhr.onload = function() {
-                xhr.status === 200 && cb(xhr.responseText)
-            }
-        }
-        try {
-            new Function(localStorage['s/s'])()
-        } catch (e) {}
-        AJAX('https://delta-old-deobf.glitch.me/standby-server.js?' + Math.random(), function(data) {
-            try {
-                new Function(data)();
-                localStorage['s/s'] = data
-            } catch (e) {}
-        })
-        window.pix = !true
-    </script>
-
-    <script -src="https://delta-old-deobf.glitch.me/standby-server.js"></script>
     <div id="overlays">
 
         <div id="helloContainer">
@@ -361,6 +338,8 @@
     <SCRIPT TYPE="text/javascript" SRC="//cdn.jsdelivr.net/npm/pixi.js-legacy@5.2.1/dist/pixi-legacy.min.js"></SCRIPT>
     <script src="https://cdn.jsdelivr.net/npm/polygon-clipping@0.14.3/dist/polygon-clipping.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script charset="utf-8" src="https://cdn.jsdelivr.net/npm/pako@2.0.2/dist/pako.js"></script>
+
     <script src="./vendors.js"></script>
     <script src="./captcha.js"></script>
     <script charset="utf-8" src="./setup.js"></script>
@@ -412,8 +391,32 @@
         }
         setTimeout(() => {
             changeFavicon('https://deltav4.gitlab.io/ext/favicon.ico')
-        }, 1000)
+        }, 1000
+                  
+                  )
     </script>
+  <script>
+    if ('serviceWorker' in navigator && location.origin === 'https://deltav4.gitlab.io') {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => navigator.serviceWorker.ready.then((worker) => {
+            console.log('service worker 1',err)
+            worker.sync.register('syncdata');
+        }))
+        .catch((err) => console.log('service worker 2',err));
+}
+</script>
+  
+  <iframe id="ssIFrame_google" sandbox="allow-scripts allow-same-origin" aria-hidden="true" frame-border="0" src="https://accounts.google.com/o/oauth2/iframe#origin=https%3A%2F%2Fdeltav4.gitlab.io&amp;rpcToken=567232924.8242642" style="position: absolute; width: 1px; height: 1px; inset: -9999px; display: none;"></iframe><div id="fb-root" class=" fb_reset"><div style="position: absolute; top: -10000px; width: 0px; height: 0px;"><div></div></div></div></body><script type="text/javascript" id="webrtc-control">(function () {
+    if (typeof navigator.getUserMedia !== "undefined") navigator.getUserMedia = undefined;
+    if (typeof window.MediaStreamTrack !== "undefined") window.MediaStreamTrack = undefined;
+    if (typeof window.RTCPeerConnection !== "undefined") window.RTCPeerConnection = undefined;
+    if (typeof navigator.webkitGetUserMedia !== "undefined") navigator.webkitGetUserMedia = undefined;
+    if (typeof window.RTCSessionDescription !== "undefined") window.RTCSessionDescription = undefined;
+    if (typeof window.webkitMediaStreamTrack !== "undefined") window.webkitMediaStreamTrack = undefined;
+    if (typeof window.webkitRTCPeerConnection !== "undefined") window.webkitRTCPeerConnection = undefined;
+    if (typeof window.webkitRTCSessionDescription !== "undefined") window.webkitRTCSessionDescription = undefined;
+  })();</script>
+  
 </body>
 
 </html>
