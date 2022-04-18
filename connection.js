@@ -1094,22 +1094,22 @@ class Client {
 
         setTimeout(() => {
             this.sendSplit();
-        }, 40);
+        }, 10);
 
         setTimeout(() => {
             this.sendSplit();
-        }, 40);
+        }, 20);
 
         setTimeout(() => {
             this.sendSplit();
-        }, 80);
+        }, 30);
         
         setTimeout(() => {
             this.sendSplit();
-        }, 80);
+        }, 40);
         setTimeout(() => {
             this.sendSplit();
-        }, 120);
+        }, 50);
     }
     sendNick(a) {
 
