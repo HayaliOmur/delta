@@ -246,7 +246,7 @@ var camera = new(class {
             }
             if (settings.rainbowBorders){
               const s = theme.bordersWidth / 2;
-              this.drawRainbowBorders(this.ctx, a.mapOffsetFixed, a.mapMinX - s, a.mapMinY - s, a.mapMaxX + s, a.mapMaxY + s, theme.bordersColor, theme.bordersWidth);
+              this.drawRainbowBorders(this.ctx, a.mapOffsetFixed, a.mapMinX - s, a.mapMinY - s, a.mapMaxX + s, a.mapMaxY + s, theme.bordersColor, theme.bordersWidth*10);
             }
 
             if (settings.virusesRange === true)
@@ -692,25 +692,8 @@ var camera = new(class {
                 }
             }
         },
-        drawMapBorders(a, b, c, d, e, f, g, h) {
-            if (!b) return;
-            a.save();
-            a.strokeStyle = g;
-            a.lineWidth = h;
-            a.beginPath();
-            a.moveTo(c, d);
-            a.lineTo(e, d);
-            a.lineTo(e, f);
-            a.lineTo(c, f);
-            if (settings.bordersGlow) {
-                a.shadowBlur = theme.bordersGlowSize;
-                a.shadowColor = theme.bordersGlowColor;
-            }
-            a.closePath();
-            a.stroke();
-            a.restore();
-        },
-          getGrad(ctx, x1,y1,x2,y2) {
+      
+                getGrad(ctx, x1,y1,x2,y2) {
       let grad=ctx.createLinearGradient(x1, y1, x2, y2);//Yahnych
       grad.addColorStop(0, "black");
       grad.addColorStop(0.25, "rgba(255,255,255,0.8)");
@@ -732,53 +715,74 @@ var camera = new(class {
         ctx.closePath();
         ctx.fill();
     },
-      drawRainbowBorders(ctx, mapOffset, minX, minY, maxX, maxY, stroke, width){
+      drawRainbowBorders(a, b, c, d, e, f, g, h){
         
-        if (!mapOffset) {
-            return;
-        }
-      ctx.save();
-      let m = (width/2)*1.1,
-          m2= width/2,
-          time = Date.now();
-          saturate = "100%", 
-          lightness = "50%";
+    if (!b) {
+        return;
+    }
+  a.save();
+  let m = (h/2)*1.1,
+      m2= h/2,
+      time = Date.now();
+      saturate = "100%", 
+      lightness = "50%";
+  
+  var g1 = a.createLinearGradient(c, 0, e, 0);
+  g1.addColorStop(0,    `hsl(${~~((time)/30+0)%360},${saturate},${lightness})`);
+  g1.addColorStop(0.33, `hsl(${~~((time)/30+60)%360},${saturate},${lightness})`);
+  g1.addColorStop(0.67, `hsl(${~~((time)/30+120)%360},${saturate},${lightness})`);
+  g1.addColorStop(1, `hsl(${~~((time)/30+180)%360},${saturate},${lightness})`);
+  var g2 = a.createLinearGradient(c, 0, e, 0);
+  g2.addColorStop(0, `hsl(${~~((time)/30+180)%360},${saturate},${lightness})`);
+  g2.addColorStop(0.33, `hsl(${~~((time)/30+240)%360},${saturate},${lightness})`);
+  g2.addColorStop(0.67, `hsl(${~~((time)/30+300)%360},${saturate},${lightness})`);
+  g2.addColorStop(1,    `hsl(${~~((time)/30+0)%360},${saturate},${lightness})`);
+  
+  this.gradLine(a, g1, c+m2-1,d+m2, e-m2+1,d+m2, e+m2+1,d-m2, c-m2-1,d-m2)//Yahnych
+  a.rotate(Math.PI / 2);
+  this.gradLine(a, g2, c+m2-1,d+m2, e-m2+1,d+m2, e+m2+1,d-m2, c-m2-1,d-m2)//Yahnych
+  a.rotate(Math.PI / 2);
+  this.gradLine(a, g1, c+m2-1,d+m2, e-m2+1,d+m2, e+m2+1,d-m2, c-m2-1,d-m2)//Yahnych
+  a.rotate(Math.PI / 2);
+  this.gradLine(a, g2, c+m2-1,d+m2, e-m2+1,d+m2, e+m2+1,d-m2, c-m2-1,d-m2)//Yahnych
+  a.rotate(Math.PI / 2);
+  
+  let top=this.getGrad(a, 0, d-m, 0, d+m);//Yahnych
+  
+  a.globalCompositeOperation = 'destination-out';
+  this.gradLine(a, top, c+m-1,d+m, e-m+1,d+m, e+m+1,d-m, c-m-1,d-m)//Yahnych
+  a.rotate(Math.PI / 2);
+  this.gradLine(a, top, c+m-1,d+m, e-m+1,d+m, e+m+1,d-m, c-m-1,d-m)
+  a.rotate(Math.PI / 2);
+  this.gradLine(a, top, c+m-1,d+m, e-m+1,d+m, e+m+1,d-m, c-m-1,d-m)
+  a.rotate(Math.PI / 2);
+  this.gradLine(a, top, c+m-1,d+m, e-m+1,d+m, e+m+1,d-m, c-m-1,d-m)
+  a.rotate(Math.PI / 2);
+  a.globalCompositeOperation = 'source-over';
+  a.restore();
+    
+  },
       
-      var g1 = ctx.createLinearGradient(minX, 0, maxX, 0);
-      g1.addColorStop(0,    `hsl(${~~((time)/30+0)%360},${saturate},${lightness})`);
-      g1.addColorStop(0.33, `hsl(${~~((time)/30+60)%360},${saturate},${lightness})`);
-      g1.addColorStop(0.67, `hsl(${~~((time)/30+120)%360},${saturate},${lightness})`);
-      g1.addColorStop(1, `hsl(${~~((time)/30+180)%360},${saturate},${lightness})`);
-      var g2 = ctx.createLinearGradient(minX, 0, maxX, 0);
-      g2.addColorStop(0, `hsl(${~~((time)/30+180)%360},${saturate},${lightness})`);
-      g2.addColorStop(0.33, `hsl(${~~((time)/30+240)%360},${saturate},${lightness})`);
-      g2.addColorStop(0.67, `hsl(${~~((time)/30+300)%360},${saturate},${lightness})`);
-      g2.addColorStop(1,    `hsl(${~~((time)/30+0)%360},${saturate},${lightness})`);
       
-      this.gradLine(ctx, g1, minX+m2-1,minY+m2, maxX-m2+1,minY+m2, maxX+m2+1,minY-m2, minX-m2-1,minY-m2)//Yahnych
-      ctx.rotate(Math.PI / 2);
-      this.gradLine(ctx, g2, minX+m2-1,minY+m2, maxX-m2+1,minY+m2, maxX+m2+1,minY-m2, minX-m2-1,minY-m2)//Yahnych
-      ctx.rotate(Math.PI / 2);
-      this.gradLine(ctx, g1, minX+m2-1,minY+m2, maxX-m2+1,minY+m2, maxX+m2+1,minY-m2, minX-m2-1,minY-m2)//Yahnych
-      ctx.rotate(Math.PI / 2);
-      this.gradLine(ctx, g2, minX+m2-1,minY+m2, maxX-m2+1,minY+m2, maxX+m2+1,minY-m2, minX-m2-1,minY-m2)//Yahnych
-      ctx.rotate(Math.PI / 2);
-      
-      let top=this.getGrad(ctx, 0, minY-m, 0, minY+m);//Yahnych
-      
-      ctx.globalCompositeOperation = 'destination-out';
-      this.gradLine(ctx, top, minX+m-1,minY+m, maxX-m+1,minY+m, maxX+m+1,minY-m, minX-m-1,minY-m)//Yahnych
-      ctx.rotate(Math.PI / 2);
-      this.gradLine(ctx, top, minX+m-1,minY+m, maxX-m+1,minY+m, maxX+m+1,minY-m, minX-m-1,minY-m)
-      ctx.rotate(Math.PI / 2);
-      this.gradLine(ctx, top, minX+m-1,minY+m, maxX-m+1,minY+m, maxX+m+1,minY-m, minX-m-1,minY-m)
-      ctx.rotate(Math.PI / 2);
-      this.gradLine(ctx, top, minX+m-1,minY+m, maxX-m+1,minY+m, maxX+m+1,minY-m, minX-m-1,minY-m)
-      ctx.rotate(Math.PI / 2);
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.restore();
-        
-      },
+        drawMapBorders(a, b, c, d, e, f, g, h) {
+            if (!b) return;
+            a.save();
+            a.strokeStyle = g;
+            a.lineWidth = h;
+            a.beginPath();
+            a.moveTo(c, d);
+            a.lineTo(e, d);
+            a.lineTo(e, f);
+            a.lineTo(c, f);
+            if (settings.bordersGlow) {
+                a.shadowBlur = theme.bordersGlowSize;
+                a.shadowColor = theme.bordersGlowColor;
+            }
+            a.closePath();
+            a.stroke();
+            a.restore();
+        },
+
         drawVirusesRange(a, b, c, d) {
             if (!b || !b.length) return;
             a.beginPath();

@@ -1858,7 +1858,7 @@ const theme = {
         }
     };
 var settings = {
-  
+        rainbowBorders: true,
         showBotsGUI: true,
         showBgImg: true,
         foodGlow: false,
