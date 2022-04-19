@@ -514,6 +514,7 @@ const ExpImp = new(class {
             this.addOption('gridGroup', 'showMapBorders');
             this.addOption('gridGroup', 'showBgImg');
             this.addOption('gridGroup', 'bordersGlow');
+            this.addOption('gridGroup','rainbowBorders');
             this.addOptions([], 'chatGroup');
             this.addOption('chatGroup', 'disableChat');
             this.addOption('chatGroup', 'chatSounds');
@@ -639,7 +640,7 @@ const ExpImp = new(class {
             this.addSliderBoxT('#theme-main', 'foodSize', 1, 50, 1, 'setFoodColor');
             this.addSliderBoxT('#theme-main', 'virusStrokeSize', 2, 40, 1);
             this.addSliderBoxT('#theme-main', 'bordersWidth', 2, 200, 2);
-            this.addSliderBoxT('#theme-main', 'bordersGlowSize', 2, 40, 1);
+            //this.addSliderBoxT('#theme-main', 'bordersGlowSize', 2, 40, 1);
             this.addSliderBoxT('#theme-main', 'sectorsWidth', 2, 200, 2);
             this.addSliderBoxT('#theme-main', 'cellsAlpha', 0.01, 0.99, 0.01);
             this.addSliderBoxT('#theme-main', 'skinsAlpha', 0.01, 0.99, 0.01);
