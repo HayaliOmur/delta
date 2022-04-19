@@ -244,6 +244,10 @@ var camera = new(class {
                 const s = theme.bordersWidth >> 1;
                 this.drawMapBorders(this.ctx, a.mapOffsetFixed, a.mapMinX - s, a.mapMinY - s, a.mapMaxX + s, a.mapMaxY + s, theme.bordersColor, theme.bordersWidth);
             }
+            if (settings.rainbowBorders){
+              const s = theme.bordersWidth / 2;
+              this.drawRainbowBorders(this.ctx, a.mapOffsetFixed, a.mapMinX - s, a.mapMinY - s, a.mapMaxX + s, a.mapMaxY + s, theme.bordersColor, theme.bordersWidth);
+            }
 
             if (settings.virusesRange === true)
                 this.drawVirusesRange(this.ctx, this.virusesFrame);
@@ -706,6 +710,75 @@ var camera = new(class {
             a.stroke();
             a.restore();
         },
+          getGrad(ctx, x1,y1,x2,y2) {
+      let grad=ctx.createLinearGradient(x1, y1, x2, y2);//Yahnych
+      grad.addColorStop(0, "black");
+      grad.addColorStop(0.25, "rgba(255,255,255,0.8)");
+      grad.addColorStop(0.4, "rgba(255,255,255,0.5)");
+      grad.addColorStop(0.5, "rgba(255,255,255,0)");
+      grad.addColorStop(0.6, "rgba(255,255,255,0.5)");
+      grad.addColorStop(0.75, "rgba(255,255,255,0.8)");
+      grad.addColorStop(1, "black");
+      return grad
+    },
+          gradLine(ctx, fillStyle, x1,y1, x2,y2, x3,y3, x4,y4) {
+        ctx.fillStyle = fillStyle;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.lineTo(x3, y3);
+        ctx.lineTo(x4, y4);
+
+        ctx.closePath();
+        ctx.fill();
+    },
+      drawRainbowBorders(ctx, mapOffset, minX, minY, maxX, maxY, stroke, width){
+        
+        if (!mapOffset) {
+            return;
+        }
+      ctx.save();
+      let m = (width/2)*1.1,
+          m2= width/2,
+          time = Date.now();
+          saturate = "100%", 
+          lightness = "50%";
+      
+      var g1 = ctx.createLinearGradient(minX, 0, maxX, 0);
+      g1.addColorStop(0,    `hsl(${~~((time)/30+0)%360},${saturate},${lightness})`);
+      g1.addColorStop(0.33, `hsl(${~~((time)/30+60)%360},${saturate},${lightness})`);
+      g1.addColorStop(0.67, `hsl(${~~((time)/30+120)%360},${saturate},${lightness})`);
+      g1.addColorStop(1, `hsl(${~~((time)/30+180)%360},${saturate},${lightness})`);
+      var g2 = ctx.createLinearGradient(minX, 0, maxX, 0);
+      g2.addColorStop(0, `hsl(${~~((time)/30+180)%360},${saturate},${lightness})`);
+      g2.addColorStop(0.33, `hsl(${~~((time)/30+240)%360},${saturate},${lightness})`);
+      g2.addColorStop(0.67, `hsl(${~~((time)/30+300)%360},${saturate},${lightness})`);
+      g2.addColorStop(1,    `hsl(${~~((time)/30+0)%360},${saturate},${lightness})`);
+      
+      this.gradLine(ctx, g1, minX+m2-1,minY+m2, maxX-m2+1,minY+m2, maxX+m2+1,minY-m2, minX-m2-1,minY-m2)//Yahnych
+      ctx.rotate(Math.PI / 2);
+      this.gradLine(ctx, g2, minX+m2-1,minY+m2, maxX-m2+1,minY+m2, maxX+m2+1,minY-m2, minX-m2-1,minY-m2)//Yahnych
+      ctx.rotate(Math.PI / 2);
+      this.gradLine(ctx, g1, minX+m2-1,minY+m2, maxX-m2+1,minY+m2, maxX+m2+1,minY-m2, minX-m2-1,minY-m2)//Yahnych
+      ctx.rotate(Math.PI / 2);
+      this.gradLine(ctx, g2, minX+m2-1,minY+m2, maxX-m2+1,minY+m2, maxX+m2+1,minY-m2, minX-m2-1,minY-m2)//Yahnych
+      ctx.rotate(Math.PI / 2);
+      
+      let top=this.getGrad(ctx, 0, minY-m, 0, minY+m);//Yahnych
+      
+      ctx.globalCompositeOperation = 'destination-out';
+      this.gradLine(ctx, top, minX+m-1,minY+m, maxX-m+1,minY+m, maxX+m+1,minY-m, minX-m-1,minY-m)//Yahnych
+      ctx.rotate(Math.PI / 2);
+      this.gradLine(ctx, top, minX+m-1,minY+m, maxX-m+1,minY+m, maxX+m+1,minY-m, minX-m-1,minY-m)
+      ctx.rotate(Math.PI / 2);
+      this.gradLine(ctx, top, minX+m-1,minY+m, maxX-m+1,minY+m, maxX+m+1,minY-m, minX-m-1,minY-m)
+      ctx.rotate(Math.PI / 2);
+      this.gradLine(ctx, top, minX+m-1,minY+m, maxX-m+1,minY+m, maxX+m+1,minY-m, minX-m-1,minY-m)
+      ctx.rotate(Math.PI / 2);
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.restore();
+        
+      },
         drawVirusesRange(a, b, c, d) {
             if (!b || !b.length) return;
             a.beginPath();

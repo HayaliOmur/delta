@@ -1,5 +1,6 @@
 const displayText = {
     en: {
+        rainbowBorders:`Rainbow borders`,
         showBotsGUI: 'Show bots GUI',
         botsGroup: 'Bots',
         showBgImg: 'Show background image',
@@ -373,6 +374,7 @@ const displayText = {
         Activated: 'Activated'
     },
     'ru-RU': {
+      rainbowBorders:`Rainbow borders`,
         showBotsGUI: 'Show bots GUI',
         botsGroup: 'Bots',
         showBgImg: 'Show background image',
@@ -1856,6 +1858,7 @@ const theme = {
         }
     };
 var settings = {
+  
         showBotsGUI: true,
         showBgImg: true,
         foodGlow: false,
