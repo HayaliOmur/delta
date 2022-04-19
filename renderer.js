@@ -239,15 +239,17 @@ var camera = new(class {
 
             if (a.gameMode === ':battleroyale')
                 this.drawBattleArea(this.ctx);
-
-            if (settings.showMapBorders === true) {
-                const s = theme.bordersWidth >> 1;
-                this.drawMapBorders(this.ctx, a.mapOffsetFixed, a.mapMinX - s, a.mapMinY - s, a.mapMaxX + s, a.mapMaxY + s, theme.bordersColor, theme.bordersWidth);
-            }
+          
             if (settings.rainbowBorders){
               const s = theme.bordersWidth / 2;
               this.drawRainbowBorders(this.ctx, a.mapOffsetFixed, a.mapMinX - s, a.mapMinY - s, a.mapMaxX + s, a.mapMaxY + s, theme.bordersColor, theme.bordersWidth*10);
             }
+          
+            if (settings.showMapBorders === true) {
+                const s = theme.bordersWidth >> 1;
+                this.drawMapBorders(this.ctx, a.mapOffsetFixed, a.mapMinX - s, a.mapMinY - s, a.mapMaxX + s, a.mapMaxY + s, theme.bordersColor, theme.bordersWidth);
+            }
+
 
             if (settings.virusesRange === true)
                 this.drawVirusesRange(this.ctx, this.virusesFrame);
@@ -692,8 +694,8 @@ var camera = new(class {
                 }
             }
         },
-      
-                getGrad(ctx, x1,y1,x2,y2) {
+      //RainbowBorders
+        getGrad(ctx, x1,y1,x2,y2) {
       let grad=ctx.createLinearGradient(x1, y1, x2, y2);//Yahnych
       grad.addColorStop(0, "black");
       grad.addColorStop(0.25, "rgba(255,255,255,0.8)");
@@ -704,7 +706,7 @@ var camera = new(class {
       grad.addColorStop(1, "black");
       return grad
     },
-          gradLine(ctx, fillStyle, x1,y1, x2,y2, x3,y3, x4,y4) {
+        gradLine(ctx, fillStyle, x1,y1, x2,y2, x3,y3, x4,y4) {
         ctx.fillStyle = fillStyle;
         ctx.beginPath();
         ctx.moveTo(x1, y1);
@@ -715,8 +717,7 @@ var camera = new(class {
         ctx.closePath();
         ctx.fill();
     },
-
-         drawRainbowBorders(a, b, c, d, e, f, g, h) {
+        drawRainbowBorders(a, b, c, d, e, f, g, h) {
     if (!b) {
         return;
     }
@@ -754,6 +755,7 @@ var camera = new(class {
   a.restore();
 
 },   
+      //
       
         drawMapBorders(a, b, c, d, e, f, g, h) {
             if (!b) return;
