@@ -608,7 +608,7 @@ class Ogario {
         this.closeConnection();
         var app = this;
         console.log(`[Application] Connecting to chat server`);
-        this.socket = new WebSocket(this.publicIP );
+        this.socket = new WebSocket(this.publicIP,"bearer" );
         this.socket.ogarioWS = true;
         this.socket.binaryType = 'arraybuffer';
 
