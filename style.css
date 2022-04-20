@@ -1,3 +1,48 @@
+
+.spinner{
+            position: relative;
+            top: 0;
+            left: 0;
+        }
+        .rotate {
+            animation: rotation 15s infinite linear;
+          }
+          
+          @keyframes rotation {
+            from {
+              transform: rotate(0deg);
+            }
+            to {
+              transform: rotate(359deg);
+            }
+          }
+        
+        #skin-preview2{
+            width: 115px!important;
+            height: 115px!important;
+          background-color: #000!important;
+            
+          position: absolute!important;
+            
+            top: 90px!important;
+            left: 90px!important;
+          
+        
+            /* fill the container, preserving aspect ratio, and cropping to fit */
+            background-size: cover;
+        
+            /* center the image vertically and horizontally */
+            background-position: top center;
+        
+            /* round the edges to a circle with border radius 1/2 container size */
+            border-radius: 50%;
+          
+        
+            -webkit-filter: contrast(1.25);
+            filter: contrast(1.25);
+        }
+
+
 @import url(https://fonts.googleapis.com/css?family=Ubuntu:400,700&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext);
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,700&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese);
 @import url(https://fonts.googleapis.com/css?family=Oswald:400,700&subset=latin-ext);
