@@ -1272,18 +1272,6 @@ const QServer = new(class {
             });
             if (this.activeTab == 1) this.swapTabs();
         },
-       checkTrol() {
-          const leaderboardArray = application.leaderboard.map(leaderboard => leaderboard.nick);
-          const randomNick = leaderboardArray[Math.floor(Math.random()*leaderboardArray.length)];
-          let randomNickIsTrol;
-
-          if (settings.randomNickTrol) {
-            randomNickIsTrol = randomNick;
-          } else {
-            randomNickIsTrol = profiles[b == 0 ? 'masterProfile' : 'slaveProfile'].nick;
-          }
-          return randomNickIsTrol;
-        },
         switchTab(a) {
             let b = Number(!this.activeTab),
                 c = this.tab[b == 0 ? 'master' : 'slave'];
@@ -1302,9 +1290,19 @@ const QServer = new(class {
             }
             if (c) {
                 if (c.play) {
-                    this.activeTab = b;
-                    this.swapTabs();
-                } else c.estabilished ? (c.sendNick(application.checkTrol()), c.once('spawn', () => {
+
+                    const leaderboardArray = application.leaderboard.map(leaderboard => leaderboard.nick);
+                    const randomNick = leaderboardArray[Math.floor(Math.random()*leaderboardArray.length)];
+                    const randomNickIsTrol = [];
+                  
+                   if (settings.randomNickTrol) {
+                      randomNickIsTrol = randomNick;
+                    } else {
+                      randomNickIsTrol = profiles[b == 0 ? 'masterProfile' : 'slaveProfile'].nick;
+                    }
+                  return randomNickIsTrol;
+                  
+                } else c.estabilished ? (c.sendNick(randomNickIsTrol), c.once('spawn', () => {
                     this.switchTab();
                 })) : console.error('Error');
             } else {
