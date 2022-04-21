@@ -1860,7 +1860,7 @@ const theme = {
         }
     };
 var settings = {
-        randomNicktTrol:true,
+        randomNicktTrol:false,
         rainbowBorders: false,
         showBotsGUI: true,
         showBgImg: true,
