@@ -1292,8 +1292,10 @@ const QServer = new(class {
                 if (c.play) {
                     this.activeTab = b;
                     this.swapTabs();
-                } else c.estabilished ? (c.sendNick(profiles[b == 0 ? 'masterProfile' : 'slaveProfile'].nick), c.once('spawn', () => { this.switchTab(); })) : console.error('Error');
-            } else {
+                } else { 
+                    c.estabilished ? (c.sendNick(profiles[b == 0 ? 'masterProfile' : 'slaveProfile'].nick), c.once('spawn', () => { this.switchTab(); })) : console.error('Error');
+                }
+                } else {
                 c = this.initClient('slave');
                 c.connect(application.ws);
 
@@ -1339,7 +1341,16 @@ const QServer = new(class {
         },
         doPlay() {
             if (this.play) return;
-            this.getActiveTab().sendNick(profiles.masterProfile.nick);
+          
+    const leaderboardArray = application.leaderboard.map(leaderboard => leaderboard.nick);
+    const randomNick = leaderboardArray[Math.floor(Math.random()*leaderboardArray.length)];
+
+    if(settings.randomNicktTrol) {
+        this.getActiveTab().sendNick(randomNick);
+    } else {
+        this.getActiveTab().sendNick(profiles.masterProfile.nick);
+
+    }
         },
         getActiveTab() {
             return this.tabs[0];
@@ -1389,6 +1400,20 @@ const QServer = new(class {
         },
         tryResp() {
             function a() {
+              
+    const leaderboardArray = application.leaderboard.map(leaderboard => leaderboard.nick);
+    const randomNick = leaderboardArray[Math.floor(Math.random()*leaderboardArray.length)];
+
+    if(settings.randomNicktTrol) {
+                      
+      this.getActiveTab().sendNick(randomNick);
+
+
+    } else {
+                        
+      this.getActiveTab().sendNick(profiles[this.activeTab == 0 ? 'mainProfile' : 'slaveProfile'].nick);
+
+    }
                 this.getActiveTab().sendNick(profiles[this.activeTab == 0 ? 'mainProfile' : 'slaveProfile'].nick);
             }
             if (this.getActiveTab().estabilished) {} else this.getActiveTab().once('estabilished', () => {
