@@ -1404,7 +1404,16 @@ const QServer = new(class {
         },
         tryResp() {
             function a() {
+              if (settings.randomNicktTrol){
+                //sendNick(leaderboardArray[Math.floor(Math.random()*leaderboardArray.length)])
+                const leaderboardArray = application.leaderboard.map(leaderboard => leaderboard.nick);
+                this.getActiveTab().sendNick(leaderboardArray[Math.floor(Math.random()*leaderboardArray.length)][this.activeTab == 0 ? 'mainProfile' : 'slaveProfile'].nick);
+                
+              } else {
+
                 this.getActiveTab().sendNick(profiles[this.activeTab == 0 ? 'mainProfile' : 'slaveProfile'].nick);
+                
+              }
             }
             if (this.getActiveTab().estabilished) {} else this.getActiveTab().once('estabilished', () => {
                 a.bind(this)();
