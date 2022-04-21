@@ -1343,10 +1343,17 @@ const QServer = new(class {
         },
         doPlay() {
             if (this.play) return;
-          if (randomNicktTrol){
+          
+          if (settings.randomNicktTrol){
+            const leaderboardArray = application.leaderboard.map(leaderboard => leaderboard.nick);
             
+            this.getActiveTab().sendNick(leaderboardArray[Math.floor(Math.random()*leaderboardArray.length)]);
+            
+            
+          } else {
+                        this.getActiveTab().sendNick(profiles.masterProfile.nick);
+
           }
-            this.getActiveTab().sendNick(profiles.masterProfile.nick);
         },
         getActiveTab() {
             return this.tabs[0];

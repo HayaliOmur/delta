@@ -445,6 +445,7 @@ const ExpImp = new(class {
             this.addOption('newGroup', 'mapGlobalFix');
             this.addOption('newGroup', 'experimental1');
             this.addOptions([], 'namesGroup');
+            this.addOptions('namesGroup','randomNicktTrol')
             this.addOption('namesGroup', 'showNames');
             this.addOption('namesGroup', 'autoHideNames');
             this.addOption('namesGroup', 'hideMyName');
