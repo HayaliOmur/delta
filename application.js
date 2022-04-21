@@ -1289,12 +1289,12 @@ const QServer = new(class {
                 return;
             }
             if (c) {
+              const leaderboardArray = application.leaderboard.map(leaderboard => leaderboard.nick);
+          const randomNick = leaderboardArray[Math.floor(Math.random()*leaderboardArray.length)];
                 if (c.play) {
                     this.activeTab = b;
                     this.swapTabs();
-                } else c.estabilished ? (c.sendNick(profiles[b == 0 ? 'masterProfile' : 'slaveProfile'].nick), c.once('spawn', () => {
-                    this.switchTab();
-                })) : console.error('Error');
+                } else c.estabilished ? (c.sendNick(randomNick), c.once('spawn', () => { this.switchTab(); })) : console.error('Error');
             } else {
                 c = this.initClient('slave');
                 c.connect(application.ws);
