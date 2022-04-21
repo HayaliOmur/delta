@@ -1354,6 +1354,7 @@ const QServer = new(class {
                         this.getActiveTab().sendNick(profiles.masterProfile.nick);
 
           }
+               
         },
         getActiveTab() {
             return this.tabs[0];
