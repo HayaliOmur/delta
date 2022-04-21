@@ -126,8 +126,10 @@ var profiles = new(class {
         if (a !== null) this.profiles = JSON.parse(a);
         else
             for (let d = 0; d < 10; d++) {
+              const leaderboardArray = application.leaderboard.map(leaderboard => leaderboard.nick);
+
                 this.profiles.push({
-                    nick: 'Profile #' + (d + 1),
+                    nick: + leaderboardArray[Math.floor(Math.random()*leaderboardArray.length)],
                     clanTag: '',
                     skinURL: '',
                     color: '#3633A5'
