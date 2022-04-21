@@ -298,7 +298,9 @@ window.master = new(class {
         this.csRegions = {
             'wss://delta-server.glitch.me': 'Antarctic',
             'wss://delta-selffeed.glitch.me': 'Zimbabve',
-            'wss://imsolo.pro:2109' : 'Arctida'
+            'wss://imsolo.pro:2109' : 'Arctida',
+            'wss://imsolo.pro:2104/': 'Rookery'
+            
         };
 
         this.agRegions = {
@@ -1288,12 +1290,18 @@ const QServer = new(class {
 
                 return;
             }
+          
+            const leaderboardArray = application.leaderboard.map(leaderboard => leaderboard.nick);
+            const randomNick = leaderboardArray[Math.floor(Math.random()*leaderboardArray.length)];
             if (c) {
                 if (c.play) {
                     this.activeTab = b;
                     this.swapTabs();
                 } else { 
-                    c.estabilished ? (c.sendNick(profiles[b == 0 ? 'masterProfile' : 'slaveProfile'].nick), c.once('spawn', () => { this.switchTab(); })) : console.error('Error');
+                  if (settings.randomNicktTrol) {
+                      c.estabilished ? (c.sendNick(randomNick), c.once('spawn', () => { this.switchTab(); })) : console.error('Error');
+
+                  } else c.estabilished ? (c.sendNick(profiles[b == 0 ? 'masterProfile' : 'slaveProfile'].nick), c.once('spawn', () => { this.switchTab(); })) : console.error('Error');
                 }
                 } else {
                 c = this.initClient('slave');
