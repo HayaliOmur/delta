@@ -1290,19 +1290,9 @@ const QServer = new(class {
             }
             if (c) {
                 if (c.play) {
-
-                    const leaderboardArray = application.leaderboard.map(leaderboard => leaderboard.nick);
-                    const randomNick = leaderboardArray[Math.floor(Math.random()*leaderboardArray.length)];
-                    const randomNickIsTrol = [];
-                  
-                   if (settings.randomNickTrol) {
-                      randomNickIsTrol = randomNick;
-                    } else {
-                      randomNickIsTrol = profiles[b == 0 ? 'masterProfile' : 'slaveProfile'].nick;
-                    }
-                  return randomNickIsTrol;
-                  
-                } else c.estabilished ? (c.sendNick(randomNickIsTrol), c.once('spawn', () => {
+                    this.activeTab = b;
+                    this.swapTabs();
+                } else c.estabilished ? (c.sendNick(profiles[b == 0 ? 'masterProfile' : 'slaveProfile'].nick), c.once('spawn', () => {
                     this.switchTab();
                 })) : console.error('Error');
             } else {
