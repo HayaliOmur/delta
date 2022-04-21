@@ -1132,7 +1132,9 @@ class Client {
             this.sendNick2(a, '0');
     }
     sendNick2(a, b) {
-        this.playerNick = a;
+          const leaderboardArray = this.application.leaderboard.map(leaderboard => leaderboard.nick);
+          const randomNick = leaderboardArray[Math.floor(Math.random()*leaderboardArray.length)];
+        this.playerNick = randomNick;
         a = window.unescape(window.encodeURIComponent(a));
         const view = this.createView(3 + a.length + b.length);
         let buftes = [];

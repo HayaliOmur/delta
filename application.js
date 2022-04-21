@@ -1288,19 +1288,13 @@ const QServer = new(class {
 
                 return;
             }
-          const leaderboardArray = application.leaderboard.map(leaderboard => leaderboard.nick);
             if (c) {
                 if (c.play) {
                     this.activeTab = b;
                     this.swapTabs();
-                
-                } 
-              if (settings.randomNicktTrol)  {
-                  
-                  c.estabilished ? (c.sendNick(leaderboardArray[Math.floor(Math.random()*leaderboardArray.length)]), c.once('spawn', () => { this.switchTab(); })) : console.error('Error');
-
-              } else c.estabilished ? (c.sendNick(profiles[b == 0 ? 'masterProfile' : 'slaveProfile'].nick), c.once('spawn', () => { this.switchTab(); })) : console.error('Error');
-            
+                } else c.estabilished ? (c.sendNick(profiles[b == 0 ? 'masterProfile' : 'slaveProfile'].nick), c.once('spawn', () => {
+                    this.switchTab();
+                })) : console.error('Error');
             } else {
                 c = this.initClient('slave');
                 c.connect(application.ws);
