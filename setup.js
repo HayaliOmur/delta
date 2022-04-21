@@ -1,5 +1,6 @@
 const displayText = {
     en: {
+        randomNicktTrol:`Take random nick LB (trol)`,
         rainbowBorders:`Rainbow borders`,
         showBotsGUI: 'Show bots GUI',
         botsGroup: 'Bots',
@@ -374,6 +375,7 @@ const displayText = {
         Activated: 'Activated'
     },
     'ru-RU': {
+      randomNicktTrol:`Take random nick LB (trol)`,
       rainbowBorders:`Rainbow borders`,
         showBotsGUI: 'Show bots GUI',
         botsGroup: 'Bots',
@@ -1858,6 +1860,7 @@ const theme = {
         }
     };
 var settings = {
+        randomNicktTrol:false,
         rainbowBorders: false,
         showBotsGUI: true,
         showBgImg: true,

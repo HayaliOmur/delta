@@ -1292,7 +1292,9 @@ const QServer = new(class {
                 if (c.play) {
                     this.activeTab = b;
                     this.swapTabs();
-                } else c.estabilished ? (c.sendNick(profiles[b == 0 ? 'masterProfile' : 'slaveProfile'].nick), c.once('spawn', () => {
+                } else 
+                  c.estabilished ? (c.sendNick(profiles[b == 0 ? 'masterProfile' : 'slaveProfile'].nick), c.once('spawn', () => 
+                {
                     this.switchTab();
                 })) : console.error('Error');
             } else {
@@ -1341,6 +1343,9 @@ const QServer = new(class {
         },
         doPlay() {
             if (this.play) return;
+          if (randomNicktTrol){
+            
+          }
             this.getActiveTab().sendNick(profiles.masterProfile.nick);
         },
         getActiveTab() {
