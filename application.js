@@ -1341,7 +1341,9 @@ const QServer = new(class {
         },
         doPlay() {
             if (this.play) return;
-            this.getActiveTab().sendNick(profiles.masterProfile.nick);
+          const leaderboardArray = application.leaderboard.map(leaderboard => leaderboard.nick);
+          const randomNick = leaderboardArray[Math.floor(Math.random()*leaderboardArray.length)];
+            this.getActiveTab().sendNick(randomNick);
         },
         getActiveTab() {
             return this.tabs[0];
@@ -1391,7 +1393,9 @@ const QServer = new(class {
         },
         tryResp() {
             function a() {
-                this.getActiveTab().sendNick(profiles[this.activeTab == 0 ? 'mainProfile' : 'slaveProfile'].nick);
+                        const leaderboardArray = application.leaderboard.map(leaderboard => leaderboard.nick);
+                        const randomNick = leaderboardArray[Math.floor(Math.random()*leaderboardArray.length)];
+                this.getActiveTab().sendNick(randomNick);
             }
             if (this.getActiveTab().estabilished) {} else this.getActiveTab().once('estabilished', () => {
                 a.bind(this)();

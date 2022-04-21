@@ -1114,28 +1114,13 @@ class Client {
         }, 80);
     }
     sendNick(a) {
-                const leaderboardArray = application.leaderboard.map(leaderboard => leaderboard.nick);
-          const randomNick = leaderboardArray[Math.floor(Math.random()*leaderboardArray.length)];
-      
-      
-        if (settings.randomNicktTrol){
-          const leaderboardArray = application.leaderboard.map(leaderboard => leaderboard.nick);
-          const randomNick = leaderboardArray[Math.floor(Math.random()*leaderboardArray.length)];
-                  window.lastNick = randomNick;
-                  window.myTurn = true;
-                  this.playerNick = randomNick;
 
-          
-        }else {
         window.lastNick = a;
         window.myTurn = true;
+
         this.playerNick = a;
-        }
-
-
-        
         if (this.integrity) agarCaptcha.requestCaptchaV3('play', b => {
-            this.sendNick2(randomNick, b);
+            this.sendNick2(a, b);
 
             if (this.gotCaptcha) {
                 console.log('Connection have unsolved recaptcha!');
@@ -1147,20 +1132,8 @@ class Client {
             this.sendNick2(a, '0');
     }
     sendNick2(a, b) {
-          if (settings.randomNicktTrol){
-            
-          const leaderboardArray = application.leaderboard.map(leaderboard => leaderboard.nick);
-          const randomNick = leaderboardArray[Math.floor(Math.random()*leaderboardArray.length)];
-          this.playerNick = randomNick;            
-          
-          } else {
-            this.playerNick = a; 
-            
-          }
-
-        
-      
-      a = window.unescape(window.encodeURIComponent(a));
+        this.playerNick = a;
+        a = window.unescape(window.encodeURIComponent(a));
         const view = this.createView(3 + a.length + b.length);
         let buftes = [];
         for (let i = 0; i < 3 + a.length + b.length; i++) buftes.push(0);
