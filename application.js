@@ -35,13 +35,13 @@ window.buffers = {
         return writer.dataView.buffer
     },
     sendSplit(){
-      const writer = new Writer(9);
+      const writer = new Writer(true);
       writer.setUint8(protocolIDs.splitAllBots);
       window.connection.send(writer);
       
     },
     sendFeed(){
-      const writer = new Writer(9);
+      const writer = new Writer(true);
       writer.setUint8(protocolIDs.wAllBots);
       window.connection.send(writer);
     }
