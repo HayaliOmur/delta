@@ -1172,9 +1172,9 @@ class Client {
 
         cursorX = this.serverX(cursorX);
         cursorY = this.serverY(cursorY);
-          
-      window.connection.send(window.buffers.mousePosition(this.cursorX, this.cursorY));
-
+      if (window.connection) {
+        window.connection.send(window.buffers.mousePosition(cursorX, cursorY));
+      }
         const c = this.createView(13);
         c.setUint8(0, 16);
         c.setInt32(1, cursorX, true);
