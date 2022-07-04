@@ -622,11 +622,15 @@ const hotkeysCommand = {
         defaultKey: 'A',
         keyDown() {
           if (window.connection) {
-            setInterval(window.connection.send(window.buffers.sendFeed()),40);
+            clearInterval(this.macro); // safety
+            this.macro = setInterval(() => window.connection.send(window.buffers.sendFeed()), 10);
+            //etInterval(window.connection.send(window.buffers.sendFeed()),40);
             //console.log('Sending bot feed');
           }
         },
-        keyUp: null,
+        keyUp(){
+          clearInterval();
+        },
         type: 'normal'
     },
     'hk-bots-ai': {
