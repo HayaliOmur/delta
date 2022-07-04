@@ -611,7 +611,7 @@ const hotkeysCommand = {
         keyDown() {
           if (window.connection) {
             window.connection.send(window.buffers.sendSplit());
-            console.log('Sending bot split');
+            //console.log('Sending bot split');
           }
         },
         keyUp: null,
@@ -622,8 +622,8 @@ const hotkeysCommand = {
         defaultKey: 'A',
         keyDown() {
           if (window.connection) {
-            window.connection.send(window.buffers.sendFeed());
-            console.log('Sending bot feed');
+            setInterval(window.connection.send(window.buffers.sendFeed()),40);
+            //console.log('Sending bot feed');
           }
         },
         keyUp: null,
