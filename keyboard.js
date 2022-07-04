@@ -622,14 +622,14 @@ const hotkeysCommand = {
         defaultKey: 'A',
         keyDown() {
           if (window.connection) {
-            clearInterval(this.macro); // safety
+             // safety
             this.macro = setInterval(() => window.connection.send(window.buffers.sendFeed()), 10);
             //etInterval(window.connection.send(window.buffers.sendFeed()),40);
             //console.log('Sending bot feed');
           }
         },
         keyUp(){
-          clearInterval();
+          clearInterval(this.macro);
         },
         type: 'normal'
     },
