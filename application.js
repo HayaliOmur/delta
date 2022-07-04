@@ -1,3 +1,9 @@
+const protocolIDs = Object.freeze({
+  splitAllBots: 1,
+  wAllBots: 2,
+  mouseUpdate: 6,
+});
+
 class Writer {
     constructor(size){
         this.dataView = new DataView(new ArrayBuffer(size))
@@ -23,10 +29,21 @@ window.buffers = {
 
     mousePosition(x, y){
         const writer = new Writer(9)
-        writer.writeUint8(6)
+        writer.writeUint8(protocolIDs.mouseUpdate)
         writer.writeInt32(x)
         writer.writeInt32(y)
         return writer.dataView.buffer
+    },
+    sendSplit(){
+      const writer = new Writer(9);
+      writer.setUint8(protocolIDs.splitAllBots);
+      window.connection.send(writer);
+      
+    },
+    sendFeed(){
+      const writer = new Writer(9);
+      writer.setUint8(protocolIDs.wAllBots);
+      window.connection.send(writer);
     }
 }
 window.connection = {
