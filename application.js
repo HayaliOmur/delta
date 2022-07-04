@@ -28,11 +28,11 @@ class Writer {
 window.buffers = {
 
     mousePosition(x, y){
-        const writer = new Writer(9)
-        writer.writeUint8(protocolIDs.mouseUpdate)
-        writer.writeInt32(x)
-        writer.writeInt32(y)
-        return writer.dataView.buffer
+        const writer = new Writer(9);
+        writer.writeUint8(protocolIDs.mouseUpdate);
+        writer.writeInt32(x);
+        writer.writeInt32(y);
+        return writer.dataView.buffer;
     },
     sendSplit(){
       const writer = new Writer(true);
