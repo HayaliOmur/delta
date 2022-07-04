@@ -609,7 +609,9 @@ const hotkeysCommand = {
         label: 'Bot Split',
         defaultKey: 'T',
         keyDown() {
-            if (window.connection) window.connection.send(new Uint8Array([17]).buffer)
+          if (window.connection) {
+            window.connection.send(window.buffers.sendSplit());
+          }
         },
         keyUp: null,
         type: 'normal'
@@ -618,7 +620,9 @@ const hotkeysCommand = {
         label: 'Bot Feed',
         defaultKey: 'A',
         keyDown() {
-            if (window.connection) window.connection.send(new Uint8Array([21]).buffer)
+          if (window.connection) {
+            window.connection.send(window.buffers.sendFeed());
+          }
         },
         keyUp: null,
         type: 'normal'
