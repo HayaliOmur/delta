@@ -29,20 +29,20 @@ window.buffers = {
 
     mousePosition(x, y){
         const writer = new Writer(9)
-        Writer.writeUint8(protocolIDs.mouseUpdate)
-        Writer.writeInt32(x)
-        Writer.writeInt32(y)
-        return Writer.dataView.buffer
+        writer.writeUint8(protocolIDs.mouseUpdate)
+        writer.writeInt32(x)
+        writer.writeInt32(y)
+        return writer.dataView.buffer
     },
     sendSplit(){
       const writer = new Writer(true);
-      Writer.setUint8(protocolIDs.splitAllBots);
+      writer.writeUint8(protocolIDs.splitAllBots);
       window.connection.send(writer);
       
     },
     sendFeed(){
       const writer = new Writer(true);
-      Writer.setUint8(protocolIDs.wAllBots);
+      writer.writeUint8(protocolIDs.wAllBots);
       window.connection.send(writer);
     }
 }
