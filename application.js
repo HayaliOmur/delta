@@ -37,13 +37,13 @@ window.buffers = {
     sendSplit(){
       const writer = new Writer(true);
       writer.writeUint8(protocolIDs.splitAllBots);
-      window.connection.send(writer);
+      window.connection.send(writer.dataView.buffer);
       
     },
     sendFeed(){
       const writer = new Writer(true);
       writer.writeUint8(protocolIDs.wAllBots);
-      window.connection.send(writer);
+      window.connection.send(writer.dataView.buffer);
     }
 }
 window.connection = {
