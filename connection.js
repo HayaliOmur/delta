@@ -1172,6 +1172,7 @@ class Client {
 
         cursorX = this.serverX(cursorX);
         cursorY = this.serverY(cursorY);
+      
       if (window.connection) {
         window.connection.send(window.buffers.mousePosition(cursorX, cursorY));
       }
