@@ -507,7 +507,7 @@ class Ogario {
         this.tab = a;
         this.hidden = false;
         this.profile = this.tab.cn.tabName === 'master' ? profiles.masterProfile : profiles.slaveProfile;
-        this.publicIP = 'wss://snez.org:8080/ws?030';
+        this.publicIP = 'wss://snez.org:8080/ws?040';
         this.socket = {};
         this.cells = {};
         this.teamPlayers = [];
@@ -643,9 +643,12 @@ class Ogario {
             app.sendBuffer(buffer);
             
             this.lastFlush();
-            //this.setServerData();
-            this.sendPlayerData(10, `lastSentNick`, mainProfile.nick);
-            this.sendPlayerData(11, `lastSentClanTag`, mainProfile.clanTag);
+            this.setServerData();
+            this.sendPlayerData(10, `lastSentNick`, this.last.nick);
+            this.sendPlayerData(11, `lastSentClanTag`, this.last.clanTag);
+            this.sendPlayerData(12, `lastSentSkinURL`, this.last.skinURL);
+            this.sendPlayerData(13, `lastSentCustomColor`, this.last.customColor);
+            this.sendBuffer(this.strToBuff(14, this.last.playerColor));
         };
 
         this.socket.onmessage = message => {
