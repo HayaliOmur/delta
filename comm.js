@@ -256,6 +256,15 @@ class Agartool {
         this.region = $('#region').val();
         this.gameMode = $('#gamemode').val();
     }
+  sendPlayerData(offset, name, str) {
+            if (this[name] !== null && this[name] === str) {
+                return;
+            }
+            if (this.isSocketOpen()) {
+                this.sendBuffer(this.strToBuff(offset, str));
+                this[name] = str;
+            }
+    }
     lastFlush() {
         this.last = {
             ws: '',
@@ -591,6 +600,15 @@ class Ogario {
         this.region = $('#region').val();
         this.gameMode = $('#gamemode').val();
     }
+  sendPlayerData(offset, name, str) {
+            if (this[name] !== null && this[name] === str) {
+                return;
+            }
+            if (this.isSocketOpen()) {
+                this.sendBuffer(this.strToBuff(offset, str));
+                this[name] = str;
+            }
+        }
     lastFlush() {
         this.last = {
             nick: '',
@@ -625,7 +643,9 @@ class Ogario {
             app.sendBuffer(buffer);
             
             this.lastFlush();
-            this.setServerData();
+            //this.setServerData();
+            this.sendPlayerData(10, `lastSentNick`, mainProfile.nick);
+            this.sendPlayerData(11, `lastSentClanTag`, mainProfile.clanTag);
         };
 
         this.socket.onmessage = message => {
