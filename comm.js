@@ -498,7 +498,7 @@ class Ogario {
         this.tab = a;
         this.hidden = false;
         this.profile = this.tab.cn.tabName === 'master' ? profiles.masterProfile : profiles.slaveProfile;
-        this.publicIP = 'wss://snez.org:8080/ws?040';
+        this.publicIP = 'wss://snez.org:8080/ws?030';
         this.socket = {};
         this.cells = {};
         this.teamPlayers = [];
@@ -608,7 +608,7 @@ class Ogario {
         this.closeConnection();
         var app = this;
         console.log(`[Application] Connecting to chat server`);
-        this.socket = new WebSocket(this.publicIP,"bearer" );
+        this.socket = new WebSocket(this.publicIP);
         this.socket.ogarioWS = true;
         this.socket.binaryType = 'arraybuffer';
 
@@ -620,8 +620,7 @@ class Ogario {
             
             app.sendBuffer(buffer);
             buffer.setUint8(0, 5);
-            buffer.setUint16(1, 50, true);
-            app.emit("estabilished");
+            buffer.setUint16(1, 40, true);
           
             app.sendBuffer(buffer);
             
