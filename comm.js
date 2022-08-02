@@ -7,17 +7,17 @@ var mirror = {
             this.socket = null;
             return;
         }
-
         if (application.play && comm.playerID && this.socket && this.socket.readyState == 1) {
             a = window.unescape(window.encodeURIComponent(a));
-
-            if (b != null) this.socket.send(JSON.stringify({
+            if (b != null) {
+                this.socket.send(JSON.stringify({
                 toH: this.token,
                 msg: {
                     t: a,
                     s: b
                 }
             }));
+        }
         }
     },
     connect: function(a) {
@@ -27,33 +27,30 @@ var mirror = {
             this.socket.url = 'wss://cloud.achex.ca/JIMBOY3200' + this.token;
             return this.socket.refresh();
         }
-        var b = function(f) {
-                var g = JSON.parse(f.data);
-                if (!g.msg) return;
-                var h = g.msg.s,
-                    i = window.decodeURIComponent(escape(g.msg.t)),
-                    j = comm.checkPlayerNick(i);
-
-                if (null != j)
-                    comm.teamPlayers[j].quadrant = h;
-            },
-            c = function() {
+       var b = function(f) {
+            var g = JSON.parse(f.data);
+            if (!g.msg) return;
+            var h = g.msg.s;
+            var i = window.decodeURIComponent(escape(g.msg.t));
+            var j = comm.checkPlayerNick(i);
+            if (null != j) {
+                comm.teamPlayers[j].quadrant = h;
+            }
+        };
+           var c = function() {
                 this.socket.send(JSON.stringify({
                     auth: 'JIM2' + comm.playerID,
                     password: 'legendmod2'
                 }));
-
                 this.socket.send(JSON.stringify({
                     joinHub: this.token
                 }));
-            }.bind(this),
-            d = function() {};
-
+            }.bind(this);
+        var d = function() {};
         this.socket = new ReconnectingWebSocket('wss://cloud.achex.ca/JIMBOY3200' + this.token, null, {
             reconnectInterval: 3000,
             maxReconnectAttempts: 3
         });
-
         this.socket.onmessage = b;
         this.socket.onopen = c;
         this.socket.onclose = d;
@@ -178,10 +175,10 @@ class Agartool {
     constructor(a) {
         eventify(this);
         this.isDebug = true;
-        Debugger(true, this, '[[31mAPI.AGTL ' + a.cn.tabName + '[105m]:');
-        this.tab = a;
+          Debugger(true, this, '[[31mAPI.AGTL ' + a.tabName + '[105m]:');
+        this.cn = a;
         this.hidden = false;
-        this.profile = this.tab.cn.tabName === 'master' ? profiles.masterProfile : profiles.slaveProfile;
+        this.profile = this.cn.tabName === 'master' ? profiles.masterProfile : profiles.slaveProfile;
         this.publicIP = 'wss://minimap.agartool.io:9000';
         this.socket = {};
         this.finderSocket = {};
@@ -202,7 +199,6 @@ class Agartool {
             region: '',
             gamemode: ''
         };
-
         this._onSpawn = null;
         this._onDeath = null;
         this._onConnecting = null;
@@ -217,8 +213,8 @@ class Agartool {
         this._onConnecting = a => this.onConnecting(a);
         this._onPlay = a => this.onPlay();
         this._onConnecting = a => this.onConnecting();
-        this.tab.cn.on('spawn', this._onSpawn);
-        this.tab.cn.on('death', this._onDeath);
+        this.cn.on('spawn', this._onSpawn);
+        this.cn.on('death', this._onDeath);
         application.on('connecting', this._onConnecting);
         application.on('playPressed', this._onPlay);
         application.on('spectatePressed', this._onConnecting);
@@ -227,7 +223,7 @@ class Agartool {
         this.setServerData();
     }
     onConnecting(a) {
-        this.setServerData();
+   this.setServerData();
     }
     onDeath() {
         this.sendPlayerDeath();
@@ -249,10 +245,10 @@ class Agartool {
         application.removeListener('spectatePressed', this._onConnecting);
     }
     setServerData() {
-        this.ws = this.tab.cn.ws;
-        this.nick = this.tab.cn.tabName === 'master' ? profiles.masterProfile.nick : profiles.slaveProfile.nick;
+        this.ws = this.cn.ws;
+        this.nick = this.cn.tabName === 'master' ? profiles.masterProfile.nick : profiles.slaveProfile.nick;
         this.clanTag = profiles.masterProfile.clanTag;
-        this.skinURL = this.tab.cn.tabName === 'master' ? profiles.masterProfile.skinURL : profiles.slaveProfile.skinURL;
+        this.skinURL = this.cn.tabName === 'master' ? profiles.masterProfile.skinURL : profiles.slaveProfile.skinURL;
         this.region = $('#region').val();
         this.gameMode = $('#gamemode').val();
     }
@@ -331,7 +327,7 @@ class Agartool {
             this.finderSocket = null;
         }
     }
-    reconnect() {
+      reconnect() {
         setTimeout(() => {
             this.connect();
         }, 5000);
@@ -342,7 +338,7 @@ class Agartool {
     handleMessage(a) {
         this.readMessage(a);
     }
-    readMessage(a) {
+  readMessage(a) {
         if (undefined === a.name) return false;
         switch (a.name) {
             case 'add':
@@ -353,24 +349,24 @@ class Agartool {
             case 'remove':
                 break;
             case 'position':
-                if (!this.hidden)
+             if (!this.hidden)
                     this.parseTeammatePos(a);
 
                 break;
             case 'customSkins':
-                if (!this.hidden)
+                 if (!this.hidden)
                     this.parseSkin(a);
 
                 break;
             case 'reset':
                 break;
             case 'chat':
-                if (!this.hidden)
+                 if (!this.hidden)
                     this.readChatMessage(a);
 
                 break;
             case 'command':
-                if (!this.hidden)
+                 if (!this.hidden)
                     this.readChatMessage(a);
 
                 break;
@@ -396,7 +392,7 @@ class Agartool {
             name: 'dead'
         });
     }
-    set clanTag(a) {
+     set clanTag(a) {
         if (a !== this.last.clanTag) {
             this.last.clanTag = a;
             this.connect();
@@ -438,17 +434,18 @@ class Agartool {
             this.sendBuffer(a);
         }
     }
-    sendPlayerPosition() {
-        if (this.tab.cn.play && this.isSocketOpen()) this.socket.emit('command', {
+  sendPlayerPosition() {
+        if (this.cn.play && this.isSocketOpen()) this.socket.emit('command', {
             name: 'position',
             x: this.tab.cn.getPlayerX(),
             y: this.tab.cn.getPlayerX()
         });
     }
-    readChatMessage(a) {
+   readChatMessage(a) {
         if (settings.disableChat) return;
         const b = a.name === 'chat' ? 101 : 102,
             c = new Date().toTimeString().replace(/^(\d{2}:\d{2}).*/, '$1');
+
         comm.displayChatMessage(c, b, Math.random(), a.playerName + ': ' + a.message, 'at');
     }
     parseTeammatePos(a) {
@@ -492,7 +489,7 @@ class Agartool {
 
         if (this.isSocketOpen()) this.socket.emit('command', {
             name: d,
-            nick: b.substr(0, 15),
+            nick: b,
             message: c
         });
 
@@ -503,11 +500,27 @@ class Ogario {
     constructor(a) {
         eventify(this);
         this.isDebug = true;
-        Debugger(true, this, '[[31mAPI.OGAR ' + a.cn.tabName + '[105m]:');
-        this.tab = a;
-        this.hidden = false;
-        this.profile = this.tab.cn.tabName === 'master' ? profiles.masterProfile : profiles.slaveProfile;
-        this.publicIP = 'wss://snez.org:8080/ws?040';
+        Debugger(true, this, '[[31mAPI.OGAR ' + a.tabName + '[105m]:');
+        this.cn = a;
+        this.profile = this.cn.tabName === 'master' ? profiles.masterProfile : profiles.slaveProfile;
+        this.nick = '';
+        this.clanTag = '';
+        this.skinURL = '';
+        this.color = '';
+        this.playerColor = '';
+        this.partyToken = '';
+        this.serverToken = '';
+        this.region = '';
+        this.gameMode = ':ffa';
+        this.serverArena = '';
+        this.lastSentNick = '';
+        this.lastSentClanTag = null;
+        this.lastSentSkinURL = '';
+        this.lastSentCustomColor = '';
+        this.lastSentPartyToken = '';
+        this.lastSentServerToken = '';
+        this.lastMessageSentTime = Date.now();
+        this.publicIP = 'wss://snez.dev:8080/ws';
         this.socket = {};
         this.cells = {};
         this.teamPlayers = [];
@@ -520,31 +533,17 @@ class Ogario {
         this.customSkinsMap = {};
         this.cacheQueue = [];
         this.playerID = null;
+        this.playerMass = 0;
         this.ws = '';
-
         this.timer = setInterval(() => {
             this.sendPlayerPosition();
         }, 2000);
-
-        this.last = {
-            nick: '',
-            clanTag: '',
-            skinURL: '',
-            customColor: '',
-            playerColor: '',
-            partyToken: '',
-            serverToken: '',
-            region: '',
-            gamemode: ''
-        };
-
         this._onSpawn = null;
         this._onDeath = null;
         this._onConnecting = null;
         this._onPlay = null;
         this._onConnecting = null;
         this.initEvents();
-        this.connect();
     }
     initEvents() {
         this._onSpawn = a => this.onSpawn();
@@ -552,17 +551,24 @@ class Ogario {
         this._onConnecting = a => this.onConnecting();
         this._onPlay = a => this.onPlay();
         this._onConnecting = a => this.onConnecting();
-        this.tab.cn.on('spawn', this._onSpawn);
-        this.tab.cn.on('death', this._onDeath);
+        this.cn.on('spawn', this._onSpawn);
+        this.cn.on('death', this._onDeath);
         application.on('connecting', this._onConnecting);
         application.on('playPressed', this._onPlay);
         application.on('spectatePressed', this._onConnecting);
     }
     onPlay() {
         this.setServerData();
+        this._sendPartyToken();
+        this._sendPlayerNick();
+        this.sendPlayerClanTag();
+        this.sendServerToken();
     }
     onConnecting() {
         this.setServerData();
+         this._sendPartyToken();
+        this.sendPlayerClanTag();
+        this.sendServerToken();
         this.sendPlayerDeath();
         this.sendPlayerJoin();
     }
@@ -594,61 +600,39 @@ class Ogario {
     setServerData() {
         this.ws = $('#server-ws').val();
         this.serverToken = $('#server-token').val();
-        this.nick = this.tab.cn.tabName === 'master' ? profiles.masterProfile.nick : profiles.slaveProfile.nick;
+        this.nick = this.cn.tabName === 'master' ? $('#nick').val() : profiles.slaveProfile.nick;
         this.clanTag = profiles.masterProfile.clanTag;
-        this.skinURL = this.tab.cn.tabName === 'master' ? profiles.masterProfile.skinURL : profiles.slaveProfile.skinURL;
+        this.skinURL = this.cn.tabName === 'master' ? profiles.masterProfile.skinURL : profiles.slaveProfile.skinURL;
         this.region = $('#region').val();
         this.gameMode = $('#gamemode').val();
     }
-  sendPlayerData(offset, name, str) {
-            if (this[name] !== null && this[name] === str) {
-                return;
-            }
-            if (this.isSocketOpen()) {
-                this.sendBuffer(this.strToBuff(offset, str));
-                this[name] = str;
-            }
-        }
-    lastFlush() {
-        this.last = {
-            nick: '',
-            clanTag: '',
-            skinURL: '',
-            customColor: '',
-            playerColor: '',
-            partyToken: '',
-            serverToken: '',
-            region: '',
-            gamemode: ''
-        };
+   lastFlush() {
+        this.serverArena = '';
+        this.lastSentNick = '';
+        this.lastSentClanTag = null;
+        this.lastSentSkinURL = '';
+        this.lastSentCustomColor = '';
+        this.lastSentPartyToken = '';
+        this.lastSentServerToken = '';
+        this.lastMessageSentTime = Date.now();
     }
     connect() {
         this.closeConnection();
-        var app = this;
         console.log(`[Application] Connecting to chat server`);
         this.socket = new WebSocket(this.publicIP);
         this.socket.ogarioWS = true;
         this.socket.binaryType = 'arraybuffer';
 
         this.socket.onopen = () => {
-            console.log('[Application] Socket open chat server');
-            var buffer = app.createView(3);
-            buffer.setUint8(0, 0);
-            buffer.setUint16(1, 401, true);
-            
-            app.sendBuffer(buffer);
-            buffer.setUint8(0, 5);
-            buffer.setUint16(1, 40, true);
-          
-            app.sendBuffer(buffer);
-            
+             this.log('Connected');
+            const a = this.createView(3);
+            a.setUint8(0, 0);
+            a.setUint16(1, 401, true);
+            this.sendBuffer(a);
+
             this.lastFlush();
             this.setServerData();
-            this.sendPlayerData(10, `lastSentNick`, this.last.nick);
-            this.sendPlayerData(11, `lastSentClanTag`, this.last.clanTag);
-            this.sendPlayerData(12, `lastSentSkinURL`, this.last.skinURL);
-            this.sendPlayerData(13, `lastSentCustomColor`, this.last.customColor);
-            this.sendBuffer(this.strToBuff(14, this.last.playerColor));
+             this.sendPartyData();
         };
 
         this.socket.onmessage = message => {
@@ -657,13 +641,11 @@ class Ogario {
 
         this.socket.onclose = close => {
             console.log('[Application] Socket close chat server', close);
-            app.flushData();
             this.reconnect();
         };
 
         this.socket.onerror = error => {
             console.log(`[Application] Socket error chat server`, error);
-            app.flushData();
         };
     }
     closeConnection() {
@@ -687,8 +669,7 @@ class Ogario {
         return new DataView(new ArrayBuffer(a));
     }
     strToBuff(a, b) {
-        if (b === null) return 0;
-        const c = this.createView(1 + 2 * b.length);
+        const c = this.createView(1 + b.length * 2);
         c.setUint8(0, a);
         for (let d = 0; d < b.length; d++) {
             c.setUint16(1 + d * 2, b.charCodeAt(d), true);
@@ -696,36 +677,31 @@ class Ogario {
         return c;
     }
     sendBuffer(a) {
-        if (!this.socket.send) this.error('Not connected');
         this.socket.send(a.buffer);
     }
     handleMessage(a) {
         this.readMessage(new DataView(a.data));
     }
-    readMessage(a) {
+   readMessage(a) {
         switch (a.getUint8(0)) {
             case 0:
                 this.playerID = a.getUint32(1, true);
                 break;
             case 1:
-            
-                if (settings.mapGlobalFix && this.tab.cn.modeInt !== 3)
-                    this.sendQuadrant(QServer.calcLocalQuadrant());
-
                 this.sendPlayerCellUpdate();
                 break;
             case 20:
-                if (!this.hidden)
+                if (this.cn.tabName === 'master')
                     this.parseTeammate(a);
 
                 break;
             case 30:
-                if (!this.hidden)
+                if (this.cn.tabName === 'master')
                     this.parseTeammatePos(a);
 
                 break;
             case 100:
-                if (!this.hidden)
+                if (this.cn.tabName === 'master')
                     this.readChatMessage(a);
 
                 break;
@@ -738,12 +714,14 @@ class Ogario {
             this.sendBuffer(b);
         }
     }
-    sendString(a, b) {
-        if (this.isSocketOpen()) {
-            this.sendBuffer(this.strToBuff(a, b));
-            return true;
+  sendString(a, b, c) {
+        if (this[b] !== null && this[b] === c) {
+            return;
         }
-        return false;
+        if (this.isSocketOpen()) {
+            this.sendBuffer(this.strToBuff(a, c));
+            this[b] = c;
+        }
     }
     sendPlayerSpawn() {
         this.sendOption(1);
@@ -754,80 +732,60 @@ class Ogario {
     sendPlayerJoin() {
         this.sendOption(3);
     }
-    set nick(a) {
-        if (a !== this.last.nick)
-            if (this.sendString(10, a))
-                this.last.nick = a;
+  sendPlayerNick() {
+        this.sendString(10, 'lastSentNick', this.nick);
     }
-    get nick() {
-        return this.last.nick;
+    sendPlayerClanTag() {
+        this.sendString(11, 'lastSentClanTag', this.clanTag);
     }
-    set clanTag(a) {
-        if (a !== this.last.clanTag)
-            if (this.sendString(11, a))
-                this.last.clanTag = a;
+    _sendPlayerSkinURL() {
+        this.sendString(12, 'lastSentSkinURL', this.skinURL);
     }
-    get clanTag() {
-        return this.last.clanTag;
+    _sendPlayerCustomColor() {
+        this.sendString(13, 'lastSentCustomColor', this.color);
     }
-    set skinURL(a) {
-        if (a !== this.last.skinURL)
-            if (this.sendString(12, a))
-                this.last.skinURL = a;
+    _sendPlayerColor() {
+        if (this.isSocketOpen()) {
+            this.sendBuffer(this.strToBuff(14, this.playerColor));
+        }
     }
-    get skinURL() {
-        return this.last.skinURL;
+    _sendPartyToken() {
+        this.sendString(15, 'lastSentPartyToken', this.partyToken);
     }
-    set customColor(a) {
-        if (a !== this.last.customColor)
-            if (this.sendString(13, a))
-                this.last.customColor = a;
+    sendServerToken() {
+        this.sendString(16, 'lastSentServerToken', this.serverToken);
     }
-    get customColor() {
-        return this.last.customColor;
+    _sendServerRegion() {
+        if (!this.region) {
+            return;
+        }
+        const a = this.region.split('-');
+        if (this.isSocketOpen()) {
+            this.sendBuffer(this.strToBuff(17, a[0]));
+        }
     }
-    set playerColor(a) {
-        if (a !== this.last.playerColor)
-            if (this.sendString(14, a))
-                this.last.playerColor = a;
-    }
-    get playerColor() {
-        return this.last.playerColor;
-    }
-    set partyToken(a) {
-        if (a !== this.last.partyToken)
-            if (this.sendString(15, a))
-                this.last.partyToken = a;
-    }
-    get partyToken() {
-        return this.last.partyToken;
-    }
-    set serverToken(a) {
-        if (a !== this.last.serverToken)
-            if (this.sendString(16, a) && (this.last.serverToken = a))
-                Texture.skinMap.clear();
-    }
-    get serverToken() {
-        return this.last.serverToken;
-    }
-    set region(a) {
-        if (a !== this.last.region)
-            if (this.sendString(17, a))
-                this.last.region = a;
-    }
-    get region() {
-        return this.last.region;
-    }
-    set gamemode(a) {
-        if (a !== this.last.gamemode)
-            if (this.sendString(18, a))
-                this.last.gamemode = a;
-    }
-    get gamemode() {
-        return this.last.gamemode;
+    _sendServerGameMode() {
+        let a = 'FFA';
+        switch (this.gameMode) {
+            case ':battleroyale':
+                a = 'BTR';
+                break;
+            case ':teams':
+                a = 'TMS';
+                break;
+            case ':experimental':
+                a = 'EXP';
+                break;
+            case ':party':
+                a = 'PTY';
+                break;
+        }
+        if (this.isSocketOpen()) {
+            this.sendBuffer(this.strToBuff(18, a));
+        }
     }
     sendPlayerCellUpdate() {
-        if (this.isSocketOpen() && this.playerID && this.tab.cn.play) {
+        if (this.isSocketOpen() && this.playerID) {
             function c(e) {
                 for (let f = 0; f < e.length; f++) {
                     a.setUint16(b, e.charCodeAt(f), true);
@@ -846,45 +804,34 @@ class Ogario {
             c(this.nick);
             c(this.skinURL);
             c(this.profile.color || '#ffffff');
-            c(this.tab.cn.playerColor || '#ffffff');
+            c(this.cn.playerColor || '#ffffff');
             this.sendBuffer(a);
         }
     }
-    sendQuadrant(a) {
-        if (this.isSocketOpen() && this.playerID) {
-            function d(g) {
-                for (let h = 0; h < g.length; h++) {
-                    b.setUint16(c, g.charCodeAt(h), true);
-                    c += 2;
-                }
-                b.setUint16(c, 0, true);
-                c += 2;
-            }
-            let e = 41,
-                f = '4.' + a + '.png';
-            e += this.nick.length * 2;
-            e += f.length * 2;
-            var b = this.createView(e);
-            b.setUint8(0, 20);
-            b.setUint32(1, this.playerID, true);
-            var c = 5;
-            d(this.nick);
-            d(f);
-            d(this.profile.color || '#ffffff');
-            d(this.tab.cn.playerColor || '#ffffff');
-            this.sendBuffer(b);
-        }
-    }
+   
     sendPlayerPosition() {
-        if (this.tab.cn.play && this.isSocketOpen() && this.playerID) {
+        if (this.cn.play && this.isSocketOpen() && this.playerID) {
             const a = this.createView(17);
             a.setUint8(0, 30);
             a.setUint32(1, this.playerID, true);
             a.setInt32(5, this.tab.cn.getPlayerX(), true);
             a.setInt32(9, this.tab.cn.getPlayerY(), true);
-            a.setUint32(13, this.tab.cn.playerMass, true);
+            if (typeof this.cn.playerMass !== 'undefined') {
+                a.setUint32(13, this.cn.playerMass, true);
+            } else {
+                a.setUint32(13, this.cn.playerMass, true);
+            }
             this.sendBuffer(a);
         }
+    }
+      sendServerJoin() {
+        this.sendServerToken();
+        this.sendPlayerJoin();
+    }
+    sendPartyData() {
+        this.sendPlayerClanTag();
+        this._sendPartyToken();
+        this.sendServerToken();
     }
     readChatMessage(a) {
         if (settings.disableChat) return;
@@ -899,59 +846,50 @@ class Ogario {
         }
         comm.displayChatMessage(b, c, d, f);
     }
-    parseTeammatePos(a) {
-        const b = a.getUint32(1, true),
-            c = a.getInt32(5, true),
-            d = a.getInt32(9, true),
-            e = a.getUint32(13, true),
-            f = {
-                id: b,
-                x: c,
-                y: d,
-                mass: e,
-                alive: true,
-                updateTime: Date.now()
-            };
-        comm.receiveTeammatePos(f);
+   parseTeammatePos(a) {
+        const b = a.getUint32(1, true);
+        const c = a.getInt32(5, true);
+        const d = a.getInt32(9, true);
+        const e = a.getUint32(13, true);
+        comm.receiveTeammatePos({
+            id: b,
+            x: c,
+            y: d,
+            mass: e,
+            alive: true,
+            updateTime: Date.now()
+        });
     }
-    parseTeammate(a) {
+   parseTeammate(a) {
         function b() {
-            for (var k = '';;) {
-                const l = a.getUint16(d, true);
-                if (l == 0) break;
-                k += String.fromCharCode(l);
+            for (var i = '';;) {
+                const j = a.getUint16(d, true);
+                if (j == 0) {
+                    break;
+                }
+                i += String.fromCharCode(j);
                 d += 2;
             }
             d += 2;
-            return k;
+            return i;
         }
         const c = a.getUint32(1, true);
         var d = 5;
-        const e = b(),
-            f = b(),
-            g = b(),
-            h = b(),
-            i = {
-                id: c,
-                nick: e,
-                skinUrl: f,
-                customColor: g,
-                defaultColor: h,
-                quadrant: null
-            };
-        if (f.charAt(1) === '.' && this.tab.cn.tabName === 'master') {
-            if (f.charAt(0) === '4') {
-                if (this.playerID == c) return;
-                var j = Number(f.split('.')[1]);
-                QServer.receiveUsersQuadtant(j);
-                i.quadrant = j;
-            }
-        }
-        comm.updateTeamPlayer(i);
+        const e = b();
+        const f = b();
+        const g = b();
+        const h = b();
+        comm.updateTeamPlayer({
+            id: c,
+            nick: e,
+            skinUrl: f,
+            customColor: g,
+            defaultColor: h
+        });
     }
     sendChatMessage(a, b, c) {
         if (this.isSocketOpen()) {
-            var c = b.substr(0, 15) + ': ' + c;
+             var c = b + ': ' + c;
             const d = this.createView(10 + c.length * 2);
             d.setUint8(0, 100);
             d.setUint8(1, a);
@@ -965,58 +903,17 @@ class Ogario {
         }
     }
 }
-const chatApi = {
-    agartool: Agartool,
-    ogario: Ogario
-};
 class Tab {
     constructor(a, b) {
         this.type = a;
-        this.cn = b;
-        this.clients = [];
-
-        this.client = {
-            ogario: null,
-            agartool: null
-        };
-
-        this.addClient('ogario');
-
-        if (settings.enableAgartool)
-            this.addClient('agartool');
-    }
-    sendChatMessage() {
-        for (var a of this.clients) {
-            a.sendChatMessage.apply(a, arguments);
-        }
-    }
-    addClient(a) {
-        if (this.cn.tabName !== 'master' && a === 'agartool') 
-          return console.log('agartool for !=master declined');
-        if (this.client[a]) return console.error('Chat client already exists!');
-        const b = new chatApi[a](this);
-        b.hidden = this.cn.tabName !== 'master';
-        this.client[a] = b;
-        this.clients.push(b);
-        return b;
-    }
-    remClient(a) {
-        const b = this.client[a];
-        if (!b) return console.error('Chat client not exists!');
-        const c = this.clients.indexOf(b);
-
-        if (c != -1)
-            this.clients.splice(c, 1);
-
-        b.destroy();
-        delete this.client[a];
-        this.client[a] = null;
-        return true;
+        this.cn = b;   
+        this.agartool = new Agartool(b);
+        this.ogario = new Ogario(b);
+        this.ogario.connect();
     }
     destroy() {
-        for (const a in this.client) {
-            this.remClient(a);
-        }
+        this.ogario.destroy();
+        this.agartool.destroy();
     }
 }
 var comm = {
@@ -1063,18 +960,13 @@ var comm = {
         this.tab[a] = null;
         return true;
     },
-    toggleAgartool() {
-        for (const a of this.tabs) {
-            settings.enableAgartool ? a.addClient('agartool') : a.remClient('agartool');
-        }
-    },
-    initEvents(c) {
-        application.on('initClient', f => {
-            this.addTab(f);
+    initEvents(a) {
+        application.on('initClient', b => {
+            this.addTab(b);
         });
+        application.on('destroyClient', b => {
+            this.remTab(b);
 
-        application.on('destroyClient', f => {
-            this.remTab(f);
         });
     },
     checkPlayerID(a) {
@@ -1094,13 +986,14 @@ var comm = {
         return String(a).replace(/[&<>"'/]/g, b => escapeChar[b]);
     },
     checkImgURL(a) {
-        return a.includes('png') || a.includes('jpg') || a.includes('jpeg') ? a : false;
-    },
-    checkSkinURL(a) {
-        for (const b of SkinExplain) {
-            if (b.pattern.test(a)) return a;
+      if (a.includes('png') || a.includes('jpg') || a.includes('jpeg')) {
+            return a;
+        } else {
+            return false;
         }
-        return false;
+            },
+    checkSkinURL(a) {
+        return this.checkImgURL(a);
     },
     flushData() {
         this.teamPlayers = [];
@@ -1161,7 +1054,17 @@ var comm = {
             this.$messageInput.val('');
         } else {
             const a = this.$messageInput.val();
-            a.length ? (this.tab.master.sendChatMessage(101, profiles.masterProfile.nick, a), application.play && (this.$messageInput.blur(), this.$messageBox.hide())) : (this.$messageInput.blur(), this.$messageBox.hide());
+             if (a.length) {
+                this.tab.master.ogario.sendChatMessage(101, profiles.masterProfile.nick, a);
+                this.tab.master.agartool.sendChatMessage(101, profiles.masterProfile.nick, a);
+                if (application.play) {
+                    this.$messageInput.blur();
+                    this.$messageBox.hide();
+                }
+            } else {
+                this.$messageInput.blur();
+                this.$messageBox.hide();
+            }
             this.$messageInput.val('');
         }
     },
@@ -1171,7 +1074,8 @@ var comm = {
     },
     sendCommand(a) {
         const b = this.prepareCommand(chatCommand['comm' + a]);
-        this.tab.master.sendChatMessage(102, profiles.masterProfile.nick, b);
+      this.tab.master.ogario.sendChatMessage(102, profiles.masterProfile.nick, b);
+        this.tab.master.agartool.sendChatMessage(102, profiles.masterProfile.nick, b);
     },
     addChatUser(a, b) {
         this.chatUsers[a] = b;
@@ -1198,15 +1102,19 @@ var comm = {
         }
     },
     isChatUserMuted(a) {
-        if (this.chatMutedUserIDs.indexOf(a) != -1) return true;
-        return false;
+           if (this.chatMutedUserIDs.indexOf(a) != -1) {
+            return true;
+        }
+                return false;
     },
     parseMessage(a) {
         const b = /\[img\]([\w\:\/\.\?]+)\[\/img\]/i;
         if (b.test(a)) {
             var c = a.match(b)[1];
-            if (settings.showChatImages && this.checkImgURL(c)) return '<img src=\"' + c + '\" style=\"width:100%;border:none;\">';
-            return '';
+            if (settings.showChatImages && this.checkImgURL(c)) {
+                return '<img src=\"' + c + '\" style=\"width:100%;border:none;\">';
+            }      
+                  return '';
         }
         const d = /\[yt\]([\w-]{11})\[\/yt\]/i;
         if (d.test(a)) {
@@ -1294,12 +1202,15 @@ var comm = {
         if (Object.keys(a).length) {
             f += '<ol class=\"user-list\">';
             for (const g in a) {
-                if (a.hasOwnProperty(g))
+                if (a.hasOwnProperty(g)) {
                     f += '<li><strong>' + this.escapeHTML(a[g]) + '</strong> <button data-user-id=\"' + g + '\" class=\"btn btn-xs ' + c + '\">' + d + '</button></li>';
+                }
             }
             f += '</ol>';
-        } else f += dictonary.none;
-        toastr[e](f, b, {
+        } else {
+            f += dictonary.none;
+        }      
+          toastr[e](f, b, {
             closeButton: true,
             tapToDismiss: false
         });
@@ -1311,28 +1222,52 @@ var comm = {
         this.displayUserList(this.chatMutedUsers, dictonary.mutedUsers, 'btn-green btn-unmute-user', dictonary.unmute, 'error');
     },
     displayTop5() {
-        if (!settings.showTop5) return;
-        let a = '',
-            b = 0,
-            c = this.top5.length;
+     if (!settings.showTop5) {
+            return;
+        }
+        let a = '';
+        let b = 0;
+        let c = this.top5.length;
         for (let d = 0; d < c; d++) {
             b += this.top5[d].mass;
-            if (d >= this.top5limit) continue;
-            a += '\x0a            <li data-user-id=\"' + this.top5[d].id + '\">\x0a                <div class=\"skin\"></div>\x0a                <div class=\"info\">\x0a                <div class=\"mass top5-mass-color\">' + this.shortMassFormat(this.top5[d].mass) + '</div><div class=\"name hudTextColor\">' + this.escapeHTML(this.top5[d].nick) + '</div>\x0a                </div>\x0a            </li>\x0a            ';
-        }
-        this.top5pos.innerHTML = a;
+             if (d >= this.top5limit) {
+                continue;
+            }
 
+            a += `<div class="tl-player">`;
+            a += `<div class="tl-position">${(d + 1)}</div>`;
+            a += `<div class="tl-player-mass">${this.shortMassFormat(this.top5[d].mass)}</div>`;
+            settings.showTop5Sectors && (
+                a += `<div class="tl-player-location">[` + this.calculateMapSector(this.top5[d].x, this.top5[d].y) + `]</div>`);
+            a += `<div class="tl-player-nick">${this.escapeHTML(this.top5[d].nick)}</div>`;
+
+
+            a += `</div>`;
+             /*a += '<li><span class=\"cell-counter\" style=\"background-color: ' + this.top5[d].color + '\"></span>';
+            if (settings.showTargeting) {
+                a += '<a href=\"#\" data-user-id=\"' + this.top5[d].id + '\" class=\"set-target ogicon-target\"></a> ';
+            }
+
+            if (settings.showTop5Sectors)
+                a += '<span class=\"hud-main-color\">[' + this.calculateMapSector(this.top5[d].x, this.top5[d].y) + ']</span> ';
+
+            a += '<span class=\"top5-mass-color\">' + this.shortMassFormat(this.top5[d].mass) + '</span> ' + this.escapeHTML(this.top5[d].nick) + '</li>';*/
+
+
+                  }
+        this.top5pos.innerHTML = a;
         if (this.c.play && this.c.playerMass) {
             b += this.c.playerMass;
             c++;
         }
-
         this.top5totalMass.textContent = this.shortMassFormat(b);
         this.top5totalPlayers.textContent = c;
     },
     setTop5limit(a) {
-        if (!a) return;
-        this.top5limit = a;
+       if (!a) {
+            return;
+        }      
+          this.top5limit = a;
     },
     displayChatHistory(a) {
         if (a) {
@@ -1346,10 +1281,8 @@ var comm = {
     },
     clearChatHistory(a) {
         $('#messages').empty();
-
         if (a) {
             toastr.clear();
-
             if (settings.showChatBox) {
                 $('#chat-box-messages .message').remove();
                 this.chatHistory.length = 0;
@@ -1359,14 +1292,14 @@ var comm = {
     setParty() {
         let a = $('#party-token').val();
         this.gameMode = $('#gamemode').val();
-        if (this.gameMode !== ':party' || !a) return;
+     if (this.gameMode !== ':party' || !a) {
+            return;
+        }
         let b = a;
-
         if (a.indexOf('#') != -1) {
             a = a.split('#');
             b = a[1];
         }
-
         if (this.partyToken !== b) {
             this.partyToken = b;
             this.flushSkinsMap();
@@ -1375,18 +1308,16 @@ var comm = {
         }
     },
     cacheCustomSkin(a, b, c) {
-        if (settings.customSkins)
             Texture.cacheKey(a, c);
-
-        if (settings.preloadSkins)
-            Texture.getCustomSkin(a);
     },
     calculateMapSector(a, b, c = false) {
-        if (!this.c.mapOffsetFixed) return '';
-        const d = c ? this.c.mapOffsetX + this.c.mapOffset : this.c.mapOffset,
-            e = c ? this.c.mapOffsetY + this.c.mapOffset : this.c.mapOffset;
-        let f = Math.floor((b + e) / (this.c.mapSize / theme.sectorsY)),
-            g = Math.floor((a + d) / (this.c.mapSize / theme.sectorsX));
+ if (!this.c.mapOffsetFixed) {
+            return '';
+        }
+        const d = c ? this.c.mapOffsetX + this.c.mapOffset : this.c.mapOffset;
+        const e = c ? this.c.mapOffsetY + this.c.mapOffset : this.c.mapOffset;
+        let f = Math.floor((b + e) / (this.c.mapSize / theme.sectorsY));
+        let g = Math.floor((a + d) / (this.c.mapSize / theme.sectorsX));
         f = f < 0 ? 0 : f >= theme.sectorsY ? theme.sectorsY - 1 : f;
         g = g < 0 ? 0 : g >= theme.sectorsX ? theme.sectorsX - 1 : g;
         return String.fromCharCode(f + 65) + (g + 1);
@@ -1394,7 +1325,7 @@ var comm = {
     shortMassFormat(a) {
         return a < 1000 ? a : Math.round(a / 100) / 10 + 'k';
     },
-    drawMiniMap() {
+     drawMiniMap() {
         if (!this.c.mapOffsetFixed) return;
         const a = 200 * theme.miniMapScale,
             b = 0,
@@ -1612,73 +1543,91 @@ var comm = {
 
         this.$messageBox = $('#message-box');
         this.$messageInput = $('#message');
-
-        $(document).on('click', '#change-limit', function(b) {
+  $(document).on('click', '#set-targeting', b => {
             b.preventDefault();
-            const c = $(this),
-                d = (a.top5limit += 10) % 30 + 5;
-
+            a.setTargeting();
+        });
+        $(document).on('click', '#cancel-targeting', b => {
+            b.preventDefault();
+            a.cancelTargeting();
+        });
+        $(document).on('click', '#set-private-minimap', b => {
+            b.preventDefault();
+            a.setPrivateMiniMap();
+        });
+        $(document).on('click', '#change-target', b => {
+            b.preventDefault();
+            a.changeTarget();
+        });
+        $(document).on('click', '.team-top-limit', function(b) {
+            b.preventDefault();
+            const c = $(this);
+            const d = parseInt(c.attr('data-limit'));
             if (d) {
                 a.setTop5limit(d);
                 a.displayTop5();
+                $('.team-top').text(d);
+                $('.team-top-limit').removeClass('active');
+                c.addClass('active');
             }
         });
-
+    $(document).on('click', '#top5-pos .set-target', function(b) {
+            b.preventDefault();
+            a.setTarget(parseInt($(this).attr('data-user-id')));
+        });
         $(document).on('click', '.mute-user', function(b) {
             b.preventDefault();
             a.muteChatUser(parseInt($(this).attr('data-user-id')));
         });
-
         $(document).on('click', '.btn-mute-user', function() {
             const b = $(this);
             a.muteChatUser(parseInt(b.attr('data-user-id')));
             b.removeClass('btn-red btn-mute-user').addClass('btn-green btn-unmute-user').text(dictonary.unmute);
         });
-
         $(document).on('click', '.btn-unmute-user', function() {
             const b = $(this);
             a.unmuteChatUser(parseInt(b.attr('data-user-id')));
             b.removeClass('btn-green btn-unmute-user').addClass('btn-red btn-mute-user').text(dictonary.mute);
         });
-
         $(document).on('click', '.chat-sound-notifications', b => {
             b.preventDefault();
             settings.chatSounds = !settings.chatSounds;
             Settings.saveSettings(settings, 'ogarioSettings');
             a.setChatSoundsBtn();
         });
-
         $(document).on('click', '.chat-active-users', b => {
             b.preventDefault();
             a.displayChatActiveUsers();
         });
-
         $(document).on('click', '.chat-muted-users', b => {
             b.preventDefault();
             a.displayChatMutedUsers();
         });
-
         $(document).on('click', '.show-chat-emoticons', function(b) {
             b.preventDefault();
-            const c = $(this),
-                d = $('#chat-emoticons');
+           const c = $(this);
+            const d = $('#chat-emoticons');
             d.toggle();
-            d.is(':visible') ? c.addClass('active') : (c.removeClass('active'), a.$messageInput.focus());
-        });
-
+            if (d.is(':visible')) {
+                c.addClass('active');
+            } else {
+                c.removeClass('active');
+                this.$messageInput.focus();
+            }
+        });       
         for (const b in emojiChar) {
-            if (emojiChar.hasOwnProperty(b))
+            if (emojiChar.hasOwnProperty(b)) {
                 $('#chat-emoticons').append('<img src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/svg/' + emojiChar[b] + '\" alt=\"' + b + '\" class=\"emoticon\">');
+         }
         }
         $(document).on('click', '#chat-emoticons .emoticon', function() {
-            const c = $(this),
-                d = c.attr('alt'),
-                e = a.$messageInput,
-                f = e.val();
-
-            if (f.length + d.length <= 80)
+             const c = $(this);
+            const d = c.attr('alt');
+            const e = this.$messageInput;
+            const f = e.val();
+            if (f.length + d.length <= 80) {
                 e.val(f + d);
-
+            }
             e.focus();
         });
     },
@@ -1688,8 +1637,12 @@ var comm = {
         this.setVirusSound();
     },
     setChatSoundsBtn() {
-        settings.chatSounds ? $('.chat-sound-notifications').removeClass('fa-volume-mute').addClass('fa-volume-up') : $('.chat-sound-notifications').removeClass('fa-volume-up').addClass('fa-volume-mute');
-    },
+ if (settings.chatSounds) {
+            $('.chat-sound-notifications').removeClass('fa-volume-mute').addClass('fa-volume-up');
+        } else {
+            $('.chat-sound-notifications').removeClass('fa-volume-up').addClass('fa-volume-mute');
+        }   
+     },
     setVirusSound() {
         this.virusSound = this.setSound(settings.virusSoundURL);
     },
@@ -1700,8 +1653,10 @@ var comm = {
         this.commandSound = this.setSound(settings.commandSound_);
     },
     setSound(a) {
-        if (!a) return null;
-        return new Audio(a);
+       if (!a) {
+            return null;
+        }       
+         return new Audio(a);
     },
     playSound(a) {
         if (a && a.play) {
@@ -1715,15 +1670,15 @@ var comm = {
         this.setUi();
         this.preloadChatSounds();
         this.setChatSoundsBtn();
-        const a = this;
+        const e = this;
 
         setInterval(() => {
-            requestAnimationFrame(a.drawMiniMap.bind(this));
+            requestAnimationFrame(e.drawMiniMap.bind(this));
         }, 33);
-
         setInterval(() => {
-            a.updateTeamPlayers();
+            e.updateTeamPlayers();
         }, this.updateInterval);
     }
 };
-comm.init(), comm.initEvents();
+comm.init();
+ comm.initEvents();
