@@ -437,8 +437,8 @@ class Agartool {
   sendPlayerPosition() {
         if (this.cn.play && this.isSocketOpen()) this.socket.emit('command', {
             name: 'position',
-            x: this.tab.cn.getPlayerX(),
-            y: this.tab.cn.getPlayerX()
+            x: this.cn.getPlayerX(),
+            y: this.cn.getPlayerX()
         });
     }
    readChatMessage(a) {
