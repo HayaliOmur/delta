@@ -238,8 +238,8 @@ class Agartool {
             this.closeConnection();
         } catch (a) {}
         clearInterval(this.timer);
-        this.tab.cn.removeListener('spawn', this._onSpawn);
-        this.tab.cn.removeListener('death', this._onDeath);
+        this.cn.removeListener('spawn', this._onSpawn);
+        this.cn.removeListener('death', this._onDeath);
         application.removeListener('connecting', this._onConnecting);
         application.removeListener('playPressed', this._onPlay);
         application.removeListener('spectatePressed', this._onConnecting);
@@ -590,8 +590,8 @@ class Ogario {
         } catch (a) {}
         this.socket = null;
         clearInterval(this.timer);
-        this.tab.cn.removeListener('spawn', this._onSpawn);
-        this.tab.cn.removeListener('death', this._onDeath);
+        this.cn.removeListener('spawn', this._onSpawn);
+        this.cn.removeListener('death', this._onDeath);
         application.removeListener('connecting', this._onConnecting);
         application.removeListener('playPressed', this._onPlay);
         application.removeListener('spectatePressed', this._onConnecting);
@@ -813,8 +813,8 @@ class Ogario {
             const a = this.createView(17);
             a.setUint8(0, 30);
             a.setUint32(1, this.playerID, true);
-            a.setInt32(5, this.tab.cn.getPlayerX(), true);
-            a.setInt32(9, this.tab.cn.getPlayerY(), true);
+            a.setInt32(5, this.cn.getPlayerX(), true);
+            a.setInt32(9, this.cn.getPlayerY(), true);
             if (typeof this.cn.playerMass !== 'undefined') {
                 a.setUint32(13, this.cn.playerMass, true);
             } else {
