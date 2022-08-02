@@ -179,7 +179,7 @@ class Agartool {
         this.cn = a;
         this.hidden = false;
         this.profile = this.cn.tabName === 'master' ? profiles.masterProfile : profiles.slaveProfile;
-        this.publicIP = 'wss://minimap.agartool.io:9000';
+        this.publicIP = '';
         this.socket = {};
         this.finderSocket = {};
         this.playerID = null;
