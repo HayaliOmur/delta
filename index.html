@@ -293,15 +293,26 @@
     <canvas id="webgl"></canvas>
     <div id="overlays-hud" data-gamemode=":ffa">
         <div id="stats-hud" class="hud stats-hud-color"></div>
-        <!---<div id="top5-hud" class="hud">
-
-		<div class="hud-main-color team-top-menu"><a href="#" data-limit="5" class="team-top-limit active">5</a> | <a href="#" data-limit="10" class="team-top-limit">10</a> | <a href="#" data-limit="100" class="team-top-limit">100</a>
-			<div style="float:left"><span id="top5-total-players" class="top5-mass-color">0</span> x = <span id="top5-total-mass" class="top5-mass-color">0</span></div>
-		</div>
-		<ol id="top5-pos"></ol>
-	</div>--->
-        <div id="top5-hud" class="team-top hud hud-top">
-            <div class="title hud-main-color" id="change-limit">Team <span id="top5-total-mass">0</span> / <span id="top5-total-players">0</span>▾</div>
+        <!---<div id="ttop5-hud" style="width: 230px;">
+            <div id="teamlist-head">TEAM PLAYERS</div>
+            <div id="teamlist-positions">
+                <div class="tl-player"><div class="tl-position">1</div><div class="tl-player-mass">13.2k</div><div class="tl-player-nick">ᅠᅠᅠᅠᅠᅠ∞</div></div><div class="tl-player"><div class="tl-position">2</div><div class="tl-player-mass">10.3k</div><div class="tl-player-nick">𝓩𝓪𝓬𝓪 </div></div><div class="tl-player"><div class="tl-position">3</div><div class="tl-player-mass">5.8k</div><div class="tl-player-nick">&lt;3</div></div><div class="tl-player"><div class="tl-position">4</div><div class="tl-player-mass">4k</div><div class="tl-player-nick">Begemot</div></div><div class="tl-player"><div class="tl-position">5</div><div class="tl-player-mass">1.9k</div><div class="tl-player-nick">🦈</div></div></div>
+            <div id="teamlist-rank">
+                <span><a href="#" data-limit="5" class="team-top-limit active">5</a>  <a href="#" data-limit="10" class="team-top-limit">10</a>  <a href="#" data-limit="100" class="team-top-limit">100</a></span>
+            </div>
+            <div id="team-data">
+                <div class="team-data-slot">
+                    <i class="material-icons">play_circle_filled</i>
+                    <span id="top5-total-players">9</span>
+                </div>
+                <div class="team-data-slot">
+                    <i class="material-icons">stars</i>
+                    <span id="top5-total-mass">36.9k</span>
+                </div>
+            </div>
+        </div>--->
+        <div id="top5-hud" style="width: 230px;">
+            <div class="title hud-main-color" id="change-limit">TEAM PLAYERS <span id="top5-total-mass">0</span> / <span id="top5-total-players">0</span>▾</div>
             <div class="hud-main-color team-top-menu">
                 <ul id="top5-pos">
                 </ul>
