@@ -453,7 +453,6 @@ class Agartool {
         this.sendServerToken();
         this._sendPlayerNick();
     }
-    }
    readChatMessage(a) {
         if (settings.disableChat) return;
         const b = a.name === 'chat' ? 101 : 102,
@@ -579,7 +578,8 @@ class Ogario {
     }
     onConnecting() {
         this.setServerData();
-         this._sendPartyToken();
+        this._sendPartyToken();
+        this._sendPlayerNick();
         this.sendPlayerClanTag();
         this.sendServerToken();
         this.sendPlayerDeath();
@@ -845,6 +845,7 @@ class Ogario {
         this.sendPlayerClanTag();
         this._sendPartyToken();
         this.sendServerToken();
+        this.sendPlayerNick();
     }
     readChatMessage(a) {
         if (settings.disableChat) return;
