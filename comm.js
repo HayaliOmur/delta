@@ -435,11 +435,24 @@ class Agartool {
         }
     }
   sendPlayerPosition() {
-        if (this.cn.play && this.isSocketOpen()) this.socket.emit('command', {
+        if (this.cn.play && this.isSocketOpen()) {
+         this.socket.emit('command', {
             name: 'position',
             x: this.cn.getPlayerX(),
             y: this.cn.getPlayerX()
         });
+       } 
+    }        
+     sendServerJoin() {
+        this.sendServerToken();
+        this.sendPlayerJoin();
+    }
+    sendPartyData() {
+        this.sendPlayerClanTag();
+        this._sendPartyToken();
+        this.sendServerToken();
+        this._sendPlayerNick();
+    }
     }
    readChatMessage(a) {
         if (settings.disableChat) return;
@@ -560,6 +573,7 @@ class Ogario {
     onPlay() {
         this.setServerData();
         this._sendPartyToken();
+        this._sendPlayerNick();
         this.sendPlayerClanTag();
         this.sendServerToken();
     }
