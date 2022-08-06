@@ -623,7 +623,7 @@ const ExpImp = new(class {
             this.addColorBox('#theme-main', 'virusColor');
             this.addColorBox('#theme-main', 'virusStrokeColor');
             this.addColorBox('#theme-main', 'mboxActiveCellStroke');
-           this.addColorBox('#theme-main', ' mboxUnactiveCellStroke');
+            this.addColorBox('#theme-main', 'mboxUnactiveCellStroke');
             this.addColorBox('#theme-main', 'foodColor', 'setFoodColor');
             this.addColorBox('#theme-main', 'foodGlowColor');
             this.addColorBox('#theme-main', 'teammatesIndColor', 'setIndicatorColor');
