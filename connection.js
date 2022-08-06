@@ -613,7 +613,10 @@ class Cell {
             a.closePath();
             a.stroke();
             a.globalAlpha = 1;
+        }else{
+          a.strokeStyle = theme.mboxUnactiveCellStroke;
         }
+      
         a.globalAlpha *= theme.textAlpha;
         if (settings.showNames && !(this.isPlayerCell && settings.hideMyName) && !(m && settings.hideTeammatesNames)) {
             var o = Texts.nick(this);
