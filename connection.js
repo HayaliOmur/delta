@@ -613,7 +613,7 @@ class Cell {
             a.closePath();
             a.stroke();
             a.globalAlpha = 1;
-        }else if(this.isPlayerCell && c && settings.mbRings && application.activeTab === this.c.type){
+        }else if(this.isPlayerCell && application.activeTab === this.c.type){
            const q = h / 100 * 10;
             a.lineWidth = q;
             a.globalAlpha = f;
