@@ -603,19 +603,8 @@ class Cell {
                 return;
             }
         }
-        if (this.isPlayerCell && c && settings.mbRings && application.activeTab === this.c.type) {
-            const q = h / 200 * 10;
-            a.lineWidth = q;
-            a.globalAlpha = f;
-            a.strokeStyle = theme.mboxActiveCellStroke;
-            a.beginPath();
-            a.arc(this.x, this.y, h - q / 2, 0, this.pi2, false);
-            a.closePath();
-            a.stroke();
-            a.globalAlpha = 1;
-        }else{
-          if(this.isPlayerCell && c && settings.mbRings && !(application.activeTab)){
-           const q = h / 200 * 10;
+        if(this.isPlayerCell) {
+           const q = h / 50 * 10;
             a.lineWidth = q;
             a.globalAlpha = f;
             a.strokeStyle = theme.mboxUnactiveCellStroke;
@@ -624,8 +613,19 @@ class Cell {
             a.closePath();
             a.stroke();
             a.globalAlpha = 1;
-          }
         }
+        if (this.isPlayerCell && c && settings.mbRings && application.activeTab === this.c.type) {
+            const q = h / 50 * 10;
+            a.lineWidth = q;
+            a.globalAlpha = f;
+            a.strokeStyle = theme.mboxActiveCellStroke;
+            a.beginPath();
+            a.arc(this.x, this.y, h - q / 2, 0, this.pi2, false);
+            a.closePath();
+            a.stroke();
+            a.globalAlpha = 1;
+        }
+    
       
         a.globalAlpha *= theme.textAlpha;
         if (settings.showNames && !(this.isPlayerCell && settings.hideMyName) && !(m && settings.hideTeammatesNames)) {
