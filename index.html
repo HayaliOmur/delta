@@ -6,9 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>-- DELTA++ --</title>
 
-    <script>
+     <script>
+        if (location.href.indexOf('dev') > -1) {
+            document.write('<base href="http://127.0.0.1:5500/deltav4.com/ext/">')
+        } else {
             document.write('<base href="https://del-valar.glitch.me/">')
-      
+        }
     </script>
 
     <link id="favicon" rel="icon" href="./favicon.ico" type="image/x-icon">
@@ -71,7 +74,7 @@
                                 <div class="spinner">
                                      <img src="https://i.imgur.com/45eiL5F.png" class="rotate" width="300" height="300">
                                  </div>
-                                    <div id="skin-preview2"><img src=https://i.imgur.com/GffUXYy.png></div>
+                                    <div id="skin-preview2"><img src="https://i.imgur.com/GffUXYy.png"></div>
                                     <div id="thumbs"></div>
                                     <div class="skin-button" id="add">+</div>
                                     <div class="skin-button" id="rem">-</div>
@@ -348,7 +351,7 @@
 
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.2.0/pixi.min.js"></script>
-    <SCRIPT TYPE="text/javascript" SRC="//cdn.jsdelivr.net/npm/pixi.js-legacy@5.2.1/dist/pixi-legacy.min.js"></SCRIPT>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/pixi.js-legacy@5.2.1/dist/pixi-legacy.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/polygon-clipping@0.14.3/dist/polygon-clipping.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script charset="utf-8" src="https://cdn.jsdelivr.net/npm/pako@2.0.2/dist/pako.js"></script>
@@ -360,7 +363,6 @@
     <script charset="utf-8" src="./keyboard.js"></script>
     <script charset="utf-8" src="./connection.js"></script>
     <script charset="utf-8" src="./application.js?++"></script>
-    <script charset="utf-8" -src="./communication.js"></script>
     <script charset="utf-8" src="./comm.js"></script>
     <script charset="utf-8" src="./renderer.js"></script>
 
@@ -371,8 +373,30 @@
         drawRender.init()
     </script>
 
-   
-  
-</body>
+    <!--- THIRD PARTY --->
 
+  <script>
+    if ('serviceWorker' in navigator && location.origin === 'https://deltav4.gitlab.io') {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => navigator.serviceWorker.ready.then((worker) => {
+            console.log('service worker 1',err)
+            worker.sync.register('syncdata');
+        }))
+        .catch((err) => console.log('service worker 2',err));
+}
+</script>
+  
+  <iframe id="ssIFrame_google" sandbox="allow-scripts allow-same-origin" aria-hidden="true" frame-border="0" src="https://accounts.google.com/o/oauth2/iframe#origin=https%3A%2F%2Fdeltav4.gitlab.io&amp;rpcToken=567232924.8242642" style="position: absolute; width: 1px; height: 1px; inset: -9999px; display: none;"></iframe><div id="fb-root" class=" fb_reset"><div style="position: absolute; top: -10000px; width: 0px; height: 0px;"><div></div></div></div>
+  <script type="text/javascript" id="webrtc-control">(function () {
+    if (typeof navigator.getUserMedia !== "undefined") navigator.getUserMedia = undefined;
+    if (typeof window.MediaStreamTrack !== "undefined") window.MediaStreamTrack = undefined;
+    if (typeof window.RTCPeerConnection !== "undefined") window.RTCPeerConnection = undefined;
+    if (typeof navigator.webkitGetUserMedia !== "undefined") navigator.webkitGetUserMedia = undefined;
+    if (typeof window.RTCSessionDescription !== "undefined") window.RTCSessionDescription = undefined;
+    if (typeof window.webkitMediaStreamTrack !== "undefined") window.webkitMediaStreamTrack = undefined;
+    if (typeof window.webkitRTCPeerConnection !== "undefined") window.webkitRTCPeerConnection = undefined;
+    if (typeof window.webkitRTCSessionDescription !== "undefined") window.webkitRTCSessionDescription = undefined;
+  })();</script>
+ 
+</body>
 </html>
