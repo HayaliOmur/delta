@@ -604,7 +604,7 @@ class Cell {
             }
         }
         if (this.isPlayerCell && c && settings.mbRings && application.activeTab === this.c.type) {
-            const q = h / 100 * 10;
+            const q = h / 200 * 10;
             a.lineWidth = q;
             a.globalAlpha = f;
             a.strokeStyle = theme.mboxActiveCellStroke;
@@ -613,8 +613,9 @@ class Cell {
             a.closePath();
             a.stroke();
             a.globalAlpha = 1;
-        }else if(this.isPlayerCell && application.activeTab === this.c.type){
-           const q = h / 100 * 10;
+        }else{
+          if(this.isPlayerCell && c && settings.mbRings && !(application.activeTab)){
+           const q = h / 200 * 10;
             a.lineWidth = q;
             a.globalAlpha = f;
             a.strokeStyle = theme.mboxUnactiveCellStroke;
@@ -623,6 +624,7 @@ class Cell {
             a.closePath();
             a.stroke();
             a.globalAlpha = 1;
+          }
         }
       
         a.globalAlpha *= theme.textAlpha;
