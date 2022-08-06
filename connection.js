@@ -603,7 +603,7 @@ class Cell {
                 return;
             }
         }
-        if(this.isPlayerCell) {
+        this.isPlayerCell =(){
            const q = h / 50 * 10;
             a.lineWidth = q;
             a.globalAlpha = f;
