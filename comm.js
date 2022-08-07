@@ -572,7 +572,7 @@ class Ogario {
     onPlay() {
         this.setServerData();
         this._sendPartyToken();
-        this._sendPlayerNick();
+        this.sendPlayerNick();
         this.sendPlayerClanTag();
         this.sendServerToken();
     }
