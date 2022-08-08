@@ -828,10 +828,10 @@ class Ogario {
             const a = this.createView(17);
             a.setUint8(0, 30);
             a.setUint32(1, this.playerID, true);
-            a.setInt32(5, this.cn.getPlayerX(), true);
-            a.setInt32(9, this.cn.getPlayerY(), true);
-            if (typeof this.cn.playerMass !== 'undefined') {
-                a.setUint32(13, this.cn.playerMass, true);
+            a.setInt32(5, this.tab.cn.getPlayerX(), true);
+            a.setInt32(9, this.tab.cn.getPlayerY(), true);
+            if (typeof this.tab.cn.playerMass !== 'undefined') {
+                a.setUint32(13, this.tab.cn.playerMass, true);
             } else {
                 a.setUint32(13, this.cn.playerMass, true);
             }
@@ -927,58 +927,19 @@ class Ogario {
         }
     }
 }
-const chatApi = {
-    agartool: Agartool,
-    ogario: Ogario
-};
+
 class Tab {
-    constructor(a, b) {
+   constructor(a, b) {
         this.type = a;
         this.cn = b;
-        this.clients = [];
+        this.agartool = new Agartool(b);
+        this.ogario = new Ogario(b);
+        this.ogario.connect();
 
-        this.client = {
-            ogario: null,
-            agartool: null
-        };
-
-        this.addClient('ogario');
-
-        if (settings.enableAgartool)
-            this.addClient('agartool');
-    }
-    sendChatMessage() {
-        for (var a of this.clients) {
-            a.sendChatMessage.apply(a, arguments);
-        }
-    }
-    addClient(a) {
-        if (this.cn.tabName !== 'master' && a === 'agartool') 
-          return console.log('agartool for !=master declined');
-        if (this.client[a]) return console.error('Chat client already exists!');
-        const b = new chatApi[a](this);
-        b.hidden = this.cn.tabName !== 'master';
-        this.client[a] = b;
-        this.clients.push(b);
-        return b;
-    }
-    remClient(a) {
-        const b = this.client[a];
-        if (!b) return console.error('Chat client not exists!');
-        const c = this.clients.indexOf(b);
-
-        if (c != -1)
-            this.clients.splice(c, 1);
-
-        b.destroy();
-        delete this.client[a];
-        this.client[a] = null;
-        return true;
     }
     destroy() {
-        for (const a in this.client) {
-            this.remClient(a);
-        }
+        this.ogario.destroy();
+        this.agartool.destroy();
     }
 }
 var comm = {
