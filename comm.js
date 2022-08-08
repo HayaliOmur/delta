@@ -677,13 +677,11 @@ class Ogario {
 
         this.socket.onclose = close => {
             console.log('[Application] Socket close chat server', close);
-            app.flushData();
             this.reconnect();
         };
 
         this.socket.onerror = error => {
             console.log(`[Application] Socket error chat server`, error);
-            app.flushData();
         };
     }
     closeConnection() {
@@ -775,6 +773,38 @@ class Ogario {
     }
     sendPlayerJoin() {
         this.sendOption(3);
+    }
+    _sendPlayerNick() {
+        this.sendString(10, 'lastSentNick', this.nick);
+    }
+    sendPlayerClanTag() {
+        this.sendString(11, 'lastSentClanTag', this.clanTag);
+    }
+    _sendPlayerSkinURL() {
+        this.sendString(12, 'lastSentSkinURL', this.skinURL);
+    }
+    _sendPlayerCustomColor() {
+        this.sendString(13, 'lastSentCustomColor', this.color);
+    }
+    _sendPlayerColor() {
+        if (this.isSocketOpen()) {
+            this.sendBuffer(this.strToBuff(14, this.playerColor));
+        }
+    }
+    _sendPartyToken() {
+        this.sendString(15, 'lastSentPartyToken', this.partyToken);
+    }
+    sendServerToken() {
+        this.sendString(16, 'lastSentServerToken', this.serverToken);
+    }
+    _sendServerRegion() {
+        if (!this.region) {
+            return;
+        }
+        const a = this.region.split('-');
+        if (this.isSocketOpen()) {
+            this.sendBuffer(this.strToBuff(17, a[0]));
+        }
     }
     set nick(a) {
         if (a !== this.last.nick)
