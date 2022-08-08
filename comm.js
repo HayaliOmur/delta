@@ -317,11 +317,6 @@ this.nick = '';
             this.finderSocket = null;
         }
     }
-    reconnect() {
-        setTimeout(() => {
-            this.connect();
-        }, 5000);
-    }
     isSocketOpen() {
         return this.socket && this.socket.connected;
     }
@@ -408,7 +403,7 @@ this.nick = '';
         }
     }
     sendPlayerPosition() {
-        if (this.cn.play && this.isSocketOpen()) {
+        if (this.tab.cn.play && this.isSocketOpen()) {
             this.socket.emit('command', {
                 name: 'position',
                 x: this.cn.getPlayerX(),
@@ -658,7 +653,6 @@ class Ogario {
         return new DataView(new ArrayBuffer(a));
     }
     strToBuff(a, b) {
-        if (b === null) return 0;
         const c = this.createView(1 + 2 * b.length);
         c.setUint8(0, a);
         for (let d = 0; d < b.length; d++) {
@@ -781,7 +775,7 @@ class Ogario {
  
     }
     sendPlayerCellUpdate() {
-        if (this.isSocketOpen() && this.playerID && this.tab.cn.play) {
+        if (this.isSocketOpen() && this.playerID) {
             function c(e) {
                 for (let f = 0; f < e.length; f++) {
                     a.setUint16(b, e.charCodeAt(f), true);
@@ -829,14 +823,18 @@ class Ogario {
             this.sendBuffer(b);
         }
     }
-    sendPlayerPosition() {
+      sendPlayerPosition() {
         if (this.tab.cn.play && this.isSocketOpen() && this.playerID) {
             const a = this.createView(17);
             a.setUint8(0, 30);
             a.setUint32(1, this.playerID, true);
-            a.setInt32(5, this.tab.cn.getPlayerX(), true);
-            a.setInt32(9, this.tab.cn.getPlayerY(), true);
-            a.setUint32(13, this.tab.cn.playerMass, true);
+            a.setInt32(5, this.cn.getPlayerX(), true);
+            a.setInt32(9, this.cn.getPlayerY(), true);
+            if (typeof this.cn.playerMass !== 'undefined') {
+                a.setUint32(13, this.cn.playerMass, true);
+            } else {
+                a.setUint32(13, this.cn.playerMass, true);
+            }
             this.sendBuffer(a);
         }
     }
@@ -1274,14 +1272,17 @@ var comm = {
     displayChatMutedUsers() {
         this.displayUserList(this.chatMutedUsers, dictonary.mutedUsers, 'btn-green btn-unmute-user', dictonary.unmute, 'error');
     },
+  // Team players
     displayTop5() {
-        if (!settings.showTop5) return;
-        let a = '',
-            b = 0,
-            c = this.top5.length;
+        if (!settings.showTop5) {
+            return;
+        }
+        let a = '';
+        let b = 0;
+        let c = this.top5.length;
         for (let d = 0; d < c; d++) {
             b += this.top5[d].mass;
-             if (d >= this.top5limit) {
+            if (d >= this.top5limit) {
                 continue;
             }
 
@@ -1307,19 +1308,20 @@ var comm = {
             a += '<span class=\"top5-mass-color\">' + this.shortMassFormat(this.top5[d].mass) + '</span> ' + this.escapeHTML(this.top5[d].nick) + '</li>';*/
 
 
-        }        
+        }
         this.top5pos.innerHTML = a;
-
         if (this.c.play && this.c.playerMass) {
             b += this.c.playerMass;
             c++;
         }
-
         this.top5totalMass.textContent = this.shortMassFormat(b);
         this.top5totalPlayers.textContent = c;
     },
+    //
     setTop5limit(a) {
-        if (!a) return;
+        if (!a) {
+            return;
+        }
         this.top5limit = a;
     },
     displayChatHistory(a) {
@@ -1601,7 +1603,23 @@ var comm = {
         this.$messageBox = $('#message-box');
         this.$messageInput = $('#message');
 
-        $(document).on('click', '#change-limit', function(b) {
+        $(document).on('click', '#set-targeting', b => {
+            b.preventDefault();
+            a.setTargeting();
+        });
+        $(document).on('click', '#cancel-targeting', b => {
+            b.preventDefault();
+            a.cancelTargeting();
+        });
+        $(document).on('click', '#set-private-minimap', b => {
+            b.preventDefault();
+            a.setPrivateMiniMap();
+        });
+        $(document).on('click', '#change-target', b => {
+            b.preventDefault();
+            a.changeTarget();
+        });
+        $(document).on('click', '.team-top-limit', function(b) {
             b.preventDefault();
             const c = $(this),
                 d = (a.top5limit += 10) % 30 + 5;
@@ -1609,9 +1627,15 @@ var comm = {
             if (d) {
                 a.setTop5limit(d);
                 a.displayTop5();
+                $('.team-top').text(d);
+                $('.team-top-limit').removeClass('active');
+                c.addClass('active');
             }
         });
-
+            $(document).on('click', '#top5-pos .set-target', function(b) {
+            b.preventDefault();
+            a.setTarget(parseInt($(this).attr('data-user-id')));
+        });
         $(document).on('click', '.mute-user', function(b) {
             b.preventDefault();
             a.muteChatUser(parseInt($(this).attr('data-user-id')));
