@@ -446,7 +446,6 @@ class Agartool {
      sendServerJoin() {
         this.sendServerToken();
         this.sendPlayerJoin();
-        this.sendPlayerNick();
     }
     sendPartyData() {
         this.sendPlayerClanTag();
@@ -572,14 +571,14 @@ class Ogario {
     }
     onPlay() {
         this.setServerData();
-        this._sendPartyToken();
+        this.sendPartyToken();
         this.sendPlayerNick();
         this.sendPlayerClanTag();
         this.sendServerToken();
     }
     onConnecting() {
         this.setServerData();
-        this._sendPartyToken();
+        this.sendPartyToken();
         this.sendPlayerNick();
         this.sendPlayerClanTag();
         this.sendServerToken();
@@ -588,11 +587,9 @@ class Ogario {
     }
     onDeath() {
         this.sendPlayerDeath();
-        this.sendPlayerNick();
     }
     onSpawn() {
         this.sendPlayerSpawn();
-        this.sendPlayerNick();
         comm.cacheCustomSkin(profiles.masterProfile.nick, null, profiles.masterProfile.skinURL);
         comm.cacheCustomSkin(profiles.slaveProfile.nick, null, profiles.slaveProfile.skinURL);
     }
@@ -848,7 +845,7 @@ class Ogario {
         this.sendPlayerClanTag();
         this._sendPartyToken();
         this.sendServerToken();
-        this.sendPlayerNick();
+
     }
     readChatMessage(a) {
         if (settings.disableChat) return;

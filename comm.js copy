@@ -446,7 +446,6 @@ class Agartool {
      sendServerJoin() {
         this.sendServerToken();
         this.sendPlayerJoin();
-        this.sendPlayerNick();
     }
     sendPartyData() {
         this.sendPlayerClanTag();
@@ -588,11 +587,9 @@ class Ogario {
     }
     onDeath() {
         this.sendPlayerDeath();
-        this.sendPlayerNick();
     }
     onSpawn() {
         this.sendPlayerSpawn();
-        this.sendPlayerNick();
         comm.cacheCustomSkin(profiles.masterProfile.nick, null, profiles.masterProfile.skinURL);
         comm.cacheCustomSkin(profiles.slaveProfile.nick, null, profiles.slaveProfile.skinURL);
     }
