@@ -439,11 +439,23 @@ class Agartool {
         }
     }
     sendPlayerPosition() {
-        if (this.tab.cn.play && this.isSocketOpen()) this.socket.emit('command', {
-            name: 'position',
-            x: this.tab.cn.getPlayerX(),
-            y: this.tab.cn.getPlayerX()
-        });
+        if (this.cn.play && this.isSocketOpen()) {
+            this.socket.emit('command', {
+                name: 'position',
+                x: this.cn.getPlayerX(),
+                y: this.cn.getPlayerX()
+            });
+        }
+    }
+    sendServerJoin() {
+        this.sendServerToken();
+        this.sendPlayerJoin();
+    }
+    sendPartyData() {
+        this.sendPlayerClanTag();
+        this._sendPartyToken();
+        this.sendServerToken();
+        this._sendPlayerNick();
     }
     readChatMessage(a) {
         if (settings.disableChat) return;
@@ -492,7 +504,7 @@ class Agartool {
 
         if (this.isSocketOpen()) this.socket.emit('command', {
             name: d,
-            nick: b.substr(0, 15),
+            nick: b,
             message: c
         });
 
@@ -507,7 +519,7 @@ class Ogario {
         this.tab = a;
         this.hidden = false;
         this.profile = this.tab.cn.tabName === 'master' ? profiles.masterProfile : profiles.slaveProfile;
-        this.publicIP = 'wss://snez.org:8080/ws?040';
+        this.publicIP = 'wss://snez.dev:8080/ws?040';
         this.socket = {};
         this.cells = {};
         this.teamPlayers = [];
@@ -560,9 +572,17 @@ class Ogario {
     }
     onPlay() {
         this.setServerData();
+         this._sendPartyToken();
+        this._sendPlayerNick();
+        this.sendPlayerClanTag();
+        this.sendServerToken();
     }
     onConnecting() {
         this.setServerData();
+          this._sendPartyToken();
+        this._sendPlayerNick();
+        this.sendPlayerClanTag();
+        this.sendServerToken();
         this.sendPlayerDeath();
         this.sendPlayerJoin();
     }
@@ -738,8 +758,10 @@ class Ogario {
             this.sendBuffer(b);
         }
     }
-    sendString(a, b) {
-        if (this.isSocketOpen()) {
+    sendString(a, b, c) {
+        if (this[b] !== null && this[b] === c) {
+            return;
+        }        if (this.isSocketOpen()) {
             this.sendBuffer(this.strToBuff(a, b));
             return true;
         }
