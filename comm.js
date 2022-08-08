@@ -451,6 +451,7 @@ class Agartool {
         this.sendPlayerClanTag();
         this._sendPartyToken();
         this.sendServerToken();
+        this.sendPlayerNick();
     }
    readChatMessage(a) {
         if (settings.disableChat) return;
@@ -571,6 +572,7 @@ class Ogario {
     onPlay() {
         this.setServerData();
         this._sendPartyToken();
+        this.sendPlayerNick();
         this.sendPlayerClanTag();
         this.sendServerToken();
     }
@@ -796,6 +798,51 @@ class Ogario {
         }
     }
    
+   
+ 
+   parseTeammate(a) {
+        function b() {
+            for (var i = '';;) {
+                const j = a.getUint16(d, true);
+                if (j == 0) {
+                    break;
+                }
+                i += String.fromCharCode(j);
+                d += 2;
+            }
+            d += 2;
+            return i;
+        }
+        const c = a.getUint32(1, true);
+        var d = 5;
+        const e = b();
+        const f = b();
+        const g = b();
+        const h = b();
+        comm.updateTeamPlayer({
+            id: c,
+            nick: e,
+            skinUrl: f,
+            customColor: g,
+            defaultColor: h
+        });
+    }
+    sendChatMessage(a, b, c) {
+        if (this.isSocketOpen()) {
+             var c = b + ': ' + c;
+            const d = this.createView(10 + c.length * 2);
+            d.setUint8(0, 100);
+            d.setUint8(1, a);
+            d.setUint32(2, this.playerID, true);
+            d.setUint32(6, 0, true);
+            for (let e = 0; e < c.length; e++) {
+                d.setUint16(10 + e * 2, c.charCodeAt(e), true);
+            }
+            this.sendBuffer(d);
+            this.lastMessageSentTime = Date.now();
+        }
+    }
+}
 class Tab {
     constructor(a, b) {
         this.type = a;
