@@ -180,36 +180,41 @@ class Agartool {
         this.isDebug = true;
         Debugger(true, this, '[[31mAPI.AGTL ' + a.cn.tabName + '[105m]:');
         this.tab = a;
-        this.hidden = false;
-        this.profile = this.tab.cn.tabName === 'master' ? profiles.masterProfile : profiles.slaveProfile;
+this.nick = '';
+        this.clanTag = '';
+        this.skinURL = '';
+        this.color = '';
+        this.playerColor = '';
+        this.partyToken = '';
+        this.serverToken = '';
+        this.region = '';
+        this.gameMode = ':ffa';
+        this.serverArena = '';
+        this.lastMessageSentTime = Date.now();
         this.publicIP = 'wss://minimap.agartool.io:9000';
-        this.socket = {};
         this.finderSocket = {};
+        this.cells = {};
+        this.teamPlayers = [];
+        this.parties = [];
+        this.chatHistory = [];
+        this.chatUsers = {};
+        this.chatMutedUsers = {};
+        this.chatMutedUserIDs = [];
+        this.customSkinsCache = {};
+        this.customSkinsMap = {};
+        this.cacheQueue = [];
         this.playerID = null;
-
+        this.playerMass = 0;
+        this.ws = null;
         this.timer = setInterval(() => {
             this.sendPlayerPosition();
         }, 2000);
-
-        this.last = {
-            nick: '',
-            clanTag: '',
-            skinURL: '',
-            customColor: '',
-            playerColor: '',
-            partyToken: '',
-            serverToken: '',
-            region: '',
-            gamemode: ''
-        };
-
         this._onSpawn = null;
         this._onDeath = null;
         this._onConnecting = null;
         this._onPlay = null;
         this._onConnecting = null;
         this.initEvents();
-        this.setServerData();
     }
     initEvents() {
         this._onSpawn = a => this.onSpawn();
@@ -226,8 +231,11 @@ class Agartool {
     onPlay() {
         this.setServerData();
     }
-    onConnecting(a) {
-        this.setServerData();
+   onConnecting() {
+        if (this.ws !== $('#server-ws').val() || this.clanTag !== $('#clantag').val() || !this.isSocketOpen()) {
+            this.setServerData();
+            this.connect();
+        }
     }
     onDeath() {
         this.sendPlayerDeath();
@@ -256,29 +264,7 @@ class Agartool {
         this.region = $('#region').val();
         this.gameMode = $('#gamemode').val();
     }
-  sendPlayerData(offset, name, str) {
-            if (this[name] !== null && this[name] === str) {
-                return;
-            }
-            if (this.isSocketOpen()) {
-                this.sendBuffer(this.strToBuff(offset, str));
-                this[name] = str;
-            }
-    }
-    lastFlush() {
-        this.last = {
-            ws: '',
-            nick: '',
-            clanTag: '',
-            skinURL: '',
-            customColor: '',
-            playerColor: '',
-            partyToken: '',
-            serverToken: '',
-            region: '',
-            gamemode: ''
-        };
-    }
+  
     connect() {
         if (!this.ws) return;
         try {
@@ -396,24 +382,7 @@ class Agartool {
             name: 'dead'
         });
     }
-    set clanTag(a) {
-        if (a !== this.last.clanTag) {
-            this.last.clanTag = a;
-            this.connect();
-        }
-    }
-    get clanTag() {
-        return this.last.clanTag;
-    }
-    set ws(a) {
-        if (a !== this.last.ws) {
-            this.last.ws = a;
-            this.connect();
-        }
-    }
-    get ws() {
-        return this.last.ws;
-    }
+   
     sendPlayerCellUpdate() {
         if (this.isSocketOpen() && this.playerID) {
             function c(e) {
@@ -458,10 +427,12 @@ class Agartool {
         this._sendPlayerNick();
     }
     readChatMessage(a) {
-        if (settings.disableChat) return;
-        const b = a.name === 'chat' ? 101 : 102,
-            c = new Date().toTimeString().replace(/^(\d{2}:\d{2}).*/, '$1');
-        comm.displayChatMessage(c, b, Math.random(), a.playerName + ': ' + a.message, 'at');
+        if (settings.disableChat) {
+            return;
+        }
+        const b = a.name === 'chat' ? 101 : 102;
+        const c = new Date().toTimeString().replace(/^(\d{2}:\d{2}).*/, '$1');
+         comm.displayChatMessage(c, b, Math.random(), a.playerName + ': ' + a.message, 'at');
     }
     parseTeammatePos(a) {
         comm.receiveTeammatePos({
@@ -517,9 +488,25 @@ class Ogario {
         this.isDebug = true;
         Debugger(true, this, '[[31mAPI.OGAR ' + a.cn.tabName + '[105m]:');
         this.tab = a;
-        this.hidden = false;
-        this.profile = this.tab.cn.tabName === 'master' ? profiles.masterProfile : profiles.slaveProfile;
-        this.publicIP = 'wss://snez.dev:8080/ws?040';
+          this.profile = this.tab.tabName === 'master' ? profiles.masterProfile : profiles.slaveProfile;
+        this.nick = '';
+        this.clanTag = '';
+        this.skinURL = '';
+        this.color = '';
+        this.playerColor = '';
+        this.partyToken = '';
+        this.serverToken = '';
+        this.region = '';
+        this.gameMode = ':ffa';
+        this.serverArena = '';
+        this.lastSentNick = '';
+        this.lastSentClanTag = null;
+        this.lastSentSkinURL = '';
+        this.lastSentCustomColor = '';
+        this.lastSentPartyToken = '';
+        this.lastSentServerToken = '';
+        this.lastMessageSentTime = Date.now();
+        this.publicIP = 'wss://snez.dev:8080/ws';
         this.socket = {};
         this.cells = {};
         this.teamPlayers = [];
@@ -532,23 +519,11 @@ class Ogario {
         this.customSkinsMap = {};
         this.cacheQueue = [];
         this.playerID = null;
+        this.playerMass = 0;
         this.ws = '';
-
         this.timer = setInterval(() => {
             this.sendPlayerPosition();
         }, 2000);
-
-        this.last = {
-            nick: '',
-            clanTag: '',
-            skinURL: '',
-            customColor: '',
-            playerColor: '',
-            partyToken: '',
-            serverToken: '',
-            region: '',
-            gamemode: ''
-        };
 
         this._onSpawn = null;
         this._onDeath = null;
@@ -620,27 +595,15 @@ class Ogario {
         this.region = $('#region').val();
         this.gameMode = $('#gamemode').val();
     }
-  sendPlayerData(offset, name, str) {
-            if (this[name] !== null && this[name] === str) {
-                return;
-            }
-            if (this.isSocketOpen()) {
-                this.sendBuffer(this.strToBuff(offset, str));
-                this[name] = str;
-            }
-        }
     lastFlush() {
-        this.last = {
-            nick: '',
-            clanTag: '',
-            skinURL: '',
-            customColor: '',
-            playerColor: '',
-            partyToken: '',
-            serverToken: '',
-            region: '',
-            gamemode: ''
-        };
+       this.serverArena = '';
+        this.lastSentNick = '';
+        this.lastSentClanTag = null;
+        this.lastSentSkinURL = '';
+        this.lastSentCustomColor = '';
+        this.lastSentPartyToken = '';
+        this.lastSentServerToken = '';
+        this.lastMessageSentTime = Date.now();
     }
     connect() {
         this.closeConnection();
@@ -654,21 +617,11 @@ class Ogario {
             console.log('[Application] Socket open chat server');
             var buffer = app.createView(3);
             buffer.setUint8(0, 0);
-            buffer.setUint16(1, 401, true);
-            
+            buffer.setUint16(1, 401, true);          
             app.sendBuffer(buffer);
-            buffer.setUint8(0, 5);
-            buffer.setUint16(1, 40, true);
-          
-            app.sendBuffer(buffer);
-            
+     
             this.lastFlush();
-            this.setServerData();
-            this.sendPlayerData(10, `lastSentNick`, this.last.nick);
-            this.sendPlayerData(11, `lastSentClanTag`, this.last.clanTag);
-            this.sendPlayerData(12, `lastSentSkinURL`, this.last.skinURL);
-            this.sendPlayerData(13, `lastSentCustomColor`, this.last.customColor);
-            this.sendBuffer(this.strToBuff(14, this.last.playerColor));
+         
         };
 
         this.socket.onmessage = message => {
@@ -759,11 +712,11 @@ class Ogario {
     sendString(a, b, c) {
         if (this[b] !== null && this[b] === c) {
             return;
-        }        if (this.isSocketOpen()) {
-            this.sendBuffer(this.strToBuff(a, b));
-            return true;
+        }        
+        if (this.isSocketOpen()) {
+            this.sendBuffer(this.strToBuff(a, c));
+            this[b] = c;
         }
-        return false;
     }
     sendPlayerSpawn() {
         this.sendOption(1);
@@ -806,77 +759,26 @@ class Ogario {
             this.sendBuffer(this.strToBuff(17, a[0]));
         }
     }
-    set nick(a) {
-        if (a !== this.last.nick)
-            if (this.sendString(10, a))
-                this.last.nick = a;
-    }
-    get nick() {
-        return this.last.nick;
-    }
-    set clanTag(a) {
-        if (a !== this.last.clanTag)
-            if (this.sendString(11, a))
-                this.last.clanTag = a;
-    }
-    get clanTag() {
-        return this.last.clanTag;
-    }
-    set skinURL(a) {
-        if (a !== this.last.skinURL)
-            if (this.sendString(12, a))
-                this.last.skinURL = a;
-    }
-    get skinURL() {
-        return this.last.skinURL;
-    }
-    set customColor(a) {
-        if (a !== this.last.customColor)
-            if (this.sendString(13, a))
-                this.last.customColor = a;
-    }
-    get customColor() {
-        return this.last.customColor;
-    }
-    set playerColor(a) {
-        if (a !== this.last.playerColor)
-            if (this.sendString(14, a))
-                this.last.playerColor = a;
-    }
-    get playerColor() {
-        return this.last.playerColor;
-    }
-    set partyToken(a) {
-        if (a !== this.last.partyToken)
-            if (this.sendString(15, a))
-                this.last.partyToken = a;
-    }
-    get partyToken() {
-        return this.last.partyToken;
-    }
-    set serverToken(a) {
-        if (a !== this.last.serverToken)
-            if (this.sendString(16, a) && (this.last.serverToken = a))
-                Texture.skinMap.clear();
-    }
-    get serverToken() {
-        return this.last.serverToken;
-    }
-    set region(a) {
-        if (a !== this.last.region)
-            if (this.sendString(17, a))
-                this.last.region = a;
-    }
-    get region() {
-        return this.last.region;
-    }
-    set gamemode(a) {
-        if (a !== this.last.gamemode)
-            if (this.sendString(18, a))
-                this.last.gamemode = a;
-    }
-    get gamemode() {
-        return this.last.gamemode;
+   _sendServerGameMode() {
+        let a = 'FFA';
+        switch (this.gameMode) {
+            case ':battleroyale':
+                a = 'BTR';
+                break;
+            case ':teams':
+                a = 'TMS';
+                break;
+            case ':experimental':
+                a = 'EXP';
+                break;
+            case ':party':
+                a = 'PTY';
+                break;
+        }
+        if (this.isSocketOpen()) {
+            this.sendBuffer(this.strToBuff(18, a));
+        }
+ 
     }
     sendPlayerCellUpdate() {
         if (this.isSocketOpen() && this.playerID && this.tab.cn.play) {
@@ -937,6 +839,16 @@ class Ogario {
             a.setUint32(13, this.tab.cn.playerMass, true);
             this.sendBuffer(a);
         }
+    }
+    sendServerJoin() {
+        this.sendServerToken();
+        this.sendPlayerJoin();
+    }
+    sendPartyData() {
+        this.sendPlayerClanTag();
+        this._sendPartyToken();
+        this.sendServerToken();
+        this._sendPlayerNick();
     }
     readChatMessage(a) {
         if (settings.disableChat) return;
@@ -1369,9 +1281,33 @@ var comm = {
             c = this.top5.length;
         for (let d = 0; d < c; d++) {
             b += this.top5[d].mass;
-            if (d >= this.top5limit) continue;
-            a += '\x0a            <li data-user-id=\"' + this.top5[d].id + '\">\x0a                <div class=\"skin\"></div>\x0a                <div class=\"info\">\x0a                <div class=\"mass top5-mass-color\">' + this.shortMassFormat(this.top5[d].mass) + '</div><div class=\"name hudTextColor\">' + this.escapeHTML(this.top5[d].nick) + '</div>\x0a                </div>\x0a            </li>\x0a            ';
-        }
+             if (d >= this.top5limit) {
+                continue;
+            }
+
+            a += `<div class="tl-player">`;
+            a += `<div class="tl-position">${(d + 1)}</div>`;
+            a += `<div class="tl-player-mass">${this.shortMassFormat(this.top5[d].mass)}</div>`;
+            settings.showTop5Sectors && (
+                a += `<div class="tl-player-location">[` + this.calculateMapSector(this.top5[d].x, this.top5[d].y) + `]</div>`);
+            a += `<div class="tl-player-nick">${this.escapeHTML(this.top5[d].nick)}</div>`;
+
+
+            a += `</div>`;
+
+
+            /*a += '<li><span class=\"cell-counter\" style=\"background-color: ' + this.top5[d].color + '\"></span>';
+            if (settings.showTargeting) {
+                a += '<a href=\"#\" data-user-id=\"' + this.top5[d].id + '\" class=\"set-target ogicon-target\"></a> ';
+            }
+
+            if (settings.showTop5Sectors)
+                a += '<span class=\"hud-main-color\">[' + this.calculateMapSector(this.top5[d].x, this.top5[d].y) + ']</span> ';
+
+            a += '<span class=\"top5-mass-color\">' + this.shortMassFormat(this.top5[d].mass) + '</span> ' + this.escapeHTML(this.top5[d].nick) + '</li>';*/
+
+
+        }        
         this.top5pos.innerHTML = a;
 
         if (this.c.play && this.c.playerMass) {
