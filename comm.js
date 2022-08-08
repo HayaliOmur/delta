@@ -178,7 +178,7 @@ class Agartool {
     constructor(a) {
         eventify(this);
         this.isDebug = true;
-        Debugger(true, this, '[[31mAPI.AGTL ' + a.cn.tabName + '[105m]:');
+        Debugger(true, this, '[[31mAPI.AGTL ' + cn.tabName + '[105m]:');
         this.tab = a;
 this.nick = '';
         this.clanTag = '';
