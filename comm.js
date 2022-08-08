@@ -451,7 +451,7 @@ class Agartool {
         this.sendPlayerClanTag();
         this._sendPartyToken();
         this.sendServerToken();
-        this._sendPlayerNick();
+        this.sendPlayerNick();
     }
    readChatMessage(a) {
         if (settings.disableChat) return;
