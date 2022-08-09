@@ -178,9 +178,9 @@ class Agartool {
     constructor(a) {
         eventify(this);
         this.isDebug = true;
-        Debugger(true, this, '[[31mAPI.AGTL ' + cn.tabName + '[105m]:');
+        Debugger(true, this, '[[31mAPI.AGTL ' + a.tabName + '[105m]:');
         this.tab = a;
-this.nick = '';
+        this.nick = '';
         this.clanTag = '';
         this.skinURL = '';
         this.color = '';
@@ -222,8 +222,8 @@ this.nick = '';
         this._onConnecting = a => this.onConnecting(a);
         this._onPlay = a => this.onPlay();
         this._onConnecting = a => this.onConnecting();
-        this.tab.cn.on('spawn', this._onSpawn);
-        this.tab.cn.on('death', this._onDeath);
+        this.tab.on('spawn', this._onSpawn);
+        this.tab.on('death', this._onDeath);
         application.on('connecting', this._onConnecting);
         application.on('playPressed', this._onPlay);
         application.on('spectatePressed', this._onConnecting);
@@ -257,10 +257,10 @@ this.nick = '';
         application.removeListener('spectatePressed', this._onConnecting);
     }
     setServerData() {
-        this.ws = this.tab.cn.ws;
-        this.nick = this.tab.cn.tabName === 'master' ? profiles.masterProfile.nick : profiles.slaveProfile.nick;
+        this.ws = this.tab.ws;
+        this.nick = this.tab.tabName === 'master' ? profiles.masterProfile.nick : profiles.slaveProfile.nick;
         this.clanTag = profiles.masterProfile.clanTag;
-        this.skinURL = this.tab.cn.tabName === 'master' ? profiles.masterProfile.skinURL : profiles.slaveProfile.skinURL;
+        this.skinURL = this.tab.tabName === 'master' ? profiles.masterProfile.skinURL : profiles.slaveProfile.skinURL;
         this.region = $('#region').val();
         this.gameMode = $('#gamemode').val();
     }
@@ -403,7 +403,7 @@ this.nick = '';
         }
     }
     sendPlayerPosition() {
-        if (this.tab.cn.play && this.isSocketOpen()) {
+        if (this.tab.play && this.isSocketOpen()) {
             this.socket.emit('command', {
                 name: 'position',
                 x: this.cn.getPlayerX(),
@@ -481,7 +481,7 @@ class Ogario {
     constructor(a) {
         eventify(this);
         this.isDebug = true;
-        Debugger(true, this, '[[31mAPI.OGAR ' + a.cn.tabName + '[105m]:');
+        Debugger(true, this, '[[31mAPI.OGAR ' + a.tabName + '[105m]:');
         this.tab = a;
           this.profile = this.tab.tabName === 'master' ? profiles.masterProfile : profiles.slaveProfile;
         this.nick = '';
@@ -534,8 +534,8 @@ class Ogario {
         this._onConnecting = a => this.onConnecting();
         this._onPlay = a => this.onPlay();
         this._onConnecting = a => this.onConnecting();
-        this.tab.cn.on('spawn', this._onSpawn);
-        this.tab.cn.on('death', this._onDeath);
+        this.tab.on('spawn', this._onSpawn);
+        this.tab.on('death', this._onDeath);
         application.on('connecting', this._onConnecting);
         application.on('playPressed', this._onPlay);
         application.on('spectatePressed', this._onConnecting);
@@ -584,9 +584,9 @@ class Ogario {
     setServerData() {
         this.ws = $('#server-ws').val();
         this.serverToken = $('#server-token').val();
-        this.nick = this.tab.cn.tabName === 'master' ? profiles.masterProfile.nick : profiles.slaveProfile.nick;
+        this.nick = this.tab.tabName === 'master' ? profiles.masterProfile.nick : profiles.slaveProfile.nick;
         this.clanTag = profiles.masterProfile.clanTag;
-        this.skinURL = this.tab.cn.tabName === 'master' ? profiles.masterProfile.skinURL : profiles.slaveProfile.skinURL;
+        this.skinURL = this.tab.tabName === 'master' ? profiles.masterProfile.skinURL : profiles.slaveProfile.skinURL;
         this.region = $('#region').val();
         this.gameMode = $('#gamemode').val();
     }
@@ -824,7 +824,7 @@ class Ogario {
         }
     }
       sendPlayerPosition() {
-        if (this.tab.cn.play && this.isSocketOpen() && this.playerID) {
+        if (this.tab.play && this.isSocketOpen() && this.playerID) {
             const a = this.createView(17);
             a.setUint8(0, 30);
             a.setUint32(1, this.playerID, true);
