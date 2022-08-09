@@ -115,12 +115,12 @@ function minimapCell(a, b, c, d) {
             e.lineTo(j + theme.miniMapTeammatesSize, l + theme.miniMapTeammatesSize);
             e.lineTo(j, l - m);
             e.closePath();
+        } 
+        if (settings.oneColoredTeammates) {
+            e.fillStyle = theme.miniMapTeammatesColor;
         } else {
-            e.beginPath();
-            e.arc(j, k, theme.miniMapTeammatesSize, 0, this.pi2, false);
-            e.closePath();
+            e.fillStyle = this.color;
         }
-        settings.oneColoredTeammates ? e.fillStyle = theme.miniMapTeammatesColor : e.fillStyle = this.color;
         e.fill();
     };
 }
@@ -455,6 +455,7 @@ class Agartool {
     sendServerJoin() {
         this.sendServerToken();
         this.sendPlayerJoin();
+        this._sendPlayerNick();
     }
     sendPartyData() {
         this.sendPlayerClanTag();
@@ -598,9 +599,11 @@ class Ogario {
     }
     onDeath() {
         this.sendPlayerDeath();
+        this._sendPlayerNick();
     }
     onSpawn() {
         this.sendPlayerSpawn();
+        this._sendPlayerNick();
         comm.cacheCustomSkin(profiles.masterProfile.nick, null, profiles.masterProfile.skinURL);
         comm.cacheCustomSkin(profiles.slaveProfile.nick, null, profiles.slaveProfile.skinURL);
     }
@@ -834,7 +837,7 @@ class Ogario {
             c(this.nick);
             c(this.skinURL);
             c(this.profile.color || '#ffffff');
-            c(this.tab.cn.playerColor || '#ffffff');
+            c(this.cn.playerColor || '#ffffff');
             this.sendBuffer(a);
         }
     }
@@ -859,7 +862,7 @@ class Ogario {
             d(this.nick);
             d(f);
             d(this.profile.color || '#ffffff');
-            d(this.tab.cn.playerColor || '#ffffff');
+            d(this.cn.playerColor || '#ffffff');
             this.sendBuffer(b);
         }
     }
@@ -888,15 +891,19 @@ class Ogario {
         this.sendServerToken();
         this._sendPlayerNick();
     }
-    readChatMessage(a) {
-        if (settings.disableChat) return;
-        const b = new Date().toTimeString().replace(/^(\d{2}:\d{2}).*/, '$1'),
-            c = a.getUint8(1),
-            d = a.getUint32(2, true),
-            e = a.getUint32(6, true);
+      readChatMessage(a) {
+        if (settings.disableChat) {
+            return;
+        }
+        const b = new Date().toTimeString().replace(/^(\d{2}:\d{2}).*/, '$1');
+        const c = a.getUint8(1);
+        const d = a.getUint32(2, true);
+        const e = a.getUint32(6, true);
         for (var f = '', g = 10; g < a.byteLength; g += 2) {
             const h = a.getUint16(g, true);
-            if (h == 0) break;
+            if (h == 0) {
+                break;
+            }
             f += String.fromCharCode(h);
         }
         comm.displayChatMessage(b, c, d, f);
@@ -941,7 +948,7 @@ class Ogario {
                 defaultColor: h,
                 quadrant: null
             };
-        if (f.charAt(1) === '.' && this.tab.cn.tabName === 'master') {
+        if (f.charAt(1) === '.' && this.cn.tabName === 'master') {
             if (f.charAt(0) === '4') {
                 if (this.playerID == c) return;
                 var j = Number(f.split('.')[1]);
@@ -953,7 +960,7 @@ class Ogario {
     }
     sendChatMessage(a, b, c) {
         if (this.isSocketOpen()) {
-            var c = b.substr(0, 15) + ': ' + c;
+            var c = b + ': ' + c;
             const d = this.createView(10 + c.length * 2);
             d.setUint8(0, 100);
             d.setUint8(1, a);
@@ -1026,20 +1033,15 @@ var comm = {
         this.tab[a] = null;
         return true;
     },
-    toggleAgartool() {
-        for (const a of this.tabs) {
-            settings.enableAgartool ? a.addClient('agartool') : a.remClient('agartool');
-        }
-    },
-    initEvents(c) {
-        application.on('initClient', f => {
-            this.addTab(f);
+    initEvents(a) {
+        application.on('initClient', b => {
+            this.addTab(b);
         });
+        application.on('destroyClient', b => {
+            this.remTab(b);
+        });
+    },
 
-        application.on('destroyClient', f => {
-            this.remTab(f);
-        });
-    },
     checkPlayerID(a) {
         if (a)
             for (let b = 0; b < this.teamPlayers.length; b++) {
