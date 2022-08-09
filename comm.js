@@ -209,12 +209,24 @@ class Agartool {
         this.timer = setInterval(() => {
             this.sendPlayerPosition();
         }, 2000);
+            this.last = {
+            nick: '',
+            clanTag: '',
+            skinURL: '',
+            customColor: '',
+            playerColor: '',
+            partyToken: '',
+            serverToken: '',
+            region: '',
+            gamemode: ''
+        };
         this._onSpawn = null;
         this._onDeath = null;
         this._onConnecting = null;
         this._onPlay = null;
         this._onConnecting = null;
         this.initEvents();
+        this.setServerData();
     }
     initEvents() {
         this._onSpawn = a => this.onSpawn();
@@ -263,6 +275,29 @@ class Agartool {
         this.skinURL = this.tab.tabName === 'master' ? profiles.masterProfile.skinURL : profiles.slaveProfile.skinURL;
         this.region = $('#region').val();
         this.gameMode = $('#gamemode').val();
+    }
+    sendPlayerData(offset, name, str) {
+            if (this[name] !== null && this[name] === str) {
+                return;
+            }
+            if (this.isSocketOpen()) {
+                this.sendBuffer(this.strToBuff(offset, str));
+                this[name] = str;
+            }
+    }
+    lastFlush() {
+        this.last = {
+            ws: '',
+            nick: '',
+            clanTag: '',
+            skinURL: '',
+            customColor: '',
+            playerColor: '',
+            partyToken: '',
+            serverToken: '',
+            region: '',
+            gamemode: ''
+        };
     }
   
     connect() {
@@ -316,6 +351,11 @@ class Agartool {
             this.finderSocket.removeAllListeners();
             this.finderSocket = null;
         }
+    }
+      reconnect() {
+        setTimeout(() => {
+            this.connect();
+        }, 5000);
     }
     isSocketOpen() {
         return this.socket && this.socket.connected;
@@ -377,7 +417,24 @@ class Agartool {
             name: 'dead'
         });
     }
-   
+   set clanTag(a) {
+        if (a !== this.last.clanTag) {
+            this.last.clanTag = a;
+            this.connect();
+        }
+    }
+    get clanTag() {
+        return this.last.clanTag;
+    }
+    set ws(a) {
+        if (a !== this.last.ws) {
+            this.last.ws = a;
+            this.connect();
+        }
+    }
+    get ws() {
+        return this.last.ws;
+    }
     sendPlayerCellUpdate() {
         if (this.isSocketOpen() && this.playerID) {
             function c(e) {
