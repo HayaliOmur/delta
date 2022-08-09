@@ -714,7 +714,7 @@ class Ogario {
                 break;
             case 1:
             
-                if (settings.mapGlobalFix && this.tab.cn.modeInt !== 3)
+                if (settings.mapGlobalFix && this.tab.modeInt !== 3)
                     this.sendQuadrant(QServer.calcLocalQuadrant());
 
                 this.sendPlayerCellUpdate();
@@ -868,12 +868,12 @@ class Ogario {
             const a = this.createView(17);
             a.setUint8(0, 30);
             a.setUint32(1, this.playerID, true);
-            a.setInt32(5, this.cn.getPlayerX(), true);
-            a.setInt32(9, this.cn.getPlayerY(), true);
-            if (typeof this.cn.playerMass !== 'undefined') {
-                a.setUint32(13, this.cn.playerMass, true);
+            a.setInt32(5, this.tab.getPlayerX(), true);
+            a.setInt32(9, this.tab.getPlayerY(), true);
+            if (typeof this.tab.playerMass !== 'undefined') {
+                a.setUint32(13, this.tab.playerMass, true);
             } else {
-                a.setUint32(13, this.cn.playerMass, true);
+                a.setUint32(13, this.tab.playerMass, true);
             }
             this.sendBuffer(a);
         }
