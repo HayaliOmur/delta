@@ -245,8 +245,8 @@ class Agartool {
             this.closeConnection();
         } catch (a) {}
         clearInterval(this.timer);
-        this.tab.cn.removeListener('spawn', this._onSpawn);
-        this.tab.cn.removeListener('death', this._onDeath);
+        this.cn.removeListener('spawn', this._onSpawn);
+        this.cn.removeListener('death', this._onDeath);
         application.removeListener('connecting', this._onConnecting);
         application.removeListener('playPressed', this._onPlay);
         application.removeListener('spectatePressed', this._onConnecting);

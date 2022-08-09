@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="./style.css">
    <link rel="stylesheet" href="./style1.css">
 
+    <script charset="utf-8" src="./pixi.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!---<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>--->
     <!---<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/js/bootstrap-colorpicker.min.js"></script>--->
@@ -365,7 +366,7 @@
     <script charset="utf-8" src="./application.js?++"></script>
     <script charset="utf-8" src="./comm.js"></script>
     <script charset="utf-8" src="./renderer.js"></script>
-
+    <script charset="utf-8" src="./buffer.js"></script>
 
 
     <script>
@@ -373,30 +374,6 @@
         drawRender.init()
     </script>
 
-    <!--- THIRD PARTY --->
-
-  <script>
-    if ('serviceWorker' in navigator && location.origin === 'https://deltav4.gitlab.io') {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => navigator.serviceWorker.ready.then((worker) => {
-            console.log('service worker 1',err)
-            worker.sync.register('syncdata');
-        }))
-        .catch((err) => console.log('service worker 2',err));
-}
-</script>
-  
-  <iframe id="ssIFrame_google" sandbox="allow-scripts allow-same-origin" aria-hidden="true" frame-border="0" src="https://accounts.google.com/o/oauth2/iframe#origin=https%3A%2F%2Fdeltav4.gitlab.io&amp;rpcToken=567232924.8242642" style="position: absolute; width: 1px; height: 1px; inset: -9999px; display: none;"></iframe><div id="fb-root" class=" fb_reset"><div style="position: absolute; top: -10000px; width: 0px; height: 0px;"><div></div></div></div>
-  <script type="text/javascript" id="webrtc-control">(function () {
-    if (typeof navigator.getUserMedia !== "undefined") navigator.getUserMedia = undefined;
-    if (typeof window.MediaStreamTrack !== "undefined") window.MediaStreamTrack = undefined;
-    if (typeof window.RTCPeerConnection !== "undefined") window.RTCPeerConnection = undefined;
-    if (typeof navigator.webkitGetUserMedia !== "undefined") navigator.webkitGetUserMedia = undefined;
-    if (typeof window.RTCSessionDescription !== "undefined") window.RTCSessionDescription = undefined;
-    if (typeof window.webkitMediaStreamTrack !== "undefined") window.webkitMediaStreamTrack = undefined;
-    if (typeof window.webkitRTCPeerConnection !== "undefined") window.webkitRTCPeerConnection = undefined;
-    if (typeof window.webkitRTCSessionDescription !== "undefined") window.webkitRTCSessionDescription = undefined;
-  })();</script>
  
-</body>
+  </body>
 </html>
