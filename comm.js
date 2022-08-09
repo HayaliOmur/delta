@@ -178,34 +178,17 @@ class Agartool {
     constructor(a) {
         eventify(this);
         this.isDebug = true;
-        Debugger(true, this, '[[31mAPI.AGTL ' + a.tabName + '[105m]:');
-        this.tab = a;
-        this.nick = '';
-        this.clanTag = '';
-        this.skinURL = '';
-        this.color = '';
-        this.playerColor = '';
-        this.partyToken = '';
-        this.serverToken = '';
-        this.region = '';
-        this.gameMode = ':ffa';
-        this.serverArena = '';
-        this.lastMessageSentTime = Date.now();
-        this.publicIP = 'wss://minimap.agartool.io:9000';
+           Debugger(true, this, '[[31mAPI.AGTL ' + a.tabName + '[105m]:');
+        this.cn = a;
+        this.hidden = false;
+        this.profile = this.cn.tabName === 'master' ? profiles.masterProfile : profiles.slaveProfile;
+        this.publicIP = '';
+        this.socket = {};
         this.finderSocket = {};
-        this.cells = {};
-        this.teamPlayers = [];
-        this.parties = [];
-        this.chatHistory = [];
-        this.chatUsers = {};
-        this.chatMutedUsers = {};
-        this.chatMutedUserIDs = [];
-        this.customSkinsCache = {};
-        this.customSkinsMap = {};
-        this.cacheQueue = [];
+     
         this.playerID = null;
-        this.playerMass = 0;
-        this.ws = null;
+    
+      
         this.timer = setInterval(() => {
             this.sendPlayerPosition();
         }, 2000);
@@ -234,8 +217,8 @@ class Agartool {
         this._onConnecting = a => this.onConnecting(a);
         this._onPlay = a => this.onPlay();
         this._onConnecting = a => this.onConnecting();
-        this.tab.on('spawn', this._onSpawn);
-        this.tab.on('death', this._onDeath);
+        this.cn.on('spawn', this._onSpawn);
+        this.cn.on('death', this._onDeath);
         application.on('connecting', this._onConnecting);
         application.on('playPressed', this._onPlay);
         application.on('spectatePressed', this._onConnecting);
@@ -262,17 +245,17 @@ class Agartool {
             this.closeConnection();
         } catch (a) {}
         clearInterval(this.timer);
-        this.tab.cn.removeListener('spawn', this._onSpawn);
-        this.tab.cn.removeListener('death', this._onDeath);
+        this.cn.removeListener('spawn', this._onSpawn);
+        this.cn.removeListener('death', this._onDeath);
         application.removeListener('connecting', this._onConnecting);
         application.removeListener('playPressed', this._onPlay);
         application.removeListener('spectatePressed', this._onConnecting);
     }
     setServerData() {
-        this.ws = this.tab.ws;
-        this.nick = this.tab.tabName === 'master' ? profiles.masterProfile.nick : profiles.slaveProfile.nick;
+        this.ws = this.cn.ws;
+        this.nick = this.cn.tabName === 'master' ? profiles.masterProfile.nick : profiles.slaveProfile.nick;
         this.clanTag = profiles.masterProfile.clanTag;
-        this.skinURL = this.tab.tabName === 'master' ? profiles.masterProfile.skinURL : profiles.slaveProfile.skinURL;
+        this.skinURL = this.cn.tabName === 'master' ? profiles.masterProfile.skinURL : profiles.slaveProfile.skinURL;
         this.region = $('#region').val();
         this.gameMode = $('#gamemode').val();
     }
@@ -417,14 +400,14 @@ class Agartool {
             name: 'dead'
         });
     }
-   set clanTag(a) {
+     get clanTag() {
+        return this.last.clanTag;
+    }
+     set clanTag(a) {
         if (a !== this.last.clanTag) {
             this.last.clanTag = a;
             this.connect();
         }
-    }
-    get clanTag() {
-        return this.last.clanTag;
     }
     set ws(a) {
         if (a !== this.last.ws) {
@@ -460,7 +443,7 @@ class Agartool {
         }
     }
     sendPlayerPosition() {
-        if (this.tab.play && this.isSocketOpen()) {
+        if (this.cn.play && this.isSocketOpen()) {
             this.socket.emit('command', {
                 name: 'position',
                 x: this.cn.getPlayerX(),
@@ -632,8 +615,8 @@ class Ogario {
         } catch (a) {}
         this.socket = null;
         clearInterval(this.timer);
-        this.tab.cn.removeListener('spawn', this._onSpawn);
-        this.tab.cn.removeListener('death', this._onDeath);
+        this.tab.removeListener('spawn', this._onSpawn);
+        this.tab.removeListener('death', this._onDeath);
         application.removeListener('connecting', this._onConnecting);
         application.removeListener('playPressed', this._onPlay);
         application.removeListener('spectatePressed', this._onConnecting);
@@ -659,7 +642,6 @@ class Ogario {
     }
     connect() {
         this.closeConnection();
-        var app = this;
         console.log(`[Application] Connecting to chat server`);
         this.socket = new WebSocket(this.publicIP);
         this.socket.ogarioWS = true;
@@ -667,13 +649,14 @@ class Ogario {
 
         this.socket.onopen = () => {
             console.log('[Application] Socket open chat server');
-            var buffer = app.createView(3);
+            var buffer = this.createView(3);
             buffer.setUint8(0, 0);
             buffer.setUint16(1, 401, true);          
-            app.sendBuffer(buffer);
+            this.sendBuffer(buffer);
      
-            this.lastFlush();
-         
+             this.lastFlush();
+             this.setServerData();
+             this.sendPartyData();
         };
 
         this.socket.onmessage = message => {
