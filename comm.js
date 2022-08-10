@@ -252,10 +252,10 @@ class Agartool {
         application.removeListener('spectatePressed', this._onConnecting);
     }
     setServerData() {
-        this.ws = this.cn.ws;
-        this.nick = this.cn.tabName === 'master' ? profiles.masterProfile.nick : profiles.slaveProfile.nick;
-        this.clanTag = profiles.masterProfile.clanTag;
-        this.skinURL = this.cn.tabName === 'master' ? profiles.masterProfile.skinURL : profiles.slaveProfile.skinURL;
+        this.ws = $('#server-ws').val();
+        this.serverToken = $('#server-token').val();
+        this.clanTag = $('#clantag').val();
+        this.nick = this.cn.tabName === 'master' ? $('#nick').val() : profiles.slaveProfile.nick;
         this.region = $('#region').val();
         this.gameMode = $('#gamemode').val();
     }
@@ -1126,7 +1126,17 @@ var comm = {
             this.$messageInput.val('');
         } else {
             const a = this.$messageInput.val();
-            a.length ? (this.tab.master.sendChatMessage(101, profiles.masterProfile.nick, a), application.play && (this.$messageInput.blur(), this.$messageBox.hide())) : (this.$messageInput.blur(), this.$messageBox.hide());
+            if (a.length) {
+                this.tab.master.ogario.sendChatMessage(101, profiles.masterProfile.nick, a);
+                this.tab.master.agartool.sendChatMessage(101, profiles.masterProfile.nick, a);
+                if (application.play) {
+                    this.$messageInput.blur();
+                    this.$messageBox.hide();
+                }
+            } else {
+                this.$messageInput.blur();
+                this.$messageBox.hide();
+            }
             this.$messageInput.val('');
         }
     },
