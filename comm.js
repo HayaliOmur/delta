@@ -584,7 +584,7 @@ class Ogario {
     this.lastSentPartyToken = "";
     this.lastSentServerToken = "";
     this.lastMessageSentTime = Date.now();
-    this.publicIP = "wss://snez.dev:8080/ws";
+    this.publicIP = "wss://chat.delta.cloudns.cx/ws?040";
     this.socket = {};
     this.cells = {};
     this.teamPlayers = [];
