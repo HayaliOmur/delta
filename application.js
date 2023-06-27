@@ -1020,7 +1020,7 @@ window.master = new(class {
 })();
 var coldEnv = {
     fb_app_id: 677505792353827,
-    gplus_client_id: '686981379285-oroivr8u2ag1dtm3ntcs6vi05i3cpv0j.apps.googleusercontent.com',
+    gplus_client_id: '544080600604-6qsvcqo3elg3f5dpmcau663i7hatie1p.apps.googleusercontent.com',
     master_url: 'webbouncer-live-v8-0.agario.miniclippt.com',
     endpoint_version: 'v4',
     proto_version: '15.0.1',
